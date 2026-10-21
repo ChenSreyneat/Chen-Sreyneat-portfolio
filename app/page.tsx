@@ -1,12 +1,9 @@
 import HeroSection from "./components/home/HeroSection";
 import AboutSection from "./components/home/AboutSection";
 import EducationSection from "./components/home/EducationSection";
-import ServicesSection from "./components/home/ServicesSection";
-import ProjectsSection from "./components/home/ProjectsSection";
-import SkillsSection from "./components/home/SkillsSection";
 import ExperienceSection from "./components/home/ExperienceSection";
+import ProjectsSection from "./components/home/ProjectsSection";
 import CertificatesSection from "./components/home/CertificatesSection";
-import ResumeSection from "./components/home/ResumeSection";
 import ContactSection from "./components/home/ContactSection";
 
 export default function Home() {
@@ -15,12 +12,9 @@ export default function Home() {
       <HeroSection />
       <AboutSection />
       <EducationSection />
-      <ServicesSection />
-      <ProjectsSection />
-      <SkillsSection />
       <ExperienceSection />
+      <ProjectsSection />
       <CertificatesSection />
-      <ResumeSection />
       <ContactSection />
     </main>
   );

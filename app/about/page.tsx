@@ -1,403 +1,386 @@
 "use client";
 
-import {
-  MapPin, Globe, Users, Lightbulb, CheckCircle, MessageSquare,
-  ChevronLeft, Briefcase, GraduationCap
-} from "lucide-react";
-import { FaGithub, FaLinkedin, FaTelegram } from "react-icons/fa";
+import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import ExperienceSection from "../components/home/ExperienceSection";
+import { 
+  Calendar, 
+  ExternalLink, 
+  Download, 
+  Mail, 
+  GraduationCap, 
+  MapPin, 
+  ChevronLeft,
+  ChevronRight,
+  Award,
+  Globe,
+  User,
+  Users,
+  Lightbulb,
+  CheckCircle2,
+  MessageSquare,
+  Briefcase
+} from "lucide-react";
+import { 
+  FaGithub, 
+  FaLinkedin, 
+  FaFacebook, 
+  FaInstagram, 
+  FaTelegram,
+  FaBehance
+} from "react-icons/fa";
 
 export default function About() {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
+  const education = [
+    {
+      school: "Royal University of Phnom Penh (RUPP)",
+      period: "2022 – 2026",
+      degree: "Bachelor of Information Technology Engineering",
+      location: "Phnom Penh, Cambodia",
+      highlight: "Awarded a full 4-year scholarship based on outstanding academic performance."
+    },
+    {
+      school: "High School National Exam (BacII)",
+      period: "2022",
+      degree: "Upper Secondary Education Diploma (Grade B)",
+      location: "Cambodia",
+      highlight: "Graduated with Grade B in the BacII (12th grade National Examination)."
+    },
+    {
+      school: "Soramrit High School",
+      period: "2019",
+      degree: "High School Diploma (1 Year – 9 Years Study)",
+      location: "Cambodia",
+      highlight: "Completed 9 years of basic general education (Grade 1 to Grade 9) at Soramrit High School."
     }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        type: "spring" as const,
-        damping: 25,
-        stiffness: 180
-      }
-    }
-  };
+  ];
 
   return (
-    <div className="relative overflow-hidden min-h-screen">
-      {/* Background Decorative Grid */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#1d70a205_1px,transparent_1px),linear-gradient(to_bottom,#1d70a205_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)]" />
+    <div className="relative min-h-screen bg-transparent overflow-hidden pb-24 pt-6">
+      {/* Background UI Grid & Ambient Luminous Glow (Matching EducationSection) */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#1d70a208_1px,transparent_1px),linear-gradient(to_bottom,#1d70a208_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none" />
+      <div 
+        className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-[700px] h-[350px] sm:h-[400px] rounded-full opacity-35 blur-[100px] pointer-events-none -z-10"
+        style={{
+          background: "radial-gradient(ellipse at center, rgba(56, 189, 248, 0.5) 0%, rgba(37, 99, 235, 0.3) 40%, transparent 75%)"
+        }}
+      />
 
-      <main className="max-w-6xl mx-auto px-4 pt-12 pb-24 relative z-10">
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 md:px-8 relative z-10">
         
         {/* Back Link */}
         <motion.div 
           initial={{ opacity: 0, x: -10 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5 }}
-          className="mb-12"
+          transition={{ duration: 0.4 }}
+          className="mb-8"
         >
           <Link 
             href="/" 
-            className="inline-flex items-center gap-2 text-text-secondary hover:text-accent-blue transition-colors group"
+            className="inline-flex items-center gap-2 text-slate-400 hover:text-accent-blue transition-colors group font-outfit text-sm font-semibold"
           >
-            <ChevronLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
-            <span className="font-bold text-sm uppercase tracking-widest">Back to Home</span>
+            <ChevronLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
+            <span>Back to Home</span>
           </Link>
         </motion.div>
 
-        {/* Dashboard Grid */}
+        {/* Section Header */}
         <motion.div 
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start"
+          initial={{ opacity: 0, y: 25 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="flex flex-col items-center text-center mb-14 px-4"
+        >
+          <div className="flex items-center justify-center gap-3 mb-3">
+            <div className="w-8 h-[1px] bg-accent-blue/50" />
+            <span className="text-accent-blue font-bold uppercase tracking-[0.4em] text-[0.6rem] font-outfit">Get To Know Me</span>
+            <div className="w-8 h-[1px] bg-accent-blue/50" />
+          </div>
+          <h1 className="text-3xl md:text-5xl font-extrabold text-white mb-3 font-outfit">
+            About <span className="text-accent-blue">Me</span>
+          </h1>
+          <p className="text-slate-200 text-sm md:text-base max-w-2xl font-medium font-inter">
+            A glimpse into my background, creative design skills, and practical IT engineering journey.
+          </p>
+        </motion.div>
+
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start mb-20"
         >
           
-          {/* 1. Header Card (Spans full width on mobile, 12 columns) */}
-          <motion.div 
-            variants={itemVariants}
-            className="lg:col-span-12 relative group"
-          >
-            <div className="absolute -inset-0.5 bg-gradient-to-r from-accent-blue/10 to-purple-500/10 rounded-3xl blur-md opacity-75 group-hover:opacity-100 transition-opacity duration-500 -z-10" />
-            <div className="relative p-8 md:p-12 rounded-3xl border border-glass-border bg-glass-bg backdrop-blur-xl hover:border-accent-blue/30 transition-all duration-300">
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-                <div>
-                  <div className="flex items-center gap-3 mb-4">
-                    <motion.span 
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.5, delay: 0.2 }}
-                      className="px-3 py-1 rounded-full bg-accent-blue/10 border border-accent-blue/20 text-[0.65rem] font-bold text-accent-blue uppercase tracking-widest inline-block"
-                    >
-                      About Me
-                    </motion.span>
-                  </div>
-                  <motion.h1 
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.3 }}
-                    className="text-4xl md:text-6xl font-black text-text-primary mb-2"
-                  >
-                    Chen <span className="text-gradient-accent">Sreyneat</span>
-                  </motion.h1>
-                  <motion.p 
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.4 }}
-                    className="text-accent-blue text-lg md:text-xl font-medium tracking-tight mb-4"
-                  >
-                    Software Development Student
-                  </motion.p>
-                  <motion.p 
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.5 }}
-                    className="text-text-secondary text-base md:text-lg leading-relaxed max-w-3xl italic"
-                  >
-                    &quot;I am a dedicated developer passionate about crafting beautiful, user-friendly applications. I blend software engineering with creativity to build responsive digital experiences.&quot;
-                  </motion.p>
-                </div>
-
-                {/* Social Connect Panel */}
-                <motion.div 
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6, delay: 0.6 }}
-                  className="flex flex-wrap md:flex-col gap-3 min-w-[160px]"
-                >
-                  <motion.a 
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    href="https://www.linkedin.com/in/chen-sreyneat-749654313/" 
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-3 px-4 py-2.5 rounded-xl bg-linear-to-r from-[#2c53a6] to-[#60a5fa] hover:from-[#214185] hover:to-[#4fa1ff] text-xs font-bold text-white shadow-md shadow-blue-500/20 transition-all"
-                  >
-                    <FaLinkedin size={16} /> LinkedIn
-                  </motion.a>
-                  <motion.a 
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    href="https://github.com/" 
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-3 px-4 py-2.5 rounded-xl bg-glass-bg border border-glass-border text-xs font-bold text-text-primary hover:bg-text-primary hover:text-bg-color shadow-sm transition-all"
-                  >
-                    <FaGithub size={16} /> GitHub
-                  </motion.a>
-                  <motion.a 
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    href="https://t.me/Neat198" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-3 px-4 py-2.5 rounded-xl bg-glass-bg border border-glass-border text-xs font-bold text-[#0088cc] hover:bg-[#0088cc] hover:text-white shadow-sm transition-all"
-                  >
-                    <FaTelegram size={16} /> Telegram
-                  </motion.a>
-                </motion.div>
+          {/* Left Column: Profile Card Sidebar (Unboxed) */}
+          <div className="lg:col-span-4 flex flex-col items-center lg:items-start pb-8 lg:pb-0 lg:pr-4">
+            
+            {/* Circular Avatar with Vivid Blue Ring */}
+            <div className="relative w-40 h-40 sm:w-44 sm:h-44 md:w-48 md:h-48 rounded-full border-[1.5px] border-accent-blue/40 p-1 bg-transparent shadow-sm mx-auto lg:mx-0">
+              <div className="relative w-full h-full rounded-full overflow-hidden">
+                <Image
+                  src="/image/1.png"
+                  alt="Chen Sreyneat"
+                  fill
+                  sizes="(max-width: 768px) 192px, 192px"
+                  className="object-cover"
+                  priority
+                />
               </div>
             </div>
-          </motion.div>
 
-          {/* Left Column Dashboard (4 Columns) */}
-          <div className="lg:col-span-4 space-y-8">
-            
-            {/* 2. Personal Info Card */}
-            <motion.div 
-              variants={itemVariants}
-              className="relative group"
-            >
-              <motion.div 
-                whileHover={{ y: -5 }}
-                className="relative p-6 rounded-2xl border border-glass-border bg-glass-bg backdrop-blur-xl hover:border-accent-blue/30 transition-all duration-300 shadow-sm hover:shadow-xl hover:shadow-accent-blue/10"
-              >
-                <h3 className="text-base font-bold text-text-primary mb-6 uppercase tracking-wider border-b border-glass-border/50 pb-3">Pillars</h3>
-                <div className="space-y-6">
-                  {/* Location */}
-                  <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-xl bg-accent-blue/10 flex items-center justify-center text-accent-blue border border-accent-blue/20 flex-shrink-0">
-                      <MapPin size={18} />
-                    </div>
-                    <div>
-                      <span className="text-[0.6rem] uppercase tracking-wider text-gray-500 font-bold block">Base</span>
-                      <span className="text-sm font-bold text-text-primary">Phnom Penh, Cambodia</span>
-                    </div>
-                  </div>
+            {/* Status Badge: Open to Opportunities (Education Badge Background) */}
+            <div className="relative -mt-3 z-10 flex justify-center w-full lg:w-auto mb-6">
+              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-white/5 border border-accent-blue/40 text-cyan-300 text-xs font-bold font-outfit uppercase tracking-wider shadow-xs">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+                </span>
+                Open to Opportunities
+              </span>
+            </div>
 
-                  {/* Languages */}
-                  <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-xl bg-accent-blue/10 flex items-center justify-center text-accent-blue border border-accent-blue/20 flex-shrink-0">
-                      <Globe size={18} />
-                    </div>
-                    <div>
-                      <span className="text-[0.6rem] uppercase tracking-wider text-gray-500 font-bold block mb-1">Languages</span>
-                      <div className="flex gap-2">
-                        <span className="px-2.5 py-0.5 rounded-md bg-glass-bg border border-glass-border text-[0.65rem] font-bold text-logo-color uppercase tracking-wider">Khmer</span>
-                        <span className="px-2.5 py-0.5 rounded-md bg-glass-bg border border-glass-border text-[0.65rem] font-bold text-logo-color uppercase tracking-wider">English</span>
-                      </div>
-                    </div>
-                  </div>
+            {/* Location Small Box (Education Box Background) */}
+            <div className="w-full flex items-center gap-3 mb-4 p-3 rounded-xl bg-slate-950/20 border border-white/20 hover:border-accent-blue shadow-sm hover:shadow-accent-blue/20 transition-all group">
+              <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/20 flex items-center justify-center shrink-0 text-accent-blue shadow-inner group-hover:border-accent-blue/60 group-hover:shadow-[0_0_12px_rgba(96,165,250,0.3)] transition-all">
+                <MapPin size={15} />
+              </div>
+              <div className="flex flex-col">
+                <span className="font-bold text-white text-sm font-outfit">
+                  Phnom Penh, Cambodia
+                </span>
+                <span className="font-mono text-slate-400 text-xs font-medium">
+                  11.5564° N, 104.9282° E
+                </span>
+              </div>
+            </div>
+
+            {/* Languages Mini Boxes (Education Box Background) */}
+            <div className="w-full mb-4">
+              <div className="flex items-center gap-2 text-xs font-bold text-accent-blue/80 uppercase tracking-[0.25em] mb-2 font-outfit">
+                <Globe size={13} className="text-accent-blue/80" />
+                <span>Languages</span>
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                <div className="rounded-xl p-2.5 bg-slate-950/20 border border-white/20 hover:border-accent-blue shadow-sm hover:shadow-accent-blue/20 transition-all group">
+                  <div className="font-bold text-sm text-white group-hover:text-accent-blue transition-colors font-outfit">Khmer</div>
+                  <div className="text-xs text-slate-400 font-inter">Native</div>
                 </div>
-              </motion.div>
-            </motion.div>
-
-            {/* 3. Soft Skills Card */}
-            <motion.div 
-              variants={itemVariants}
-              className="relative group"
-            >
-              <motion.div 
-                whileHover={{ y: -5 }}
-                className="relative p-6 rounded-2xl border border-glass-border bg-glass-bg backdrop-blur-xl hover:border-accent-blue/30 transition-all duration-300 shadow-sm hover:shadow-xl hover:shadow-accent-blue/10"
-              >
-                <h3 className="text-base font-bold text-text-primary mb-6 uppercase tracking-wider border-b border-glass-border/50 pb-3">Soft Skills</h3>
-                <div className="grid grid-cols-1 gap-3">
-                  {[
-                    { icon: Users, label: "Teamwork" },
-                    { icon: Lightbulb, label: "Problem Solving" },
-                    { icon: CheckCircle, label: "Responsible" },
-                    { icon: MessageSquare, label: "Communication" }
-                  ].map((skill, i) => (
-                    <motion.div 
-                      key={i} 
-                      whileHover={{ x: 5 }}
-                      className="flex items-center gap-3 px-4 py-3 rounded-xl bg-glass-bg border border-glass-border text-xs font-bold text-text-secondary hover:text-text-primary hover:bg-accent-blue/10 hover:border-accent-blue/30 transition-colors shadow-sm cursor-default"
-                    >
-                      <skill.icon size={16} className="text-accent-blue" /> 
-                      <span>{skill.label}</span>
-                    </motion.div>
-                  ))}
+                <div className="rounded-xl p-2.5 bg-slate-950/20 border border-white/20 hover:border-accent-blue shadow-sm hover:shadow-accent-blue/20 transition-all group">
+                  <div className="font-bold text-sm text-white group-hover:text-accent-blue transition-colors font-outfit">English</div>
+                  <div className="text-xs text-slate-400 font-inter">Professional</div>
                 </div>
-              </motion.div>
-            </motion.div>
+              </div>
+            </div>
+
+            {/* Soft Skills Mini Boxes Grid (Education Box Background) */}
+            <div className="w-full">
+              <div className="flex items-center gap-2 text-xs font-bold text-accent-blue/80 uppercase tracking-[0.25em] mb-2 font-outfit">
+                <User size={13} className="text-accent-blue/80" />
+                <span>Soft Skills</span>
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                <div className="flex items-center gap-2 p-2 rounded-xl bg-slate-950/20 border border-white/20 hover:border-accent-blue shadow-sm hover:shadow-accent-blue/20 transition-all group">
+                  <div className="w-6 h-6 rounded-md bg-white/5 border border-white/20 flex items-center justify-center text-accent-blue shrink-0 shadow-inner group-hover:border-accent-blue/60 group-hover:shadow-[0_0_12px_rgba(96,165,250,0.3)] transition-all">
+                    <Users size={12} />
+                  </div>
+                  <span className="text-xs font-bold text-white group-hover:text-accent-blue transition-colors font-outfit">Teamwork</span>
+                </div>
+                <div className="flex items-center gap-2 p-2 rounded-xl bg-slate-950/20 border border-white/20 hover:border-accent-blue shadow-sm hover:shadow-accent-blue/20 transition-all group">
+                  <div className="w-6 h-6 rounded-md bg-white/5 border border-white/20 flex items-center justify-center text-accent-blue shrink-0 shadow-inner group-hover:border-accent-blue/60 group-hover:shadow-[0_0_12px_rgba(96,165,250,0.3)] transition-all">
+                    <Lightbulb size={12} />
+                  </div>
+                  <span className="text-xs font-bold text-white group-hover:text-accent-blue transition-colors font-outfit">Problem Solving</span>
+                </div>
+                <div className="flex items-center gap-2 p-2 rounded-xl bg-slate-950/20 border border-white/20 hover:border-accent-blue shadow-sm hover:shadow-accent-blue/20 transition-all group">
+                  <div className="w-6 h-6 rounded-md bg-white/5 border border-white/20 flex items-center justify-center text-accent-blue shrink-0 shadow-inner group-hover:border-accent-blue/60 group-hover:shadow-[0_0_12px_rgba(96,165,250,0.3)] transition-all">
+                    <CheckCircle2 size={12} />
+                  </div>
+                  <span className="text-xs font-bold text-white group-hover:text-accent-blue transition-colors font-outfit">Responsible</span>
+                </div>
+                <div className="flex items-center gap-2 p-2 rounded-xl bg-slate-950/20 border border-white/20 hover:border-accent-blue shadow-sm hover:shadow-accent-blue/20 transition-all group">
+                  <div className="w-6 h-6 rounded-md bg-white/5 border border-white/20 flex items-center justify-center text-accent-blue shrink-0 shadow-inner group-hover:border-accent-blue/60 group-hover:shadow-[0_0_12px_rgba(96,165,250,0.3)] transition-all">
+                    <MessageSquare size={12} />
+                  </div>
+                  <span className="text-xs font-bold text-white group-hover:text-accent-blue transition-colors font-outfit">Communication</span>
+                </div>
+              </div>
+            </div>
 
           </div>
 
-          {/* Right Column Dashboard (8 Columns) */}
-          <div className="lg:col-span-8 space-y-8">
+          {/* Right Column: Bio & Actions (Unboxed) */}
+          <div className="lg:col-span-8 flex flex-col justify-center">
             
-            {/* 4. Work Experience Card */}
-            <motion.div 
-              variants={itemVariants}
-              className="relative group"
-            >
-              <div className="relative p-8 rounded-2xl border border-glass-border bg-glass-bg backdrop-blur-xl hover:border-accent-blue/30 transition-all duration-300">
-                <h3 className="text-lg font-bold text-white mb-8 uppercase tracking-wider border-b border-glass-border/50 pb-4 flex items-center gap-3">
-                  <Briefcase size={20} className="text-accent-blue" />
-                  Work Experience
-                </h3>
-                
-                <div className="relative border-l border-glass-border pl-6 ml-4 space-y-8">
-                  {/* Experience 1: First Service Company */}
-                  <div className="relative">
-                    <div className="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full bg-accent-blue border-4 border-[#010413]" />
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
-                      <div>
-                        <span className="text-accent-blue text-[0.65rem] font-black uppercase tracking-widest block mb-0.5">July, 2025</span>
-                        <h4 className="text-xl font-bold text-text-primary">First Service Company</h4>
-                      </div>
-                      <span className="px-3 py-1 rounded-full bg-accent-blue/10 border border-accent-blue/20 text-[0.6rem] font-bold text-logo-color uppercase tracking-widest w-fit">
-                        Digital Marketing & Designer
-                      </span>
-                    </div>
-                    <ul className="space-y-2 text-text-secondary text-sm leading-relaxed">
-                      <li className="flex gap-3">
-                        <div className="mt-2 w-1.5 h-1.5 rounded-full bg-accent-blue shrink-0" />
-                        <p>Developed creative content and produced short videos, graphics, and posts aligned with brand messaging for social media platforms.</p>
-                      </li>
-                      <li className="flex gap-3">
-                        <div className="mt-2 w-1.5 h-1.5 rounded-full bg-accent-blue shrink-0" />
-                        <p>Managed social media accounts including Facebook and TikTok, and supported the sales team with creative materials.</p>
-                      </li>
-                      <li className="flex gap-3">
-                        <div className="mt-2 w-1.5 h-1.5 rounded-full bg-accent-blue shrink-0" />
-                        <p>Improved communication and teamwork skills in a collaborative marketing environment.</p>
-                      </li>
-                    </ul>
-                  </div>
+            {/* Schedule a Call Button (Education Button Background) */}
+            <div className="mb-4">
+              <Link 
+                href="/#contact" 
+                className="inline-flex items-center gap-2 py-2 px-3.5 rounded-xl bg-accent-blue/10 hover:bg-accent-blue border border-accent-blue/30 hover:border-accent-blue text-xs font-bold text-accent-blue hover:text-white transition-all duration-300 group/btn cursor-pointer font-outfit uppercase tracking-wider shadow-sm hover:shadow-lg hover:shadow-accent-blue/20 w-fit"
+              >
+                <Calendar size={13} className="stroke-[2.5]" />
+                <span>Schedule a call</span>
+                <ExternalLink size={12} className="stroke-[2.5]" />
+              </Link>
+            </div>
 
-                  {/* Experience 2: CDDE */}
-                  <div className="relative">
-                    <div className="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full bg-accent-blue border-4 border-[#010413]" />
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
-                      <div>
-                        <span className="text-accent-blue text-[0.65rem] font-black uppercase tracking-widest block mb-0.5">March - April, 2024</span>
-                        <h4 className="text-xl font-bold text-text-primary">Center of Digital & Distance Education</h4>
-                      </div>
-                      <span className="px-3 py-1 rounded-full bg-accent-blue/10 border border-accent-blue/20 text-[0.6rem] font-bold text-logo-color uppercase tracking-widest w-fit">
-                        Teaching Staff
-                      </span>
-                    </div>
-                    <ul className="space-y-2 text-text-secondary text-sm leading-relaxed">
-                      <li className="flex gap-3">
-                        <div className="mt-2 w-1.5 h-1.5 rounded-full bg-accent-blue shrink-0" />
-                        <p>Delivered lessons to 578 students across 9 high schools, guiding them on how to use the Ministry of Education mobile application.</p>
-                      </li>
-                      <li className="flex gap-3">
-                        <div className="mt-2 w-1.5 h-1.5 rounded-full bg-accent-blue shrink-0" />
-                        <p>Managed classroom activities, ensured student understanding, and communicated confidently with large groups.</p>
-                      </li>
-                    </ul>
-                  </div>
+            {/* Main Name Heading */}
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight mb-2 font-outfit">
+              Chen <span className="text-accent-blue">Sreyneat</span>
+            </h2>
 
-                  {/* Experience 3: Village Festival */}
-                  <div className="relative">
-                    <div className="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full bg-accent-blue border-4 border-[#010413]" />
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
-                      <div>
-                        <span className="text-accent-blue text-[0.65rem] font-black uppercase tracking-widest block mb-0.5">March, 2024</span>
-                        <h4 className="text-xl font-bold text-text-primary">Village Festival</h4>
-                      </div>
-                      <span className="px-3 py-1 rounded-full bg-accent-blue/10 border border-accent-blue/20 text-[0.6rem] font-bold text-logo-color uppercase tracking-widest w-fit">
-                        Entertainment Team
-                      </span>
-                    </div>
-                    <ul className="space-y-2 text-text-secondary text-sm leading-relaxed">
-                      <li className="flex gap-3">
-                        <div className="mt-2 w-1.5 h-1.5 rounded-full bg-accent-blue shrink-0" />
-                        <p>Organized traditional games and activities, managed event schedules smoothly, and ensured participant satisfaction.</p>
-                      </li>
-                    </ul>
-                  </div>
+            {/* Role Subtitle */}
+            <p className="text-accent-blue text-sm sm:text-base font-bold uppercase tracking-wider font-outfit mb-5">
+              Information Technology Engineering Graduate • Digital Marketing &amp; Designer
+            </p>
 
-                  {/* Experience 4: Student Associate of RUPP */}
-                  <div className="relative">
-                    <div className="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full bg-accent-blue border-4 border-[#010413]" />
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
-                      <div>
-                        <span className="text-accent-blue text-[0.65rem] font-black uppercase tracking-widest block mb-0.5">January - March, 2024</span>
-                        <h4 className="text-xl font-bold text-text-primary">Student Associate of RUPP</h4>
-                      </div>
-                      <span className="px-3 py-1 rounded-full bg-accent-blue/10 border border-accent-blue/20 text-[0.6rem] font-bold text-logo-color uppercase tracking-widest w-fit">
-                        Guide Team Member
-                      </span>
-                    </div>
-                    <ul className="space-y-2 text-text-secondary text-sm leading-relaxed">
-                      <li className="flex gap-3">
-                        <div className="mt-2 w-1.5 h-1.5 rounded-full bg-accent-blue shrink-0" />
-                        <p>Assisted and guided visitors during university events, providing clear directions and information.</p>
-                      </li>
-                      <li className="flex gap-3">
-                        <div className="mt-2 w-1.5 h-1.5 rounded-full bg-accent-blue shrink-0" />
-                        <p>Supported overall event coordination and operations.</p>
-                      </li>
-                    </ul>
-                  </div>
+            {/* Social and Action Buttons Row (Education Button Background) */}
+            <div className="flex flex-wrap items-center gap-2 mb-6">
+              {/* Download CV */}
+              <a
+                href="/image/CV_Chen_Sreyneat.pdf"
+                download="CV_Chen_Sreyneat.pdf"
+                className="py-1.5 px-3 rounded-xl bg-accent-blue/10 hover:bg-accent-blue border border-accent-blue/30 hover:border-accent-blue text-xs font-bold text-accent-blue hover:text-white transition-all duration-300 inline-flex items-center gap-2 font-outfit uppercase tracking-wider shadow-sm hover:shadow-lg hover:shadow-accent-blue/20 hover:scale-105 active:scale-95 cursor-pointer"
+              >
+                <Download size={14} className="stroke-[2.5]" />
+                <span>Download CV</span>
+              </a>
 
-                  {/* Experience 5: SROLANH Smart Store */}
-                  <div className="relative">
-                    <div className="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full bg-accent-blue border-4 border-[#010413]" />
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
-                      <div>
-                        <span className="text-accent-blue text-[0.65rem] font-black uppercase tracking-widest block mb-0.5">2022 - May 2023</span>
-                        <h4 className="text-xl font-bold text-text-primary">SROLANH Smart Store</h4>
-                      </div>
-                      <span className="px-3 py-1 rounded-full bg-accent-blue/10 border border-accent-blue/20 text-[0.6rem] font-bold text-logo-color uppercase tracking-widest w-fit">
-                        Graphic Designer
-                      </span>
-                    </div>
-                    <ul className="space-y-2 text-text-secondary text-sm leading-relaxed">
-                      <li className="flex gap-3">
-                        <div className="mt-2 w-1.5 h-1.5 rounded-full bg-accent-blue shrink-0" />
-                        <p>Crafted visually compelling designs for social media and promotional materials that resonated with the brand&apos;s core identity.</p>
-                      </li>
-                      <li className="flex gap-3">
-                        <div className="mt-2 w-1.5 h-1.5 rounded-full bg-accent-blue shrink-0" />
-                        <p>Collaborated with marketing teams to develop creative campaigns that effectively engaged target audiences.</p>
-                      </li>
-                    </ul>
-                  </div>
+              {/* GitHub */}
+              <a
+                href="https://github.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-3 py-1.5 rounded-xl bg-slate-950/20 border border-white/20 hover:border-accent-blue hover:bg-accent-blue/10 text-xs font-bold text-white transition-all inline-flex items-center gap-2 font-outfit hover:scale-105 active:scale-95 shadow-sm hover:shadow-accent-blue/20"
+              >
+                <FaGithub size={14} className="text-white/90" />
+                <span>GitHub</span>
+              </a>
 
-                </div>
-              </div>
-            </motion.div>
+              {/* LinkedIn */}
+              <a
+                href="https://www.linkedin.com/in/chen-sreyneat-749654313/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-3 py-1.5 rounded-xl bg-slate-950/20 border border-white/20 hover:border-accent-blue hover:bg-accent-blue/10 text-xs font-bold text-white transition-all inline-flex items-center gap-2 font-outfit hover:scale-105 active:scale-95 shadow-sm hover:shadow-accent-blue/20"
+              >
+                <FaLinkedin size={14} className="text-[#0a66c2]" />
+                <span>LinkedIn</span>
+              </a>
 
-            {/* 5. Education Journey Card (Added for completeness and professional look) */}
-            <motion.div 
-              variants={itemVariants}
-              className="relative group"
-            >
-              <div className="relative p-8 rounded-2xl border border-glass-border bg-glass-bg backdrop-blur-xl hover:border-accent-blue/30 transition-all duration-300">
-                <h3 className="text-lg font-bold text-white mb-8 uppercase tracking-wider border-b border-glass-border/50 pb-4 flex items-center gap-3">
-                  <GraduationCap size={22} className="text-accent-blue" />
-                  Education
-                </h3>
-                
-                <div className="relative border-l border-glass-border pl-6 ml-4 space-y-8">
-                  <div className="relative">
-                    <div className="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full bg-accent-blue border-4 border-[#010413]" />
-                    
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
-                      <div>
-                        <span className="text-accent-blue text-[0.65rem] font-black uppercase tracking-widest block mb-0.5">2022 - Present</span>
-                        <h4 className="text-xl font-bold text-text-primary">Royal University of Phnom Penh</h4>
-                      </div>
-                      <span className="px-3 py-1 rounded-full bg-accent-blue/10 border border-accent-blue/20 text-[0.6rem] font-bold text-logo-color uppercase tracking-widest w-fit">
-                        ITE Student
-                      </span>
-                    </div>
-                    <p className="text-text-secondary text-sm leading-relaxed">
-                      Currently in my 4th year of Bachelor&apos;s degree in Information Technology Engineering. Awarded a full 4-year scholarship covering tuition fees for outstanding academic performance.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
+              {/* Facebook */}
+              <a
+                href="https://facebook.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-3 py-1.5 rounded-xl bg-slate-950/20 border border-white/20 hover:border-accent-blue hover:bg-accent-blue/10 text-xs font-bold text-white transition-all inline-flex items-center gap-2 font-outfit hover:scale-105 active:scale-95 shadow-sm hover:shadow-accent-blue/20"
+              >
+                <FaFacebook size={14} className="text-[#1877f2]" />
+                <span>Facebook</span>
+              </a>
+
+              {/* Instagram */}
+              <a
+                href="https://instagram.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-3 py-1.5 rounded-xl bg-slate-950/20 border border-white/20 hover:border-accent-blue hover:bg-accent-blue/10 text-xs font-bold text-white transition-all inline-flex items-center gap-2 font-outfit hover:scale-105 active:scale-95 shadow-sm hover:shadow-accent-blue/20"
+              >
+                <FaInstagram size={14} className="text-[#e4405f]" />
+                <span>Instagram</span>
+              </a>
+
+              {/* Telegram */}
+              <a
+                href="https://t.me/Neat198"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-3 py-1.5 rounded-xl bg-slate-950/20 border border-white/20 hover:border-accent-blue hover:bg-accent-blue/10 text-xs font-bold text-white transition-all inline-flex items-center gap-2 font-outfit hover:scale-105 active:scale-95 shadow-sm hover:shadow-accent-blue/20"
+              >
+                <FaTelegram size={14} className="text-[#229ed9]" />
+                <span>Telegram</span>
+              </a>
+
+              {/* Email */}
+              <a
+                href="mailto:chensreyneat198@gmail.com"
+                className="px-3 py-1.5 rounded-xl bg-slate-950/20 border border-white/20 hover:border-accent-blue hover:bg-accent-blue/10 text-xs font-bold text-white transition-all inline-flex items-center gap-2 font-outfit hover:scale-105 active:scale-95 shadow-sm hover:shadow-accent-blue/20"
+              >
+                <Mail size={14} className="text-[#ea4335]" />
+                <span>Email</span>
+              </a>
+            </div>
+
+            {/* Bio Paragraphs */}
+            <div className="space-y-4 text-slate-200 text-sm sm:text-base leading-relaxed font-semibold font-inter">
+              <p>
+                I am a Digital Marketing and Designer with a passion for creating engaging content, eye-catching visuals, and meaningful digital experiences. I enjoy combining creativity with technology to help businesses build their online presence and connect with their audience.
+              </p>
+              <p>
+                As an Information Technology Engineering graduate from the Royal University of Phnom Penh, I combine technical knowledge with creative design and digital marketing skills to create compelling content, strengthen brand identity, and deliver effective digital solutions. I am always eager to learn new trends, improve my skills, and contribute to projects that make a positive impact.
+              </p>
+            </div>
 
           </div>
 
         </motion.div>
+
+        {/* Education Section */}
+        <div className="pt-10 border-t border-white/10">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/20 flex items-center justify-center text-accent-blue shadow-inner">
+              <GraduationCap size={22} className="stroke-[2.2]" />
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-white font-outfit">
+              Education
+            </h2>
+          </div>
+
+          <div className="relative border-l-2 border-slate-800 pl-6 ml-2 space-y-8">
+            {education.map((edu, idx) => (
+              <div key={idx} className="relative">
+                {/* Blue Dot */}
+                <div className="absolute -left-[31px] top-1.5 w-2.5 h-2.5 rounded-full bg-accent-blue ring-4 ring-slate-950" />
+
+                {/* School & Date Header */}
+                <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 mb-1">
+                  <h3 className="text-base sm:text-lg font-bold text-white font-outfit">
+                    {edu.school}
+                  </h3>
+                  <span className="text-accent-blue font-bold text-xs sm:text-sm font-outfit shrink-0">
+                    {edu.period}
+                  </span>
+                </div>
+
+                {/* Degree */}
+                <p className="text-accent-blue font-semibold text-sm font-outfit mb-1.5">
+                  {edu.degree}
+                </p>
+
+                {/* Highlight */}
+                <p className="text-xs sm:text-sm text-slate-300 font-inter flex items-start gap-1.5 font-medium">
+                  <Award size={14} className="text-accent-blue mt-0.5 shrink-0" />
+                  <span>{edu.highlight}</span>
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Work Experience Section */}
+        <div className="pt-10 border-t border-white/10 mt-12">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/20 flex items-center justify-center text-accent-blue shadow-inner">
+              <Briefcase size={22} className="stroke-[2.2]" />
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-white font-outfit">
+              Work Experience
+            </h2>
+          </div>
+
+          <ExperienceSection hideHeader={true} />
+        </div>
+
       </main>
     </div>
   );

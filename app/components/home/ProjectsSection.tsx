@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { ExternalLink, ChevronLeft, ChevronRight } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
+import { motion } from "framer-motion";
 
 export default function ProjectsSection() {
   const sliderRef = useRef<HTMLDivElement>(null);
@@ -137,28 +138,40 @@ export default function ProjectsSection() {
   }, []);
 
   return (
-    <section id="projects" className="py-24 relative overflow-hidden">
-      <div className="flex flex-col items-center text-center mb-16 px-4 relative z-10">
-        <div className="flex items-center justify-center gap-3 mb-4">
+    <section id="projects" className="py-16 sm:py-20 md:py-24 relative overflow-hidden">
+      <motion.div 
+        initial={{ opacity: 0, y: 25 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        className="flex flex-col items-center text-center mb-10 sm:mb-16 px-4 relative z-10"
+      >
+        <div className="flex items-center justify-center gap-3 mb-3">
           <div className="w-8 h-[1px] bg-accent-blue/50" />
-          <span className="text-accent-blue font-bold uppercase tracking-[0.4em] text-[0.6rem]">Projects</span>
+          <span className="text-accent-blue font-bold uppercase tracking-[0.3em] sm:tracking-[0.4em] text-[0.6rem] font-outfit">Portfolio Showcase</span>
           <div className="w-8 h-[1px] bg-accent-blue/50" />
         </div>
-        <h2 className="text-3xl md:text-5xl font-bold text-text-primary max-w-2xl leading-tight mb-4">
+        <h2 className="text-2xl sm:text-4xl md:text-5xl font-extrabold text-white max-w-2xl leading-tight mb-3 font-outfit">
           Featured <span className="text-accent-blue">Projects</span>
         </h2>
-        <p className="text-text-secondary text-base md:text-lg max-w-2xl">
+        <p className="text-slate-200 text-xs sm:text-sm md:text-base max-w-2xl font-medium font-inter">
           A selection of my recent works where design meets functionality. Each project is crafted with care and technical precision.
         </p>
-      </div>
+      </motion.div>
 
       {/* Slider Container Wrapper */}
-      <div className="relative w-full z-10 max-w-7xl mx-auto px-4 md:px-12">
+      <motion.div 
+        initial={{ opacity: 0, y: 35 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.15 }}
+        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
+        className="relative w-full z-10 max-w-7xl mx-auto px-0 sm:px-4 md:px-8"
+      >
         
         {/* Left Circular Arrow Button */}
         <button
           onClick={() => handleScroll("left")}
-          className={`absolute left-2 md:left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-slate-900/90 dark:bg-white/10 backdrop-blur-md text-white rounded-full hidden lg:flex items-center justify-center z-30 transition-all duration-300 border border-slate-800/50 dark:border-white/10 hover:bg-slate-800 dark:hover:bg-white/20 hover:scale-105 active:scale-95 cursor-pointer ${
+          className={`absolute left-2 md:left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-slate-900/90 dark:bg-white/10 backdrop-blur-md text-white rounded-full hidden lg:flex items-center justify-center z-30 transition-all duration-300 border border-white/20 hover:border-accent-blue hover:bg-slate-800 hover:scale-105 active:scale-95 cursor-pointer ${
             showLeftArrow ? "opacity-100 pointer-events-auto translate-x-0" : "opacity-0 pointer-events-none -translate-x-4"
           }`}
           aria-label="Scroll Left"
@@ -169,7 +182,7 @@ export default function ProjectsSection() {
         {/* Right Circular Arrow Button */}
         <button
           onClick={() => handleScroll("right")}
-          className={`absolute right-2 md:right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-slate-900/90 dark:bg-white/10 backdrop-blur-md text-white rounded-full hidden lg:flex items-center justify-center z-30 transition-all duration-300 border border-slate-800/50 dark:border-white/10 hover:bg-slate-800 dark:hover:bg-white/20 hover:scale-105 active:scale-95 cursor-pointer ${
+          className={`absolute right-2 md:right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-slate-900/90 dark:bg-white/10 backdrop-blur-md text-white rounded-full hidden lg:flex items-center justify-center z-30 transition-all duration-300 border border-white/20 hover:border-accent-blue hover:bg-slate-800 hover:scale-105 active:scale-95 cursor-pointer ${
             showRightArrow ? "opacity-100 pointer-events-auto translate-x-0" : "opacity-0 pointer-events-none translate-x-4"
           }`}
           aria-label="Scroll Right"
@@ -177,24 +190,26 @@ export default function ProjectsSection() {
           <ChevronRight className="w-6 h-6 text-white" />
         </button>
 
-        {/* Scrollable Container */}
+        {/* Scrollable Container with native snap & touch swipe */}
         <div
           ref={sliderRef}
-          className="flex gap-6 overflow-x-auto scroll-smooth py-6 px-4 select-none no-scrollbar [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+          className="flex gap-4 sm:gap-6 overflow-x-auto scroll-smooth py-4 sm:py-6 px-4 select-none no-scrollbar snap-x snap-mandatory touch-pan-x [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
         >
           {projects.map((project, index) => (
-            <div 
+            <motion.div 
               key={index} 
-              className="flex-shrink-0 w-[280px] md:w-[360px] group relative flex flex-col justify-between bg-glass-bg border border-glass-border rounded-[2rem] p-6 transition-all duration-500 hover:border-accent-blue/30 hover:-translate-y-1.5"
+              whileHover={{ y: -6, scale: 1.02 }}
+              transition={{ type: "spring", stiffness: 350, damping: 20 }}
+              className="flex-shrink-0 w-[82vw] max-w-[320px] sm:w-[320px] md:w-[360px] snap-center group relative flex flex-col justify-between rounded-2xl bg-slate-950/20 border border-white/20 hover:border-accent-blue p-5 md:p-6 shadow-sm hover:shadow-xl hover:shadow-accent-blue/20 transition-all duration-300"
             >
               <div className="flex flex-col">
-                <div className={`w-full aspect-video bg-linear-to-br ${project.gradient} rounded-xl mb-6 flex items-center justify-center overflow-hidden relative`}>
+                <div className={`w-full aspect-video bg-linear-to-br ${project.gradient} rounded-xl mb-4 sm:mb-5 flex items-center justify-center overflow-hidden relative shadow-inner border border-white/10`}>
                   {project.image ? (
                     <Image 
                       src={project.image} 
                       alt={project.title}
                       fill
-                      className="object-cover group-hover:scale-110 transition-transform duration-500"
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                   ) : (
                     <span className={`${project.color} font-black text-2xl tracking-tighter opacity-50 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500`}>
@@ -202,46 +217,76 @@ export default function ProjectsSection() {
                     </span>
                   )}
 
-                  {/* Overlay on hover */}
-                  <div className="absolute inset-0 bg-black/60 flex items-center justify-center gap-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  {/* Desktop Hover Overlay */}
+                  <div className="hidden lg:flex absolute inset-0 bg-black/60 backdrop-blur-xs items-center justify-center gap-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    {project.github && (
+                      <motion.a
+                        whileHover={{ scale: 1.15 }}
+                        whileTap={{ scale: 0.9 }}
+                        href={project.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-3 bg-white/10 hover:bg-white/25 rounded-full text-white transition-colors cursor-pointer"
+                        aria-label="GitHub Repository"
+                      >
+                        <FaGithub size={20} />
+                      </motion.a>
+                    )}
+                    <motion.a
+                      whileHover={{ scale: 1.15 }}
+                      whileTap={{ scale: 0.9 }}
+                      href={project.live}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-3 bg-white/10 hover:bg-white/25 rounded-full text-white transition-colors cursor-pointer"
+                      aria-label="Live Demo"
+                    >
+                      <ExternalLink size={20} />
+                    </motion.a>
+                  </div>
+
+                  {/* Mobile Quick Action Badges (Always accessible on touch screens) */}
+                  <div className="flex lg:hidden absolute bottom-2 right-2 gap-1.5 z-20">
                     {project.github && (
                       <a
                         href={project.github}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="p-3 bg-white/10 rounded-full hover:bg-white/20 text-white transition-colors"
+                        className="p-2 bg-slate-950/80 backdrop-blur-md rounded-lg text-white border border-white/20 active:scale-95 transition-transform"
+                        aria-label="GitHub Repository"
                       >
-                        <FaGithub size={20} />
+                        <FaGithub size={14} />
                       </a>
                     )}
                     <a
                       href={project.live}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-3 bg-white/10 rounded-full hover:bg-white/20 text-white transition-colors"
+                      className="p-2 bg-accent-blue/90 backdrop-blur-md rounded-lg text-white border border-accent-blue/40 active:scale-95 transition-transform"
+                      aria-label="Live Demo"
                     >
-                      <ExternalLink size={20} />
+                      <ExternalLink size={14} />
                     </a>
                   </div>
                 </div>
 
-                <h3 className="text-xl font-bold mb-3 group-hover:text-accent-blue transition-colors">{project.title}</h3>
-                <p className="text-text-secondary text-sm leading-relaxed mb-6">
+                <h3 className="text-lg md:text-xl font-extrabold text-white mb-2 group-hover:text-accent-blue transition-colors font-outfit">{project.title}</h3>
+                <p className="text-slate-200 text-xs sm:text-sm leading-relaxed mb-4 sm:mb-5 font-semibold font-inter">
                   {project.desc}
                 </p>
               </div>
 
-              <div className="flex flex-wrap gap-2 mt-auto">
+              <div className="flex flex-wrap gap-1.5 sm:gap-2 mt-auto">
                 {project.tags.map((tag) => (
-                  <span key={tag} className="px-3 py-1 rounded-full bg-glass-bg border border-glass-border text-[0.7rem] font-bold text-text-secondary">
+                  <span key={tag} className="px-2 sm:px-2.5 py-0.5 rounded-md bg-white/10 border border-white/20 text-[0.65rem] sm:text-xs font-bold text-white hover:border-accent-blue hover:text-cyan-300 transition-colors font-inter shadow-xs">
                     {tag}
                   </span>
                 ))}
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }

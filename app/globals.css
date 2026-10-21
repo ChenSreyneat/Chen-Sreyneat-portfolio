@@ -27,7 +27,7 @@
   --bg-color: #010413;
   --bg-gradient: linear-gradient(135deg, #1a2369 0%, #010413 100%);
   --text-primary: #ffffff;
-  --text-secondary: #8bb8d9;
+  --text-secondary: #cbd5e1;
   
   /* Midnight Blue Palette Accents */
   --accent-deep: #0d1236;
@@ -90,7 +90,7 @@
   }
 
   html {
-    @apply scroll-smooth;
+    @apply scroll-smooth overflow-x-hidden;
   }
 
   body {

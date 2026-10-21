@@ -3,6 +3,7 @@ import { Inter, Outfit } from "next/font/google";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
+import CosmicLightBackground from "./components/CosmicLightBackground";
 import "./globals.css";
 
 const inter = Inter({
@@ -16,8 +17,8 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "Chen Sreyneat | Portfolio",
-  description: "Personal portfolio of Chen Sreyneat, showcasing projects and skills.",
+  title: "Chen Sreyneat | Digital Marketer & Designer",
+  description: "Personal portfolio of Chen Sreyneat, specializing in digital marketing, social media campaigns, content strategy, and creative design.",
   icons: {
     icon: "/favicon.png",
   },
@@ -34,6 +35,7 @@ export default function RootLayout({
       className={`${inter.variable} ${outfit.variable}`}
     >
       <body className="relative min-h-screen">
+        <CosmicLightBackground />
         <Navbar />
         <div className="pt-[80px] min-h-[calc(100vh-160px)] max-w-7xl mx-auto px-4 md:px-12 lg:px-20">
           {children}
