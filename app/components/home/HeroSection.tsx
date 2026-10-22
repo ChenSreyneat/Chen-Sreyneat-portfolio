@@ -55,7 +55,7 @@ export default function HeroSection() {
         className="w-full max-w-4xl mx-auto px-2 sm:px-4 flex flex-col items-center relative z-10"
       >
         {/* Top Status Badge Pill */}
-        <motion.div variants={itemVariants} className="mb-4 sm:mb-8">
+        <motion.div variants={itemVariants} className="mb-6 sm:mb-8">
           <div className="inline-flex items-center gap-2 sm:gap-2.5 px-3.5 sm:px-4 py-1.5 rounded-full bg-slate-900/70 border border-white/20 backdrop-blur-md shadow-xs hover:border-accent-blue/50 transition-colors">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
@@ -70,7 +70,7 @@ export default function HeroSection() {
         {/* Main Impact Headline matching letter font & gradient from reference */}
         <motion.h1
           variants={itemVariants}
-          className="text-2xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-white tracking-tight leading-[1.12] sm:leading-[1.08] font-outfit mb-3 sm:mb-6 text-center px-1"
+          className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-white tracking-tight leading-[1.12] sm:leading-[1.08] font-outfit mb-4 sm:mb-6 text-center px-1"
         >
           Crafting engaging visuals &amp;{" "}
           <span className="bg-linear-to-r from-[#0080ff] via-[#38bdf8] to-[#a855f7] bg-clip-text text-transparent font-black">
@@ -81,7 +81,7 @@ export default function HeroSection() {
         {/* Subtitle Tailored to Chen Sreyneat's Profile */}
         <motion.p
           variants={itemVariants}
-          className="text-slate-200 text-xs sm:text-base md:text-lg lg:text-xl font-medium leading-relaxed max-w-2xl mx-auto font-inter mb-6 sm:mb-10 text-center px-2"
+          className="text-slate-200 text-sm sm:text-base md:text-lg lg:text-xl font-medium leading-relaxed max-w-2xl mx-auto font-inter mb-8 sm:mb-10 text-center px-2"
         >
           Combining IT engineering foundations with creative design and digital marketing.
           I build high-impact visuals, strengthen brand identity, and deliver digital solutions that connect.
@@ -90,7 +90,7 @@ export default function HeroSection() {
         {/* Action Buttons Row with User Signature Blue Theme - Equal side-by-side on responsive screens */}
         <motion.div
           variants={itemVariants}
-          className="flex flex-row items-center justify-center gap-2.5 sm:gap-4 w-full max-w-sm sm:max-w-none mx-auto mb-6 sm:mb-14 px-2"
+          className="flex flex-row items-center justify-center gap-2.5 sm:gap-4 w-full max-w-sm sm:max-w-none mx-auto mb-10 sm:mb-14 px-2"
         >
           {/* Primary CTA: View My Work */}
           <Link

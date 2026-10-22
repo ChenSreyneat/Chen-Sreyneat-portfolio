@@ -329,7 +329,8 @@ export default function CertificatesSection() {
             <motion.div
               key={index}
               whileHover={{ y: -6 }}
-              className="flex-shrink-0 w-[calc(100vw-2.5rem)] max-w-[360px] sm:w-[340px] md:w-[380px] snap-center snap-always h-[450px] group relative flex flex-col justify-between bg-slate-900/40 backdrop-blur-md border border-white/15 rounded-2xl p-5 sm:p-6 transition-all duration-300 hover:border-accent-blue/70 hover:shadow-[0_12px_35px_-5px_rgba(96,165,250,0.22)] shadow-lg overflow-hidden mx-auto"
+              transition={{ duration: 0.3 }}
+              className="flex-shrink-0 w-[calc(100vw-2.5rem)] max-w-[360px] sm:w-[340px] md:w-[380px] snap-center snap-always group relative flex flex-col justify-between bg-slate-950/20 border border-white/20 rounded-2xl p-5 sm:p-6 transition-all duration-300 hover:border-accent-blue shadow-sm hover:shadow-xl hover:shadow-accent-blue/20"
             >
               <div>
                 <div className="flex items-start justify-between mb-4">
