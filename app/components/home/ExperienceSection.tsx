@@ -328,7 +328,6 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
   const [isVideoPlaying, setIsVideoPlaying] = useState<boolean>(false);
   const [isVideoBuffering, setIsVideoBuffering] = useState<boolean>(false);
   const [videoHasError, setVideoHasError] = useState<boolean>(false);
-  const [videoShowTapFeedback, setVideoShowTapFeedback] = useState<"play" | "pause" | null>(null);
   const touchVideoStartXRef = useRef<number | null>(null);
   const touchVideoStartYRef = useRef<number | null>(null);
 
@@ -358,24 +357,6 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
     setIsVideoPlaying(false);
     setIsVideoBuffering(false);
     setVideoHasError(false);
-  };
-
-  const toggleVideoPlay = () => {
-    if (!videoRef.current) return;
-    if (videoRef.current.paused) {
-      videoRef.current.play().then(() => {
-        setIsVideoPlaying(true);
-        setVideoShowTapFeedback("play");
-        setTimeout(() => setVideoShowTapFeedback(null), 600);
-      }).catch((err) => {
-        console.warn("Video playback error:", err);
-      });
-    } else {
-      videoRef.current.pause();
-      setIsVideoPlaying(false);
-      setVideoShowTapFeedback("pause");
-      setTimeout(() => setVideoShowTapFeedback(null), 600);
-    }
   };
 
   const handleVideoTouchStart = (e: React.TouchEvent) => {
@@ -800,8 +781,8 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
                   type="button"
                   onClick={() => setActiveTab("overview")}
                   className={`px-3 py-2 text-xs sm:text-sm font-bold font-outfit border-b-2 whitespace-nowrap transition-all cursor-pointer ${activeTab === "overview"
-                      ? "border-accent-blue text-white"
-                      : "border-transparent text-slate-400 hover:text-slate-200"
+                    ? "border-accent-blue text-white"
+                    : "border-transparent text-slate-400 hover:text-slate-200"
                     }`}
                 >
                   Overview &amp; Deliverables
@@ -812,8 +793,8 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
                     type="button"
                     onClick={() => setActiveTab("photos")}
                     className={`inline-flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-bold font-outfit border-b-2 whitespace-nowrap transition-all cursor-pointer ${activeTab === "photos"
-                        ? "border-sky-400 text-white"
-                        : "border-transparent text-slate-400 hover:text-slate-200"
+                      ? "border-sky-400 text-white"
+                      : "border-transparent text-slate-400 hover:text-slate-200"
                       }`}
                   >
                     <ImageIcon size={14} className="text-sky-400" />
@@ -826,8 +807,8 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
                     type="button"
                     onClick={() => setActiveTab("certificate")}
                     className={`inline-flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-bold font-outfit border-b-2 whitespace-nowrap transition-all cursor-pointer ${activeTab === "certificate"
-                        ? "border-cyan-400 text-white"
-                        : "border-transparent text-slate-400 hover:text-slate-200"
+                      ? "border-cyan-400 text-white"
+                      : "border-transparent text-slate-400 hover:text-slate-200"
                       }`}
                   >
                     <FileText size={14} className="text-cyan-400" />
@@ -840,8 +821,8 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
                     type="button"
                     onClick={() => setActiveTab("videos")}
                     className={`inline-flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-bold font-outfit border-b-2 whitespace-nowrap transition-all cursor-pointer ${activeTab === "videos"
-                        ? "border-emerald-400 text-white"
-                        : "border-transparent text-slate-400 hover:text-slate-200"
+                      ? "border-emerald-400 text-white"
+                      : "border-transparent text-slate-400 hover:text-slate-200"
                       }`}
                   >
                     <Film size={14} className="text-emerald-400" />
@@ -853,8 +834,8 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
                   type="button"
                   onClick={() => setActiveTab("tools")}
                   className={`inline-flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-bold font-outfit border-b-2 whitespace-nowrap transition-all cursor-pointer ${activeTab === "tools"
-                      ? "border-amber-400 text-white"
-                      : "border-transparent text-slate-400 hover:text-slate-200"
+                    ? "border-amber-400 text-white"
+                    : "border-transparent text-slate-400 hover:text-slate-200"
                     }`}
                 >
                   <Wrench size={13} className="text-amber-400" />
@@ -1034,8 +1015,8 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
                               setPhotoZoomLevel(1);
                             }}
                             className={`px-3.5 py-1.5 rounded-xl text-xs font-bold font-outfit transition-all cursor-pointer flex items-center gap-1.5 ${isCurrent
-                                ? "bg-sky-500 text-white shadow-md shadow-sky-500/30 scale-105 border border-sky-400"
-                                : "bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10"
+                              ? "bg-sky-500 text-white shadow-md shadow-sky-500/30 scale-105 border border-sky-400"
+                              : "bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10"
                               }`}
                           >
                             <ImageIcon size={12} />
@@ -1192,9 +1173,29 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
                           Scripts, editing, visual pacing, and promotional video clips created by Chen Sreyneat.
                         </p>
                       </div>
-                      <span className="text-xs font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-md font-outfit shrink-0 w-fit">
-                        Video {activeVideoIndex} of {selectedItem.videos.length}
-                      </span>
+                      <div className="flex flex-wrap items-center gap-2 shrink-0">
+                        <a
+                          href="https://www.tiktok.com/@code.bridge2026?_r=1&_t=ZS-96WUSyJhGxc"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#fe2c55]/15 hover:bg-[#fe2c55]/30 text-[#ff7597] hover:text-white border border-[#fe2c55]/30 text-xs font-bold font-outfit transition-colors"
+                        >
+                          <span>TikTok</span>
+                          <ExternalLink size={10} />
+                        </a>
+                        <a
+                          href="https://www.behance.net/chensreyneat"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#0057ff]/15 hover:bg-[#0057ff]/30 text-[#60a5fa] hover:text-white border border-[#0057ff]/30 text-xs font-bold font-outfit transition-colors"
+                        >
+                          <FaBehance size={12} />
+                          <span>Behance</span>
+                        </a>
+                        <span className="text-xs font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-md font-outfit shrink-0 w-fit">
+                          Video {activeVideoIndex} of {selectedItem.videos.length}
+                        </span>
+                      </div>
                     </div>
 
                     {/* Video Selector Pills (1 to 9) */}
@@ -1211,8 +1212,8 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
                             type="button"
                             onClick={() => selectVideoClip(num)}
                             className={`min-h-[38px] px-3.5 py-1.5 rounded-xl text-xs font-bold font-outfit whitespace-nowrap transition-all cursor-pointer flex items-center gap-1.5 shrink-0 ${isCurrent
-                                ? "bg-accent-blue text-white shadow-md shadow-blue-500/30 scale-105 border border-blue-400"
-                                : "bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10"
+                              ? "bg-accent-blue text-white shadow-md shadow-blue-500/30 scale-105 border border-blue-400"
+                              : "bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10"
                               }`}
                           >
                             <Play size={11} className={isCurrent ? "fill-white" : ""} />
@@ -1229,7 +1230,7 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
                       onTouchEnd={handleVideoTouchEnd}
                     >
                       {/* Video Player Container */}
-                      <div className="relative w-full flex items-center justify-center bg-black min-h-[260px] sm:min-h-[340px]">
+                      <div className="relative w-full flex items-center justify-center bg-black min-h-[240px] sm:min-h-[320px]">
                         {!videoHasError ? (
                           <>
                             <video
@@ -1258,28 +1259,6 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
                               }}
                               className="w-full max-h-[46vh] sm:max-h-[52vh] object-contain rounded-t-2xl bg-black"
                             />
-
-                            {/* Interactive Centered Play Button Overlay when paused */}
-                            {!isVideoPlaying && !isVideoBuffering && (
-                              <div
-                                className="absolute inset-0 flex flex-col items-center justify-center bg-black/40 backdrop-blur-[1px] transition-all z-20 pointer-events-none"
-                              >
-                                <button
-                                  type="button"
-                                  onClick={toggleVideoPlay}
-                                  className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-accent-blue/90 hover:bg-accent-blue text-white flex items-center justify-center shadow-[0_0_35px_rgba(56,189,248,0.7)] hover:scale-110 transition-all cursor-pointer border border-white/30 pointer-events-auto active:scale-95"
-                                  aria-label="Play video"
-                                >
-                                  <Play size={28} className="fill-white translate-x-0.5" />
-                                </button>
-                                <span 
-                                  onClick={toggleVideoPlay}
-                                  className="mt-3 text-xs sm:text-sm font-bold font-outfit text-white tracking-wide bg-slate-950/80 px-3 py-1 rounded-full border border-white/10 shadow-md pointer-events-auto cursor-pointer"
-                                >
-                                  Tap to Play Video #{activeVideoIndex}
-                                </span>
-                              </div>
-                            )}
 
                             {/* Buffering Loading Spinner Overlay */}
                             {isVideoBuffering && (
@@ -1345,25 +1324,6 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
                             </div>
                           </div>
                         )}
-
-                        {/* Tap Feedback Flash */}
-                        <AnimatePresence>
-                          {videoShowTapFeedback && (
-                            <motion.div
-                              initial={{ opacity: 0, scale: 0.6 }}
-                              animate={{ opacity: 1, scale: 1 }}
-                              exit={{ opacity: 0, scale: 1.3 }}
-                              transition={{ duration: 0.4 }}
-                              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full bg-slate-950/80 backdrop-blur-md text-white flex items-center justify-center pointer-events-none z-30 border border-white/20"
-                            >
-                              {videoShowTapFeedback === "play" ? (
-                                <Play size={24} className="fill-white translate-x-0.5 text-accent-blue" />
-                              ) : (
-                                <Pause size={24} className="fill-white text-accent-blue" />
-                              )}
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
                       </div>
 
                       {/* Video Bottom Navigation Controls */}
