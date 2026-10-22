@@ -250,9 +250,9 @@ export default function CertificatesSection() {
     const slider = sliderRef.current;
     if (!slider) return;
 
-    slider.addEventListener("scroll", handleScrollButtons);
+    slider.addEventListener("scroll", handleScrollButtons, { passive: true });
     handleScrollButtons();
-    window.addEventListener("resize", handleScrollButtons);
+    window.addEventListener("resize", handleScrollButtons, { passive: true });
 
     return () => {
       slider.removeEventListener("scroll", handleScrollButtons);
@@ -321,14 +321,14 @@ export default function CertificatesSection() {
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUpOrLeave}
           onMouseLeave={handleMouseUpOrLeave}
-          className="flex gap-4 sm:gap-6 overflow-x-auto py-4 sm:py-6 px-4 no-scrollbar snap-x snap-mandatory scroll-smooth touch-auto cursor-grab active:cursor-grabbing [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+          className="flex gap-4 sm:gap-6 overflow-x-auto py-4 sm:py-6 px-4 no-scrollbar snap-x snap-proximity scroll-smooth touch-pan-x touch-pan-y overscroll-x-contain cursor-grab active:cursor-grabbing [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
         >
           {certificates.map((item, index) => (
             <motion.div
               key={index}
               whileHover={{ y: -6 }}
               transition={{ duration: 0.3 }}
-              className="flex-shrink-0 w-[calc(100vw-2.5rem)] max-w-[360px] sm:w-[340px] md:w-[380px] snap-center snap-always group relative flex flex-col justify-between bg-slate-950/20 border border-white/20 rounded-2xl p-5 sm:p-6 transition-all duration-300 hover:border-accent-blue shadow-sm hover:shadow-xl hover:shadow-accent-blue/20"
+              className="flex-shrink-0 w-[calc(100vw-2.5rem)] max-w-[360px] sm:w-[340px] md:w-[380px] snap-start group relative flex flex-col justify-between bg-slate-950/20 border border-white/20 rounded-2xl p-5 sm:p-6 transition-all duration-300 hover:border-accent-blue shadow-sm hover:shadow-xl hover:shadow-accent-blue/20"
             >
               <div>
                 <div className="flex items-start justify-between mb-4">

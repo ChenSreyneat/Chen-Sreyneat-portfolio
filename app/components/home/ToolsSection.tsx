@@ -51,9 +51,9 @@ export default function ToolsSection() {
     const el = scrollRef.current;
     if (!el) return;
 
-    el.addEventListener("scroll", checkScrollButtons);
+    el.addEventListener("scroll", checkScrollButtons, { passive: true });
     checkScrollButtons();
-    window.addEventListener("resize", checkScrollButtons);
+    window.addEventListener("resize", checkScrollButtons, { passive: true });
 
     let intervalId: NodeJS.Timeout;
 
@@ -240,7 +240,7 @@ export default function ToolsSection() {
         {/* Scrollable Container */}
         <div
           ref={scrollRef}
-          className="flex gap-6 overflow-x-auto scroll-smooth py-6 px-4 select-none no-scrollbar [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+          className="flex gap-6 overflow-x-auto scroll-smooth py-6 px-4 select-none no-scrollbar touch-pan-x touch-pan-y overscroll-x-contain [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
         >
           {tools.map((tool, index) => (
             <div

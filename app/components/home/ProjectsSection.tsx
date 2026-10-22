@@ -172,9 +172,9 @@ export default function ProjectsSection() {
     const slider = sliderRef.current;
     if (!slider) return;
 
-    slider.addEventListener("scroll", handleScrollButtons);
+    slider.addEventListener("scroll", handleScrollButtons, { passive: true });
     handleScrollButtons();
-    window.addEventListener("resize", handleScrollButtons);
+    window.addEventListener("resize", handleScrollButtons, { passive: true });
 
     return () => {
       slider.removeEventListener("scroll", handleScrollButtons);
@@ -240,14 +240,14 @@ export default function ProjectsSection() {
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUpOrLeave}
           onMouseLeave={handleMouseUpOrLeave}
-          className="flex gap-4 sm:gap-6 overflow-x-auto py-4 sm:py-6 px-4 no-scrollbar snap-x snap-mandatory scroll-smooth touch-auto cursor-grab active:cursor-grabbing [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+          className="flex gap-4 sm:gap-6 overflow-x-auto py-4 sm:py-6 px-4 no-scrollbar snap-x snap-proximity scroll-smooth touch-pan-x touch-pan-y overscroll-x-contain cursor-grab active:cursor-grabbing [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
         >
           {projects.map((project, index) => (
             <motion.div
               key={index}
               whileHover={{ y: -6, scale: 1.02 }}
               transition={{ type: "spring", stiffness: 350, damping: 20 }}
-              className="flex-shrink-0 w-[calc(100vw-2.5rem)] max-w-[360px] sm:w-[320px] md:w-[360px] snap-center snap-always group relative flex flex-col justify-between rounded-2xl bg-slate-950/20 border border-white/20 hover:border-accent-blue p-5 md:p-6 shadow-sm hover:shadow-xl hover:shadow-accent-blue/20 transition-all duration-300 mx-auto sm:mx-0"
+              className="flex-shrink-0 w-[calc(100vw-2.5rem)] max-w-[360px] sm:w-[320px] md:w-[360px] snap-start group relative flex flex-col justify-between rounded-2xl bg-slate-950/20 border border-white/20 hover:border-accent-blue p-5 md:p-6 shadow-sm hover:shadow-xl hover:shadow-accent-blue/20 transition-all duration-300 mx-auto sm:mx-0"
             >
               <div className="flex flex-col">
                 <div className={`w-full aspect-video bg-linear-to-br ${project.gradient} rounded-xl mb-4 sm:mb-5 flex items-center justify-center overflow-hidden relative shadow-inner border border-white/10`}>

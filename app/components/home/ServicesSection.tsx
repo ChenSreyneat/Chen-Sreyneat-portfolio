@@ -34,9 +34,9 @@ export default function SkillsSection() {
     const slider = sliderRef.current;
     if (!slider) return;
 
-    slider.addEventListener("scroll", handleScrollButtons);
+    slider.addEventListener("scroll", handleScrollButtons, { passive: true });
     handleScrollButtons();
-    window.addEventListener("resize", handleScrollButtons);
+    window.addEventListener("resize", handleScrollButtons, { passive: true });
 
     let intervalId: NodeJS.Timeout;
 
@@ -117,7 +117,7 @@ export default function SkillsSection() {
           {/* Scrollable Container */}
           <div
             ref={sliderRef}
-            className="flex gap-6 overflow-x-auto scroll-smooth py-6 px-4 select-none no-scrollbar [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+            className="flex gap-6 overflow-x-auto scroll-smooth py-6 px-4 select-none no-scrollbar touch-pan-x touch-pan-y overscroll-x-contain [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
           >
             {skillsData.map((skill, index) => (
               <div 

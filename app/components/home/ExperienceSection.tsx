@@ -309,9 +309,9 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
     const slider = sliderRef.current;
     if (!slider) return;
 
-    slider.addEventListener("scroll", handleScrollButtons);
+    slider.addEventListener("scroll", handleScrollButtons, { passive: true });
     handleScrollButtons();
-    window.addEventListener("resize", handleScrollButtons);
+    window.addEventListener("resize", handleScrollButtons, { passive: true });
 
     return () => {
       slider.removeEventListener("scroll", handleScrollButtons);
@@ -492,7 +492,7 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUpOrLeave}
           onMouseLeave={handleMouseUpOrLeave}
-          className="flex lg:grid lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 overflow-x-auto lg:overflow-visible py-4 lg:py-0 px-4 lg:px-0 no-scrollbar snap-x snap-mandatory lg:snap-none scroll-smooth touch-auto cursor-grab active:cursor-grabbing [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] items-stretch"
+          className="flex lg:grid lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 overflow-x-auto lg:overflow-visible py-4 lg:py-0 px-4 lg:px-0 no-scrollbar snap-x snap-proximity lg:snap-none scroll-smooth touch-pan-x touch-pan-y overscroll-x-contain cursor-grab active:cursor-grabbing [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] items-stretch"
         >
           {experiences.map((item, index) => (
             <motion.div
@@ -501,9 +501,9 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
               variants={cardVariants}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
+              viewport={{ once: true, amount: 0.15 }}
               whileHover={{ y: -6 }}
-              className="w-[calc(100vw-2.5rem)] max-w-[360px] sm:max-w-[400px] lg:w-full shrink-0 lg:shrink snap-center snap-always lg:snap-align-none h-[450px] group relative flex mx-auto"
+              className="w-[calc(100vw-2.5rem)] max-w-[360px] sm:max-w-[400px] lg:w-full shrink-0 lg:shrink snap-start lg:snap-align-none h-[450px] group relative flex mx-auto"
             >
               <div className="relative h-[450px] w-full flex flex-col justify-between bg-slate-900/40 backdrop-blur-md border border-white/15 rounded-2xl p-5 sm:p-6 transition-all duration-300 hover:border-accent-blue/70 hover:shadow-[0_12px_35px_-5px_rgba(96,165,250,0.22)] hover:bg-slate-900/60 shadow-lg overflow-hidden">
                 <div className="flex flex-col h-full justify-between">

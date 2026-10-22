@@ -208,9 +208,9 @@ export default function EducationSection() {
     const slider = sliderRef.current;
     if (!slider) return;
 
-    slider.addEventListener("scroll", handleScrollButtons);
+    slider.addEventListener("scroll", handleScrollButtons, { passive: true });
     handleScrollButtons();
-    window.addEventListener("resize", handleScrollButtons);
+    window.addEventListener("resize", handleScrollButtons, { passive: true });
 
     return () => {
       slider.removeEventListener("scroll", handleScrollButtons);
@@ -336,7 +336,7 @@ export default function EducationSection() {
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUpOrLeave}
           onMouseLeave={handleMouseUpOrLeave}
-          className="flex lg:grid lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 overflow-x-auto lg:overflow-visible py-3 lg:py-0 px-4 lg:px-0 no-scrollbar snap-x snap-mandatory lg:snap-none scroll-smooth touch-auto cursor-grab active:cursor-grabbing [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] items-stretch"
+          className="flex lg:grid lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 overflow-x-auto lg:overflow-visible py-3 lg:py-0 px-4 lg:px-0 no-scrollbar snap-x snap-proximity lg:snap-none scroll-smooth touch-pan-x touch-pan-y overscroll-x-contain cursor-grab active:cursor-grabbing [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] items-stretch"
         >
           {education.map((item, index) => (
             <motion.div
@@ -345,9 +345,9 @@ export default function EducationSection() {
               variants={cardVariants}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
+              viewport={{ once: true, amount: 0.15 }}
               whileHover={{ y: -4 }}
-              className="w-[calc(100vw-2.5rem)] max-w-[360px] sm:max-w-[400px] lg:w-full shrink-0 lg:shrink snap-center snap-always lg:snap-align-none group relative flex h-full mx-auto"
+              className="w-[calc(100vw-2.5rem)] max-w-[360px] sm:max-w-[400px] lg:w-full shrink-0 lg:shrink snap-start lg:snap-align-none group relative flex h-full mx-auto"
             >
               <div className="relative h-full w-full flex flex-col justify-between bg-slate-950/20 border border-white/20 rounded-2xl p-4 sm:p-6 transition-all duration-300 hover:border-accent-blue shadow-sm hover:shadow-xl hover:shadow-accent-blue/20 min-h-[300px] sm:min-h-[320px] lg:min-h-0">
                 <div>
