@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
-import { ExternalLink, ChevronLeft, ChevronRight } from "lucide-react";
+import { ExternalLink, ChevronLeft, ChevronRight, Eye } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
 import { motion } from "framer-motion";
 
@@ -247,7 +247,7 @@ export default function ProjectsSection() {
               key={index}
               whileHover={{ y: -6, scale: 1.02 }}
               transition={{ type: "spring", stiffness: 350, damping: 20 }}
-              className="flex-shrink-0 w-[calc(100vw-2.5rem)] max-w-[360px] sm:w-[320px] md:w-[360px] snap-center snap-always group relative flex flex-col justify-between rounded-2xl bg-slate-950/20 border border-white/20 hover:border-accent-blue p-5 md:p-6 shadow-sm hover:shadow-xl hover:shadow-accent-blue/20 transition-all duration-300 mx-auto sm:mx-0"
+              className="flex-shrink-0 w-[calc(100vw-2.5rem)] max-w-[360px] sm:w-[340px] md:w-[380px] snap-center snap-always h-[460px] group relative flex flex-col justify-between rounded-2xl bg-slate-900/40 backdrop-blur-md border border-white/15 hover:border-accent-blue/70 p-5 md:p-6 shadow-lg hover:shadow-[0_12px_35px_-5px_rgba(96,165,250,0.22)] transition-all duration-300 mx-auto"
             >
               <div className="flex flex-col">
                 <div className={`w-full aspect-video bg-linear-to-br ${project.gradient} rounded-xl mb-4 sm:mb-5 flex items-center justify-center overflow-hidden relative shadow-inner border border-white/10`}>
@@ -329,6 +329,20 @@ export default function ProjectsSection() {
                     {tag}
                   </span>
                 ))}
+              </div>
+
+              {/* Full-Width User Signature Blue Action Button */}
+              <div className="pt-3 mt-3 border-t border-white/10 w-full">
+                <a
+                  href={project.live}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full py-2.5 px-3 sm:px-4 rounded-xl flex items-center justify-center gap-2 bg-[#4185DB] hover:bg-[#3273c5] border border-[#4185DB] text-xs font-bold text-white transition-all duration-300 group/btn cursor-pointer font-outfit uppercase tracking-wider shadow-md shadow-[#4185DB]/25 hover:shadow-lg hover:shadow-[#4185DB]/40 active:scale-[0.98]"
+                >
+                  <Eye size={15} className="group-hover/btn:scale-110 transition-transform" />
+                  <span>View Project Details</span>
+                  <ExternalLink size={13} className="opacity-80 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
+                </a>
               </div>
             </motion.div>
           ))}

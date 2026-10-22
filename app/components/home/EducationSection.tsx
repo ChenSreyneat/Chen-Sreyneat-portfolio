@@ -349,9 +349,9 @@ export default function EducationSection() {
               whileInView="visible"
               viewport={{ once: true, amount: 0.2 }}
               whileHover={{ y: -4 }}
-              className="w-[calc(100vw-2.5rem)] max-w-[360px] sm:max-w-[400px] lg:w-full shrink-0 lg:shrink snap-center snap-always lg:snap-align-none group relative flex h-full mx-auto"
+              className="w-[calc(100vw-2.5rem)] max-w-[360px] sm:max-w-[400px] lg:w-full shrink-0 lg:shrink snap-center snap-always lg:snap-align-none h-[450px] group relative flex mx-auto"
             >
-              <div className="relative h-full w-full flex flex-col justify-between bg-slate-950/20 border border-white/20 rounded-2xl p-4 sm:p-6 transition-all duration-300 hover:border-accent-blue shadow-sm hover:shadow-xl hover:shadow-accent-blue/20 min-h-[300px] sm:min-h-[320px] lg:min-h-0">
+              <div className="relative h-[450px] w-full flex flex-col justify-between bg-slate-900/40 backdrop-blur-md border border-white/15 rounded-2xl p-5 sm:p-6 transition-all duration-300 hover:border-accent-blue/70 hover:shadow-[0_12px_35px_-5px_rgba(96,165,250,0.22)] shadow-lg overflow-hidden">
                 <div>
                   <div className="flex items-start justify-between mb-3 sm:mb-4">
                     <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/20 flex items-center justify-center text-accent-blue shadow-inner group-hover:border-accent-blue/60 group-hover:shadow-[0_0_12px_rgba(96,165,250,0.3)] transition-all">
