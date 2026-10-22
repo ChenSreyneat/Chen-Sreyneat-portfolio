@@ -188,31 +188,7 @@ export default function CosmicLightBackground() {
       aria-hidden="true" 
       className="fixed inset-0 pointer-events-none z-[-1] overflow-hidden"
     >
-      {/* 1. Central Ambient Luminous Light (Light color at 60% intensity) */}
-      <div 
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] md:w-[1250px] h-[500px] md:h-[750px] rounded-full opacity-60 blur-[100px] pointer-events-none"
-        style={{
-          background: "radial-gradient(ellipse at center, rgba(56, 189, 248, 0.6) 0%, rgba(37, 99, 235, 0.42) 38%, rgba(14, 30, 95, 0.15) 68%, transparent 80%)",
-        }}
-      />
-
-      {/* 2. Left Horizontal Light Cluster Flare (Light color at 60% intensity) */}
-      <div 
-        className="absolute top-1/2 left-[18%] -translate-x-1/2 -translate-y-1/2 w-[450px] md:w-[700px] h-[350px] md:h-[500px] rounded-full opacity-60 blur-[85px] pointer-events-none"
-        style={{
-          background: "radial-gradient(circle at center, rgba(56, 189, 248, 0.6) 0%, rgba(37, 99, 235, 0.35) 45%, transparent 75%)",
-        }}
-      />
-
-      {/* 3. Right Horizontal Light Cluster Flare (Light color at 60% intensity) */}
-      <div 
-        className="absolute top-1/2 right-[18%] translate-x-1/2 -translate-y-1/2 w-[450px] md:w-[700px] h-[350px] md:h-[500px] rounded-full opacity-60 blur-[85px] pointer-events-none"
-        style={{
-          background: "radial-gradient(circle at center, rgba(56, 189, 248, 0.6) 0%, rgba(37, 99, 235, 0.35) 45%, transparent 75%)",
-        }}
-      />
-
-      {/* 4. Canvas with Animated Glowing Particles & Stardust */}
+      {/* Canvas with Animated Glowing Particles & Stardust */}
       <canvas 
         ref={canvasRef} 
         className="absolute inset-0 w-full h-full pointer-events-none"

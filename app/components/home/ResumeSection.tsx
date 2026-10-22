@@ -27,10 +27,10 @@ export default function ResumeSection() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
             {/* Left: simulated CV mockup */}
-            <div className="border border-slate-200 dark:border-glass-border rounded-2xl p-6 bg-white dark:bg-slate-950/40 relative overflow-hidden shadow-xs order-2 md:order-1">
+            <div className="border border-glass-border rounded-2xl p-6 bg-slate-950/40 relative overflow-hidden shadow-xs order-2 md:order-1">
               {/* Paper CV design preview */}
               <div className="space-y-4">
-                <div className="flex justify-between items-start border-b border-slate-200 dark:border-glass-border pb-4">
+                <div className="flex justify-between items-start border-b border-glass-border pb-4">
                   <div>
                     <h4 className="text-base font-bold text-text-primary mb-0.5">Chen Sreyneat</h4>
                     <p className="text-[0.6rem] text-accent-blue font-semibold uppercase tracking-wider">ITE & Software Developer</p>
@@ -46,7 +46,7 @@ export default function ResumeSection() {
                     <h5 className="text-[0.65rem] font-bold text-accent-blue uppercase tracking-wider mb-1.5 flex items-center gap-1">
                       <GraduationCap size={10} /> Education
                     </h5>
-                    <div className="pl-3 border-l border-slate-200 dark:border-glass-border space-y-1">
+                    <div className="pl-3 border-l border-glass-border space-y-1">
                       <p className="text-[0.6rem] font-bold text-text-primary">Royal University of Phnom Penh</p>
                       <p className="text-[0.55rem] text-text-secondary">Information Technology Engineering • 2022 - Present</p>
                     </div>
@@ -56,7 +56,7 @@ export default function ResumeSection() {
                     <h5 className="text-[0.65rem] font-bold text-accent-blue uppercase tracking-wider mb-1.5 flex items-center gap-1">
                       <Briefcase size={10} /> Experience
                     </h5>
-                    <div className="pl-3 border-l border-slate-200 dark:border-glass-border space-y-1">
+                    <div className="pl-3 border-l border-glass-border space-y-1">
                       <p className="text-[0.6rem] font-bold text-text-primary">Graphic Designer</p>
                       <p className="text-[0.55rem] text-text-secondary">SROLANH Smart Store • 2022 - 2023</p>
                     </div>
@@ -68,7 +68,7 @@ export default function ResumeSection() {
                     </h5>
                     <div className="flex flex-wrap gap-1 mt-1">
                       {["Next.js", "React", "TypeScript", "UI/UX Design", "Figma"].map((t) => (
-                        <span key={t} className="text-[0.5rem] bg-slate-50 dark:bg-glass-bg border border-slate-200 dark:border-glass-border px-1.5 py-0.5 rounded text-text-secondary">
+                        <span key={t} className="text-[0.5rem] bg-glass-bg border border-glass-border px-1.5 py-0.5 rounded text-text-secondary">
                           {t}
                         </span>
                       ))}
@@ -78,7 +78,7 @@ export default function ResumeSection() {
               </div>
 
               {/* Overlay glow/gradient effect */}
-              <div className="absolute inset-0 bg-gradient-to-t from-white dark:from-slate-950/80 via-transparent to-transparent pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent pointer-events-none" />
             </div>
 
             {/* Right: details & CTA */}

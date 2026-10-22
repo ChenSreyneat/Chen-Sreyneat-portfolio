@@ -36,9 +36,9 @@ export default function HeroSection() {
     >
       {/* Ambient Cosmic Radial Light Glow matching reference image & background light */}
       <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-[850px] h-[320px] sm:h-[450px] md:h-[550px] rounded-full opacity-35 blur-[80px] sm:blur-[120px] pointer-events-none -z-10"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-[850px] h-[320px] sm:h-[450px] md:h-[550px] rounded-full opacity-25 blur-[80px] sm:blur-[120px] pointer-events-none -z-10"
         style={{
-          background: "radial-gradient(ellipse at center, rgba(56, 189, 248, 0.45) 0%, rgba(37, 99, 235, 0.25) 45%, rgba(1, 4, 19, 0) 75%)"
+          background: "radial-gradient(ellipse at center, rgba(30, 58, 138, 0.3) 0%, rgba(15, 23, 42, 0.2) 50%, rgba(1, 4, 19, 0) 75%)"
         }}
       />
 

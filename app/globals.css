@@ -59,29 +59,28 @@
 }
 
 [data-theme='light'] {
-  --bg-color: #FFFFFF;
-  --bg-gradient: linear-gradient(135deg, #FFFFFF 0%, #FFFFFF 100%);
-  --text-primary: #0a1c4b;
-  --text-secondary: #1d70a2;
+  --bg-color: #010413;
+  --bg-gradient: linear-gradient(135deg, #1a2369 0%, #010413 100%);
+  --text-primary: #ffffff;
+  --text-secondary: #cbd5e1;
+  --accent-deep: #0d1236;
+  --accent-mid: #131b50;
   --accent-blue: #4185DB;
-  --glass-bg: rgba(255, 255, 255, 0.7);
-  --glass-border: rgba(29, 112, 162, 0.1);
-  --glass-glow: rgba(29, 112, 162, 0.1);
-  --nav-bg: rgba(240, 247, 255, 0.85);
-  --nav-border: rgba(29, 112, 162, 0.15);
-  --card-shadow: rgba(10, 28, 75, 0.05);
-  --project-bg: rgba(29, 112, 162, 0.05);
-  --logo-color: #4185DB;
-
-  /* Hamburger Dropdown Colors */
-  --dropdown-bg: #f0f7ff;
-  --dropdown-border: rgba(29, 112, 162, 0.15);
-  --dropdown-text: #0a1c4b;
+  --accent-light: #5c6bc0;
+  --glass-bg: rgba(26, 35, 105, 0.1);
+  --glass-border: rgba(92, 107, 192, 0.2);
+  --glass-glow: rgba(26, 35, 105, 0.3);
+  --nav-bg: rgba(38, 75, 146, 0.8);
+  --nav-border: rgba(255, 255, 255, 0.1);
+  --card-shadow: rgba(0, 0, 0, 0.6);
+  --project-bg: rgba(255, 255, 255, 0.02);
+  --logo-color: #ffffff;
+  --dropdown-bg: #224287;
+  --dropdown-border: rgba(255, 255, 255, 0.12);
+  --dropdown-text: rgba(255, 255, 255, 0.9);
   --dropdown-icon: #4185DB;
-
-  /* Accent Gradient Colors */
   --gradient-accent-start: #4185DB;
-  --gradient-accent-end: #0a1c4b;
+  --gradient-accent-end: #1d70a2;
 }
 
 @layer base {
@@ -95,11 +94,14 @@
     scroll-padding-top: 4.5rem;
     overflow-x: clip;
     -webkit-overflow-scrolling: touch;
+    background-color: #010413;
+    color-scheme: dark;
   }
 
   body {
     @apply text-text-primary font-inter leading-relaxed relative;
     background: var(--bg-gradient);
+    background-color: #010413;
     overflow-x: clip;
   }
 

@@ -10,12 +10,9 @@ export default function ThemeToggle() {
     Promise.resolve().then(() => {
       setMounted(true);
       const savedTheme = localStorage.getItem("theme") as "dark" | "light" | null;
-      let activeTheme: "dark" | "light";
+      let activeTheme: "dark" | "light" = "dark";
       if (savedTheme) {
         activeTheme = savedTheme;
-      } else {
-        const prefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
-        activeTheme = prefersLight ? "light" : "dark";
       }
       setTheme(activeTheme);
       document.documentElement.setAttribute("data-theme", activeTheme);

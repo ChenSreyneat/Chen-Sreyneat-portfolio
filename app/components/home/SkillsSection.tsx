@@ -77,7 +77,7 @@ function SkillBadge({ name, icon: Icon, color }: { name: string; icon: React.Com
         "--brand-color": color,
         "--hover-text-color": hoverTextColor
       } as React.CSSProperties}
-      className="skill-badge-hover flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-50 dark:bg-slate-900/30 border border-slate-200 dark:border-glass-border cursor-default text-xs font-semibold text-text-secondary"
+      className="skill-badge-hover flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-900/30 border border-glass-border cursor-default text-xs font-semibold text-text-secondary"
     >
       <Icon 
         size={16} 
@@ -110,7 +110,7 @@ export default function SkillsSection() {
           {skillCategories.map((category, idx) => (
             <div 
               key={idx} 
-              className={`group relative flex flex-col justify-between bg-white dark:bg-glass-bg border border-slate-200 dark:border-glass-border rounded-[2rem] p-6 md:p-8 transition-all duration-300 hover:border-accent-blue/30 hover:-translate-y-1 ${
+              className={`group relative flex flex-col justify-between bg-glass-bg border border-glass-border rounded-[2rem] p-6 md:p-8 transition-all duration-300 hover:border-accent-blue/30 hover:-translate-y-1 ${
                 idx === 1 ? 'md:col-span-2 lg:col-span-2' : ''
               } ${
                 idx === 4 ? 'md:col-span-2 lg:col-span-1' : ''

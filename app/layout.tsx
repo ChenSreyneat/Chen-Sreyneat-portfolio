@@ -32,9 +32,11 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${outfit.variable}`}
+      className={`dark ${inter.variable} ${outfit.variable}`}
+      data-theme="dark"
+      style={{ backgroundColor: "#010413", colorScheme: "dark" }}
     >
-      <body className="relative min-h-screen">
+      <body className="relative min-h-screen text-white" style={{ backgroundColor: "#010413" }}>
         <CosmicLightBackground />
         <Navbar />
         <div className="pt-[80px] min-h-[calc(100vh-160px)] max-w-7xl mx-auto px-4 md:px-12 lg:px-20">

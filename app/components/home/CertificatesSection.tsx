@@ -267,9 +267,9 @@ export default function CertificatesSection() {
       {/* Background UI Grid & Ambient Luminous Glow (Matching EducationSection) */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#1d70a208_1px,transparent_1px),linear-gradient(to_bottom,#1d70a208_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none" />
       <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-[700px] h-[300px] sm:h-[400px] rounded-full opacity-35 blur-[100px] pointer-events-none -z-10"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-[700px] h-[300px] sm:h-[400px] rounded-full opacity-25 blur-[100px] pointer-events-none -z-10"
         style={{
-          background: "radial-gradient(ellipse at center, rgba(56, 189, 248, 0.5) 0%, rgba(37, 99, 235, 0.3) 40%, transparent 75%)"
+          background: "radial-gradient(ellipse at center, rgba(30, 58, 138, 0.3) 0%, rgba(15, 23, 42, 0.2) 50%, transparent 75%)"
         }}
       />
 
