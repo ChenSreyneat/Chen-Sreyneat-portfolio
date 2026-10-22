@@ -325,7 +325,6 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const videoPillsRef = useRef<HTMLDivElement>(null);
-  const [isVideoPlaying, setIsVideoPlaying] = useState<boolean>(false);
   const [isVideoBuffering, setIsVideoBuffering] = useState<boolean>(false);
   const [videoHasError, setVideoHasError] = useState<boolean>(false);
   const touchVideoStartXRef = useRef<number | null>(null);
@@ -343,7 +342,6 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
 
   const selectVideoClip = (num: number) => {
     setActiveVideoIndex(num);
-    setIsVideoPlaying(false);
     setIsVideoBuffering(false);
     setVideoHasError(false);
   };
@@ -354,7 +352,6 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
     setActiveVideoIndex(1);
     setActivePhotoIndex(0);
     setPhotoZoomLevel(1);
-    setIsVideoPlaying(false);
     setIsVideoBuffering(false);
     setVideoHasError(false);
   };
@@ -1223,7 +1220,7 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
                       })}
                     </div>
 
-                    {/* Main Video Theater: Tap to Play/Pause, Buffering Spinner, Touch Swipe */}
+                    {/* Main Video Theater: Native Player with Error Fallback */}
                     <div
                       className="relative w-full max-w-xl mx-auto rounded-2xl overflow-hidden bg-black/95 border border-white/15 shadow-2xl flex flex-col items-center"
                       onTouchStart={handleVideoTouchStart}
@@ -1243,18 +1240,14 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
                               onWaiting={() => setIsVideoBuffering(true)}
                               onPlaying={() => {
                                 setIsVideoBuffering(false);
-                                setIsVideoPlaying(true);
                                 setVideoHasError(false);
                               }}
-                              onPause={() => setIsVideoPlaying(false)}
-                              onEnded={() => setIsVideoPlaying(false)}
                               onLoadedData={() => {
                                 setIsVideoBuffering(false);
                                 setVideoHasError(false);
                               }}
                               onError={() => {
                                 setIsVideoBuffering(false);
-                                setIsVideoPlaying(false);
                                 setVideoHasError(true);
                               }}
                               className="w-full max-h-[46vh] sm:max-h-[52vh] object-contain rounded-t-2xl bg-black"
