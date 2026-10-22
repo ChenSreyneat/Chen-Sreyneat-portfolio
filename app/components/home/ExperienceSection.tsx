@@ -214,44 +214,50 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
   const [showRightArrow, setShowRightArrow] = useState(true);
   const [activeSlide, setActiveSlide] = useState(0);
 
+  const scrollToSlide = useCallback((index: number) => {
+    if (sliderRef.current) {
+      const cards = sliderRef.current.children;
+      const targetCard = cards[index] as HTMLElement;
+      if (targetCard) {
+        targetCard.scrollIntoView({
+          behavior: "smooth",
+          block: "nearest",
+          inline: "center"
+        });
+      }
+    }
+  }, []);
+
   const handleScrollButtons = useCallback(() => {
     if (sliderRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = sliderRef.current;
       setShowLeftArrow(scrollLeft > 15);
       setShowRightArrow(scrollLeft < scrollWidth - clientWidth - 15);
 
-      const card = sliderRef.current.firstElementChild as HTMLElement;
-      if (card) {
-        const cardWidth = card.offsetWidth + 24;
-        const current = Math.min(
-          experiences.length - 1,
-          Math.max(0, Math.round(scrollLeft / cardWidth))
-        );
-        setActiveSlide(current);
+      const cards = Array.from(sliderRef.current.children) as HTMLElement[];
+      if (cards.length > 0) {
+        let closestIndex = 0;
+        let minDiff = Infinity;
+        const containerCenter = scrollLeft + clientWidth / 2;
+        cards.forEach((c, i) => {
+          const cardCenter = c.offsetLeft + c.offsetWidth / 2;
+          const diff = Math.abs(containerCenter - cardCenter);
+          if (diff < minDiff) {
+            minDiff = diff;
+            closestIndex = i;
+          }
+        });
+        setActiveSlide(closestIndex);
       }
     }
-  }, [experiences.length]);
+  }, []);
 
   const handleScroll = (direction: "left" | "right") => {
     if (sliderRef.current) {
-      const card = sliderRef.current.firstElementChild as HTMLElement;
-      const cardWidth = card ? card.offsetWidth : 300;
-      const scrollAmount = cardWidth + 24;
-      sliderRef.current.scrollBy({
-        left: direction === "left" ? -scrollAmount : scrollAmount,
-        behavior: "smooth"
-      });
-    }
-  };
-
-  const scrollToSlide = (index: number) => {
-    if (sliderRef.current) {
-      const card = sliderRef.current.firstElementChild as HTMLElement;
-      const cardWidth = card ? card.offsetWidth + 24 : 320;
-      sliderRef.current.scrollTo({
-        left: cardWidth * index,
-        behavior: "smooth"
-      });
+      const nextIndex = direction === "left"
+        ? Math.max(0, activeSlide - 1)
+        : Math.min(experiences.length - 1, activeSlide + 1);
+      scrollToSlide(nextIndex);
     }
   };
 
@@ -278,7 +284,27 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
   };
 
   const handleMouseUpOrLeave = () => {
-    isDownRef.current = false;
+    if (isDownRef.current && sliderRef.current) {
+      isDownRef.current = false;
+      const { scrollLeft, clientWidth } = sliderRef.current;
+      const cards = Array.from(sliderRef.current.children) as HTMLElement[];
+      if (cards.length > 0) {
+        let closestIndex = 0;
+        let minDiff = Infinity;
+        const containerCenter = scrollLeft + clientWidth / 2;
+        cards.forEach((c, i) => {
+          const cardCenter = c.offsetLeft + c.offsetWidth / 2;
+          const diff = Math.abs(containerCenter - cardCenter);
+          if (diff < minDiff) {
+            minDiff = diff;
+            closestIndex = i;
+          }
+        });
+        scrollToSlide(closestIndex);
+      }
+    } else {
+      isDownRef.current = false;
+    }
   };
 
   useEffect(() => {
@@ -421,7 +447,7 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
   };
 
   return (
-    <section id="experience" className={`relative overflow-hidden bg-transparent ${hideHeader ? "py-2" : "py-20 md:py-28"}`}>
+    <section id="experience" className={`min-h-[calc(100dvh-5rem)] flex flex-col justify-center relative overflow-hidden bg-transparent snap-start scroll-mt-20 ${hideHeader ? "py-2" : "py-6 sm:py-10 md:py-16 lg:py-24"}`}>
       {/* Background UI Grid & Ambient Cosmic Glow */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#1d70a208_1px,transparent_1px),linear-gradient(to_bottom,#1d70a208_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none" />
       <div 
@@ -438,19 +464,19 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.3 }}
-          className="flex flex-col items-center text-center mb-14 md:mb-16 px-4 relative z-10"
+          className="flex flex-col items-center text-center mb-6 sm:mb-10 md:mb-14 px-4 relative z-10"
         >
-          <div className="flex items-center gap-3 mb-3">
+          <div className="flex items-center gap-3 mb-2 sm:mb-3">
             <div className="w-8 h-[1px] bg-accent-blue/50" />
             <span className="text-accent-blue font-bold uppercase tracking-[0.4em] text-[0.6rem] font-outfit">
               Work Experience
             </span>
             <div className="w-8 h-[1px] bg-accent-blue/50" />
           </div>
-          <h2 className="text-3xl md:text-5xl font-extrabold text-white mb-3 font-outfit">
+          <h2 className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-white mb-2 sm:mb-3 font-outfit">
             Work <span className="text-accent-blue">Experience</span>
           </h2>
-          <p className="text-slate-200 text-sm md:text-base max-w-2xl font-medium font-inter">
+          <p className="text-slate-200 text-xs sm:text-sm md:text-base max-w-2xl font-medium font-inter">
             Professional roles, digital marketing achievements, and practical IT engineering expertise.
           </p>
         </motion.div>
@@ -489,7 +515,7 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUpOrLeave}
           onMouseLeave={handleMouseUpOrLeave}
-          className="flex lg:grid lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 overflow-x-auto lg:overflow-visible py-4 lg:py-0 px-4 lg:px-0 no-scrollbar snap-x snap-proximity lg:snap-none touch-auto cursor-grab active:cursor-grabbing [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] items-stretch"
+          className="flex lg:grid lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 overflow-x-auto lg:overflow-visible py-4 lg:py-0 px-4 lg:px-0 no-scrollbar snap-x snap-mandatory lg:snap-none scroll-smooth touch-auto cursor-grab active:cursor-grabbing [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] items-stretch"
         >
           {experiences.map((item, index) => (
             <motion.div 
@@ -500,7 +526,7 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
               whileInView="visible"
               viewport={{ once: true, amount: 0.2 }}
               whileHover={{ y: -6 }}
-              className="w-[82vw] max-w-[340px] sm:w-[350px] lg:w-full shrink-0 lg:shrink snap-center lg:snap-align-none h-[450px] group relative flex"
+              className="w-[calc(100vw-2.5rem)] max-w-[360px] sm:max-w-[400px] lg:w-full shrink-0 lg:shrink snap-center snap-always lg:snap-align-none h-[450px] group relative flex mx-auto"
             >
               <div className="relative h-[450px] w-full flex flex-col justify-between bg-slate-900/40 backdrop-blur-md border border-white/15 rounded-2xl p-5 sm:p-6 transition-all duration-300 hover:border-accent-blue/70 hover:shadow-[0_12px_35px_-5px_rgba(96,165,250,0.22)] hover:bg-slate-900/60 shadow-lg overflow-hidden">
                 <div className="flex flex-col h-full justify-between">
@@ -685,11 +711,11 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
                     <button
                       type="button"
                       onClick={() => openExperienceModal(item, "overview")}
-                      className="w-full py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 bg-accent-blue/10 hover:bg-accent-blue border border-accent-blue/30 hover:border-accent-blue text-xs font-bold text-accent-blue hover:text-white transition-all duration-300 group/btn cursor-pointer font-outfit uppercase tracking-wider shadow-sm hover:shadow-lg hover:shadow-accent-blue/25 active:scale-[0.98]"
+                      className="w-full py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 bg-[#4185DB] hover:bg-[#3273c5] border border-[#4185DB] text-xs font-bold text-white transition-all duration-300 group/btn cursor-pointer font-outfit uppercase tracking-wider shadow-md shadow-[#4185DB]/25 hover:shadow-lg hover:shadow-[#4185DB]/40 active:scale-[0.98]"
                     >
                       <Eye size={15} className="group-hover/btn:scale-110 transition-transform" />
-                      <span>View Details &amp; Pop-up</span>
-                      <ExternalLink size={13} className="opacity-70 group-hover/btn:translate-x-0.5 transition-transform" />
+                      <span>View Details</span>
+                      <ExternalLink size={13} className="opacity-80 group-hover/btn:translate-x-0.5 transition-transform" />
                     </button>
                   </div>
                 </div>

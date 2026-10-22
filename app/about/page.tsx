@@ -214,7 +214,7 @@ export default function About() {
             <div className="mb-4">
               <Link 
                 href="/#contact" 
-                className="inline-flex items-center gap-2 py-2 px-3.5 rounded-xl bg-accent-blue/10 hover:bg-accent-blue border border-accent-blue/30 hover:border-accent-blue text-xs font-bold text-accent-blue hover:text-white transition-all duration-300 group/btn cursor-pointer font-outfit uppercase tracking-wider shadow-sm hover:shadow-lg hover:shadow-accent-blue/20 w-fit"
+                className="inline-flex items-center gap-2 py-2 px-3.5 rounded-xl bg-[#4185DB] hover:bg-[#3273c5] border border-[#4185DB] text-xs font-bold text-white transition-all duration-300 group/btn cursor-pointer font-outfit uppercase tracking-wider shadow-md shadow-[#4185DB]/25 hover:shadow-lg hover:shadow-[#4185DB]/40 active:scale-[0.98] w-fit"
               >
                 <Calendar size={13} className="stroke-[2.5]" />
                 <span>Schedule a call</span>
@@ -232,13 +232,13 @@ export default function About() {
               Information Technology Engineering Graduate • Digital Marketing &amp; Designer
             </p>
 
-            {/* Social and Action Buttons Row (Education Button Background) */}
+            {/* Social and Action Buttons Row */}
             <div className="flex flex-wrap items-center gap-2 mb-6">
               {/* Download CV */}
               <a
                 href="/image/CV_Chen_Sreyneat.pdf"
                 download="CV_Chen_Sreyneat.pdf"
-                className="py-1.5 px-3 rounded-xl bg-accent-blue/10 hover:bg-accent-blue border border-accent-blue/30 hover:border-accent-blue text-xs font-bold text-accent-blue hover:text-white transition-all duration-300 inline-flex items-center gap-2 font-outfit uppercase tracking-wider shadow-sm hover:shadow-lg hover:shadow-accent-blue/20 hover:scale-105 active:scale-95 cursor-pointer"
+                className="py-1.5 px-3 rounded-xl bg-[#4185DB] hover:bg-[#3273c5] border border-[#4185DB] text-xs font-bold text-white transition-all duration-300 inline-flex items-center gap-2 font-outfit uppercase tracking-wider shadow-md shadow-[#4185DB]/25 hover:shadow-lg hover:shadow-[#4185DB]/40 hover:scale-105 active:scale-95 cursor-pointer"
               >
                 <Download size={14} className="stroke-[2.5]" />
                 <span>Download CV</span>

@@ -155,43 +155,43 @@ export default function CertificatesSection() {
     touchStartYRef.current = null;
   };
 
+  const scrollToSlide = useCallback((index: number) => {
+    if (sliderRef.current) {
+      const cards = sliderRef.current.children;
+      const targetCard = cards[index] as HTMLElement;
+      if (targetCard) {
+        targetCard.scrollIntoView({
+          behavior: "smooth",
+          block: "nearest",
+          inline: "center"
+        });
+      }
+    }
+  }, []);
+
   const handleScrollButtons = useCallback(() => {
     if (sliderRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = sliderRef.current;
       setShowLeftArrow(scrollLeft > 10);
       setShowRightArrow(scrollLeft < scrollWidth - clientWidth - 10);
 
-      const card = sliderRef.current.firstElementChild as HTMLElement;
-      if (card) {
-        const style = window.getComputedStyle(sliderRef.current);
-        const gap = parseFloat(style.columnGap || style.gap) || 16;
-        const cardWidth = card.offsetWidth + gap;
-        const maxScroll = scrollWidth - clientWidth;
-        const current = scrollLeft >= maxScroll - 10
-          ? certificates.length - 1
-          : Math.min(
-              certificates.length - 1,
-              Math.max(0, Math.round(scrollLeft / cardWidth))
-            );
-        setActiveSlide(current);
-      }
-    }
-  }, [certificates.length]);
-
-  const scrollToSlide = (index: number) => {
-    if (sliderRef.current) {
-      const card = sliderRef.current.firstElementChild as HTMLElement;
-      if (card) {
-        const style = window.getComputedStyle(sliderRef.current);
-        const gap = parseFloat(style.columnGap || style.gap) || 16;
-        const cardWidth = card.offsetWidth + gap;
-        sliderRef.current.scrollTo({
-          left: cardWidth * index,
-          behavior: "smooth"
+      const cards = Array.from(sliderRef.current.children) as HTMLElement[];
+      if (cards.length > 0) {
+        let closestIndex = 0;
+        let minDiff = Infinity;
+        const containerCenter = scrollLeft + clientWidth / 2;
+        cards.forEach((c, i) => {
+          const cardCenter = c.offsetLeft + c.offsetWidth / 2;
+          const diff = Math.abs(containerCenter - cardCenter);
+          if (diff < minDiff) {
+            minDiff = diff;
+            closestIndex = i;
+          }
         });
+        setActiveSlide(closestIndex);
       }
     }
-  };
+  }, []);
 
   // Mouse drag-to-scroll support ("like touch on box")
   const isDownRef = useRef(false);
@@ -216,19 +216,35 @@ export default function CertificatesSection() {
   };
 
   const handleMouseUpOrLeave = () => {
-    isDownRef.current = false;
+    if (isDownRef.current && sliderRef.current) {
+      isDownRef.current = false;
+      const { scrollLeft, clientWidth } = sliderRef.current;
+      const cards = Array.from(sliderRef.current.children) as HTMLElement[];
+      if (cards.length > 0) {
+        let closestIndex = 0;
+        let minDiff = Infinity;
+        const containerCenter = scrollLeft + clientWidth / 2;
+        cards.forEach((c, i) => {
+          const cardCenter = c.offsetLeft + c.offsetWidth / 2;
+          const diff = Math.abs(containerCenter - cardCenter);
+          if (diff < minDiff) {
+            minDiff = diff;
+            closestIndex = i;
+          }
+        });
+        scrollToSlide(closestIndex);
+      }
+    } else {
+      isDownRef.current = false;
+    }
   };
 
   const handleScroll = (direction: "left" | "right") => {
     if (sliderRef.current) {
-      const cardElement = sliderRef.current.firstElementChild as HTMLElement;
-      const cardWidth = cardElement ? cardElement.offsetWidth : 300;
-      const scrollAmount = cardWidth + 24; // Card width + gap
-
-      sliderRef.current.scrollBy({
-        left: direction === "left" ? -scrollAmount : scrollAmount,
-        behavior: "smooth",
-      });
+      const nextIndex = direction === "left" 
+        ? Math.max(0, activeSlide - 1)
+        : Math.min(certificates.length - 1, activeSlide + 1);
+      scrollToSlide(nextIndex);
     }
   };
 
@@ -247,7 +263,7 @@ export default function CertificatesSection() {
   }, [handleScrollButtons]);
 
   return (
-    <section id="certificates" className="py-16 sm:py-20 md:py-24 relative overflow-hidden bg-transparent">
+    <section id="certificates" className="min-h-[calc(100dvh-5rem)] flex flex-col justify-center py-6 sm:py-10 md:py-16 lg:py-24 relative overflow-hidden bg-transparent snap-start scroll-mt-20">
       {/* Background UI Grid & Ambient Luminous Glow (Matching EducationSection) */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#1d70a208_1px,transparent_1px),linear-gradient(to_bottom,#1d70a208_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none" />
       <div 
@@ -262,14 +278,14 @@ export default function CertificatesSection() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.3 }}
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        className="flex flex-col items-center text-center mb-10 sm:mb-16 px-4 relative z-10"
+        className="flex flex-col items-center text-center mb-6 sm:mb-10 md:mb-14 px-4 relative z-10"
       >
-        <div className="flex items-center gap-3 mb-3">
+        <div className="flex items-center gap-3 mb-2 sm:mb-3">
           <div className="w-8 h-[1px] bg-accent-blue/50" />
           <span className="text-accent-blue font-bold uppercase tracking-[0.3em] sm:tracking-[0.4em] text-[0.6rem] font-outfit">Achievements</span>
           <div className="w-8 h-[1px] bg-accent-blue/50" />
         </div>
-        <h2 className="text-2xl sm:text-4xl md:text-5xl font-extrabold text-white mb-3 font-outfit">
+        <h2 className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-white mb-2 sm:mb-3 font-outfit">
           Certificates &amp; <span className="text-accent-blue">Awards</span>
         </h2>
         <p className="text-slate-200 text-xs sm:text-sm md:text-base max-w-2xl font-medium font-inter">
@@ -309,14 +325,14 @@ export default function CertificatesSection() {
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUpOrLeave}
           onMouseLeave={handleMouseUpOrLeave}
-          className="flex gap-4 sm:gap-6 overflow-x-auto py-4 sm:py-6 px-4 no-scrollbar snap-x snap-proximity touch-auto cursor-grab active:cursor-grabbing [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+          className="flex gap-4 sm:gap-6 overflow-x-auto py-4 sm:py-6 px-4 no-scrollbar snap-x snap-mandatory scroll-smooth touch-auto cursor-grab active:cursor-grabbing [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
         >
           {certificates.map((item, index) => (
             <motion.div 
               key={index} 
               whileHover={{ y: -6 }}
               transition={{ duration: 0.3 }}
-              className="flex-shrink-0 w-[82vw] max-w-[320px] sm:w-[320px] md:w-[380px] snap-center group relative flex flex-col justify-between bg-slate-950/20 border border-white/20 rounded-2xl p-5 sm:p-6 transition-all duration-300 hover:border-accent-blue shadow-sm hover:shadow-xl hover:shadow-accent-blue/20"
+              className="flex-shrink-0 w-[calc(100vw-2.5rem)] max-w-[360px] sm:w-[340px] md:w-[380px] snap-center snap-always group relative flex flex-col justify-between bg-slate-950/20 border border-white/20 rounded-2xl p-5 sm:p-6 transition-all duration-300 hover:border-accent-blue shadow-sm hover:shadow-xl hover:shadow-accent-blue/20"
             >
               <div>
                 <div className="flex items-start justify-between mb-4">
@@ -343,11 +359,11 @@ export default function CertificatesSection() {
                 <button
                   type="button"
                   onClick={() => openCertModal(index)}
-                  className="w-full py-2.5 px-3 sm:px-4 rounded-xl flex items-center justify-center gap-2 bg-accent-blue/10 hover:bg-accent-blue border border-accent-blue/30 hover:border-accent-blue text-xs font-bold text-accent-blue hover:text-white transition-all duration-300 group/btn cursor-pointer font-outfit uppercase tracking-wider shadow-sm hover:shadow-lg hover:shadow-accent-blue/20"
+                  className="w-full py-2.5 px-3 sm:px-4 rounded-xl flex items-center justify-center gap-2 bg-[#4185DB] hover:bg-[#3273c5] border border-[#4185DB] text-xs font-bold text-white transition-all duration-300 group/btn cursor-pointer font-outfit uppercase tracking-wider shadow-md shadow-[#4185DB]/25 hover:shadow-lg hover:shadow-[#4185DB]/40 active:scale-[0.98]"
                 >
                   <Eye size={15} className="group-hover/btn:scale-110 transition-transform" />
                   <span>{item.type === "pdf" ? "View Certificate (PDF)" : "View Certificate"}</span>
-                  <ExternalLink size={13} className="opacity-70 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
+                  <ExternalLink size={13} className="opacity-80 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
                 </button>
               </div>
             </motion.div>
@@ -454,26 +470,6 @@ export default function CertificatesSection() {
                 onTouchEnd={handleTouchEnd}
               >
                 <InBoxLightBackground />
-
-                {/* Floating Left Navigation Arrow */}
-                <button
-                  type="button"
-                  onClick={handlePrevCert}
-                  className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-30 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-slate-950/80 hover:bg-slate-900 border border-white/20 hover:border-accent-blue text-white flex items-center justify-center shadow-xl backdrop-blur-md transition-all active:scale-95 cursor-pointer"
-                  aria-label="Previous certificate"
-                >
-                  <ChevronLeft size={20} />
-                </button>
-
-                {/* Floating Right Navigation Arrow */}
-                <button
-                  type="button"
-                  onClick={handleNextCert}
-                  className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-30 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-slate-950/80 hover:bg-slate-900 border border-white/20 hover:border-accent-blue text-white flex items-center justify-center shadow-xl backdrop-blur-md transition-all active:scale-95 cursor-pointer"
-                  aria-label="Next certificate"
-                >
-                  <ChevronRight size={20} />
-                </button>
 
                 {activeCert.type === "pdf" ? (
                   <div className="w-full h-[52vh] sm:h-[60vh] md:h-[66vh] relative z-10 flex flex-col items-center">

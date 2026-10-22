@@ -32,7 +32,7 @@
   /* Midnight Blue Palette Accents */
   --accent-deep: #0d1236;
   --accent-mid: #131b50;
-  --accent-blue: #60A5FA;
+  --accent-blue: #4185DB;
   --accent-light: #5c6bc0;
   
   /* Glassmorphism - Midnight Blue Tinted */
@@ -51,10 +51,10 @@
   --dropdown-bg: #224287;
   --dropdown-border: rgba(255, 255, 255, 0.12);
   --dropdown-text: rgba(255, 255, 255, 0.9);
-  --dropdown-icon: #60A5FA;
+  --dropdown-icon: #4185DB;
 
   /* Accent Gradient Colors */
-  --gradient-accent-start: #5fa5fa;
+  --gradient-accent-start: #4185DB;
   --gradient-accent-end: #1d70a2;
 }
 
@@ -63,7 +63,7 @@
   --bg-gradient: linear-gradient(135deg, #FFFFFF 0%, #FFFFFF 100%);
   --text-primary: #0a1c4b;
   --text-secondary: #1d70a2;
-  --accent-blue: #1d70a2;
+  --accent-blue: #4185DB;
   --glass-bg: rgba(255, 255, 255, 0.7);
   --glass-border: rgba(29, 112, 162, 0.1);
   --glass-glow: rgba(29, 112, 162, 0.1);
@@ -71,16 +71,16 @@
   --nav-border: rgba(29, 112, 162, 0.15);
   --card-shadow: rgba(10, 28, 75, 0.05);
   --project-bg: rgba(29, 112, 162, 0.05);
-  --logo-color: #1D70A2;
+  --logo-color: #4185DB;
 
   /* Hamburger Dropdown Colors */
   --dropdown-bg: #f0f7ff;
   --dropdown-border: rgba(29, 112, 162, 0.15);
   --dropdown-text: #0a1c4b;
-  --dropdown-icon: #1d70a2;
+  --dropdown-icon: #4185DB;
 
   /* Accent Gradient Colors */
-  --gradient-accent-start: #1D70A2;
+  --gradient-accent-start: #4185DB;
   --gradient-accent-end: #0a1c4b;
 }
 
@@ -90,13 +90,17 @@
   }
 
   html {
-    @apply scroll-smooth overflow-x-hidden;
+    @apply scroll-smooth;
+    scroll-snap-type: y proximity;
+    scroll-padding-top: 5rem;
+    overflow-x: clip;
   }
 
   body {
-    @apply text-text-primary font-inter leading-relaxed overflow-x-hidden relative;
+    @apply text-text-primary font-inter leading-relaxed relative;
     background: var(--bg-gradient);
     background-attachment: fixed;
+    overflow-x: clip;
   }
 
   /* Dynamic Background */
@@ -144,11 +148,11 @@
   }
 
   .btn-primary {
-    @apply bg-linear-to-br from-accent-mid to-accent-blue text-white shadow-[0_4px_15px_rgba(29,112,162,0.4)] hover:scale-105 hover:shadow-[0_6px_20px_rgba(29,112,162,0.6)];
+    @apply bg-linear-to-br from-[#214185] to-[#4185DB] text-white shadow-[0_4px_15px_rgba(65,133,219,0.4)] hover:scale-105 hover:shadow-[0_6px_20px_rgba(65,133,219,0.6)];
   }
 
   .btn-outline {
-    @apply bg-transparent border border-glass-border text-text-primary hover:bg-accent-blue/10 hover:border-accent-blue;
+    @apply bg-transparent border border-glass-border text-text-primary hover:bg-[#4185DB]/10 hover:border-[#4185DB];
   }
 
   .text-gradient {

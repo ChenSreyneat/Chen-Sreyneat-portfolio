@@ -26,7 +26,7 @@ import {
 
 export default function AboutSection() {
   return (
-    <section id="about" className="py-20 md:py-28 relative overflow-hidden bg-transparent">
+    <section id="about" className="min-h-[calc(100dvh-5rem)] flex flex-col justify-center py-8 sm:py-12 md:py-20 lg:py-28 relative overflow-hidden bg-transparent snap-start scroll-mt-20">
       {/* Background UI Grid & Ambient Luminous Glow (Matching EducationSection) */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#1d70a208_1px,transparent_1px),linear-gradient(to_bottom,#1d70a208_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none" />
       <div 
@@ -44,17 +44,17 @@ export default function AboutSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.6 }}
-          className="flex flex-col items-center text-center mb-14 px-4"
+          className="flex flex-col items-center text-center mb-6 sm:mb-10 md:mb-14 px-4"
         >
-          <div className="flex items-center justify-center gap-3 mb-3">
+          <div className="flex items-center justify-center gap-3 mb-2 sm:mb-3">
             <div className="w-8 h-[1px] bg-accent-blue/50" />
             <span className="text-accent-blue font-bold uppercase tracking-[0.4em] text-[0.6rem] font-outfit">Get To Know Me</span>
             <div className="w-8 h-[1px] bg-accent-blue/50" />
           </div>
-          <h2 className="text-3xl md:text-5xl font-extrabold text-white mb-3 font-outfit">
+          <h2 className="text-2xl sm:text-4xl md:text-5xl font-extrabold text-white mb-2 sm:mb-3 font-outfit">
             About <span className="text-accent-blue">Me</span>
           </h2>
-          <p className="text-slate-200 text-sm md:text-base max-w-2xl font-medium font-inter">
+          <p className="text-slate-200 text-xs sm:text-sm md:text-base max-w-2xl font-medium font-inter">
             A glimpse into my background, creative design skills, and practical IT engineering journey.
           </p>
         </motion.div>
@@ -64,7 +64,7 @@ export default function AboutSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.6 }}
-          className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start"
+          className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-start"
         >
 
           {/* Left Column: Profile Card Sidebar (Unboxed Column) */}
@@ -167,11 +167,11 @@ export default function AboutSection() {
           {/* Right Column: Bio & Actions (Unboxed Column) */}
           <div className="lg:col-span-8 flex flex-col justify-center">
 
-            {/* Schedule a Call Button (Education Button Background) */}
+            {/* Schedule a Call Button */}
             <div className="mb-4">
               <Link
                 href="/#contact"
-                className="inline-flex items-center gap-2 py-2 px-3.5 rounded-xl bg-accent-blue/10 hover:bg-accent-blue border border-accent-blue/30 hover:border-accent-blue text-xs font-bold text-accent-blue hover:text-white transition-all duration-300 group/btn cursor-pointer font-outfit uppercase tracking-wider shadow-sm hover:shadow-lg hover:shadow-accent-blue/20 w-fit"
+                className="inline-flex items-center gap-2 py-2 px-3.5 rounded-xl bg-[#4185DB] hover:bg-[#3273c5] border border-[#4185DB] text-xs font-bold text-white transition-all duration-300 group/btn cursor-pointer font-outfit uppercase tracking-wider shadow-md shadow-[#4185DB]/25 hover:shadow-lg hover:shadow-[#4185DB]/40 active:scale-[0.98] w-fit"
               >
                 <Calendar size={13} className="stroke-[2.5]" />
                 <span>Schedule a call</span>
@@ -189,13 +189,13 @@ export default function AboutSection() {
               Information Technology Engineering Graduate • Digital Marketing &amp; Designer
             </p>
 
-            {/* Social and Action Buttons Row (Education Button Background) */}
+            {/* Social and Action Buttons Row */}
             <div className="flex flex-wrap items-center gap-2 mb-6">
               {/* Download CV */}
               <a
                 href="/image/CV_Chen_Sreyneat.pdf"
                 download="CV_Chen_Sreyneat.pdf"
-                className="py-1.5 px-3 rounded-xl bg-accent-blue/10 hover:bg-accent-blue border border-accent-blue/30 hover:border-accent-blue text-xs font-bold text-accent-blue hover:text-white transition-all duration-300 inline-flex items-center gap-2 font-outfit uppercase tracking-wider shadow-sm hover:shadow-lg hover:shadow-accent-blue/20 hover:scale-105 active:scale-95 cursor-pointer"
+                className="py-1.5 px-3 rounded-xl bg-[#4185DB] hover:bg-[#3273c5] border border-[#4185DB] text-xs font-bold text-white transition-all duration-300 inline-flex items-center gap-2 font-outfit uppercase tracking-wider shadow-md shadow-[#4185DB]/25 hover:shadow-lg hover:shadow-[#4185DB]/40 hover:scale-105 active:scale-95 cursor-pointer"
               >
                 <Download size={14} className="stroke-[2.5]" />
                 <span>Download CV</span>

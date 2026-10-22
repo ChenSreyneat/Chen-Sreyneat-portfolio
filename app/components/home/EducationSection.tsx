@@ -123,50 +123,42 @@ export default function EducationSection() {
   }, [selectedItem]);
 
   const sliderRef = useRef<HTMLDivElement>(null);
-  const [showLeftArrow, setShowLeftArrow] = useState(false);
-  const [showRightArrow, setShowRightArrow] = useState(true);
   const [activeSlide, setActiveSlide] = useState(0);
+
+  const scrollToSlide = useCallback((index: number) => {
+    if (sliderRef.current) {
+      const cards = sliderRef.current.children;
+      const targetCard = cards[index] as HTMLElement;
+      if (targetCard) {
+        targetCard.scrollIntoView({
+          behavior: "smooth",
+          block: "nearest",
+          inline: "center"
+        });
+      }
+    }
+  }, []);
 
   const handleScrollButtons = useCallback(() => {
     if (sliderRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = sliderRef.current;
-      setShowLeftArrow(scrollLeft > 15);
-      setShowRightArrow(scrollLeft < scrollWidth - clientWidth - 15);
-
-      const card = sliderRef.current.firstElementChild as HTMLElement;
-      if (card) {
-        const cardWidth = card.offsetWidth + 24;
-        const current = Math.min(
-          education.length - 1,
-          Math.max(0, Math.round(scrollLeft / cardWidth))
-        );
-        setActiveSlide(current);
+      const { scrollLeft, clientWidth } = sliderRef.current;
+      const cards = Array.from(sliderRef.current.children) as HTMLElement[];
+      if (cards.length > 0) {
+        let closestIndex = 0;
+        let minDiff = Infinity;
+        const containerCenter = scrollLeft + clientWidth / 2;
+        cards.forEach((c, i) => {
+          const cardCenter = c.offsetLeft + c.offsetWidth / 2;
+          const diff = Math.abs(containerCenter - cardCenter);
+          if (diff < minDiff) {
+            minDiff = diff;
+            closestIndex = i;
+          }
+        });
+        setActiveSlide(closestIndex);
       }
     }
-  }, [education.length]);
-
-  const handleScroll = (direction: "left" | "right") => {
-    if (sliderRef.current) {
-      const card = sliderRef.current.firstElementChild as HTMLElement;
-      const cardWidth = card ? card.offsetWidth : 300;
-      const scrollAmount = cardWidth + 24;
-      sliderRef.current.scrollBy({
-        left: direction === "left" ? -scrollAmount : scrollAmount,
-        behavior: "smooth"
-      });
-    }
-  };
-
-  const scrollToSlide = (index: number) => {
-    if (sliderRef.current) {
-      const card = sliderRef.current.firstElementChild as HTMLElement;
-      const cardWidth = card ? card.offsetWidth + 24 : 320;
-      sliderRef.current.scrollTo({
-        left: cardWidth * index,
-        behavior: "smooth"
-      });
-    }
-  };
+  }, []);
 
   // Mouse drag-to-scroll support ("like touch on box")
   const isDownRef = useRef(false);
@@ -191,7 +183,27 @@ export default function EducationSection() {
   };
 
   const handleMouseUpOrLeave = () => {
-    isDownRef.current = false;
+    if (isDownRef.current && sliderRef.current) {
+      isDownRef.current = false;
+      const { scrollLeft, clientWidth } = sliderRef.current;
+      const cards = Array.from(sliderRef.current.children) as HTMLElement[];
+      if (cards.length > 0) {
+        let closestIndex = 0;
+        let minDiff = Infinity;
+        const containerCenter = scrollLeft + clientWidth / 2;
+        cards.forEach((c, i) => {
+          const cardCenter = c.offsetLeft + c.offsetWidth / 2;
+          const diff = Math.abs(containerCenter - cardCenter);
+          if (diff < minDiff) {
+            minDiff = diff;
+            closestIndex = i;
+          }
+        });
+        scrollToSlide(closestIndex);
+      }
+    } else {
+      isDownRef.current = false;
+    }
   };
 
   useEffect(() => {
@@ -224,29 +236,15 @@ export default function EducationSection() {
   };
 
   const handleNextCert = () => {
-    if (!selectedItem) return;
+    if (!selectedItem || selectedItem.certificates.length <= 1) return;
     setZoomLevel(1);
-    if (selectedItem.certificates.length > 1) {
-      setActiveCertIndex((prev) => (prev + 1) % selectedItem.certificates.length);
-    } else {
-      const currentIdx = education.findIndex((e) => e.school === selectedItem.school);
-      const nextIdx = (currentIdx + 1) % education.length;
-      setSelectedItem(education[nextIdx]);
-      setActiveCertIndex(0);
-    }
+    setActiveCertIndex((prev) => (prev + 1) % selectedItem.certificates.length);
   };
 
   const handlePrevCert = () => {
-    if (!selectedItem) return;
+    if (!selectedItem || selectedItem.certificates.length <= 1) return;
     setZoomLevel(1);
-    if (selectedItem.certificates.length > 1) {
-      setActiveCertIndex((prev) => (prev - 1 + selectedItem.certificates.length) % selectedItem.certificates.length);
-    } else {
-      const currentIdx = education.findIndex((e) => e.school === selectedItem.school);
-      const prevIdx = (currentIdx - 1 + education.length) % education.length;
-      setSelectedItem(education[prevIdx]);
-      setActiveCertIndex(0);
-    }
+    setActiveCertIndex((prev) => (prev - 1 + selectedItem.certificates.length) % selectedItem.certificates.length);
   };
 
   const handleZoomIn = () => setZoomLevel((prev) => Math.min(2.5, +(prev + 0.5).toFixed(1)));
@@ -255,13 +253,14 @@ export default function EducationSection() {
   const toggleZoom = () => setZoomLevel((prev) => (prev > 1 ? 1 : 2));
 
   const handleTouchStart = (e: React.TouchEvent) => {
-    if (zoomLevel > 1) return;
+    if (zoomLevel > 1 || !selectedItem || selectedItem.certificates.length <= 1) return;
     touchStartXRef.current = e.touches[0].clientX;
     touchStartYRef.current = e.touches[0].clientY;
   };
 
   const handleTouchEnd = (e: React.TouchEvent) => {
     if (zoomLevel > 1 || touchStartXRef.current === null || touchStartYRef.current === null) return;
+    if (!selectedItem || selectedItem.certificates.length <= 1) return;
     const diffX = touchStartXRef.current - e.changedTouches[0].clientX;
     const diffY = touchStartYRef.current - e.changedTouches[0].clientY;
     if (Math.abs(diffX) > 40 && Math.abs(diffX) > Math.abs(diffY)) {
@@ -304,7 +303,7 @@ export default function EducationSection() {
   } : null);
 
   return (
-    <section id="education" className="py-24 relative overflow-hidden bg-transparent">
+    <section id="education" className="min-h-[calc(100dvh-5rem)] flex flex-col justify-center py-6 sm:py-10 md:py-16 lg:py-24 relative overflow-hidden bg-transparent snap-start scroll-mt-20">
       {/* Background UI Grid & Ambient Luminous Glow */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#1d70a208_1px,transparent_1px),linear-gradient(to_bottom,#1d70a208_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none" />
       <div 
@@ -319,43 +318,19 @@ export default function EducationSection() {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.3 }}
-        className="flex flex-col items-center text-center mb-16 px-4 relative z-10"
+        className="flex flex-col items-center text-center mb-4 sm:mb-8 md:mb-12 px-4 relative z-10"
       >
-        <div className="flex items-center gap-3 mb-3">
+        <div className="flex items-center gap-3 mb-2 sm:mb-3">
           <div className="w-8 h-[1px] bg-accent-blue/50" />
           <span className="text-accent-blue font-bold uppercase tracking-[0.4em] text-[0.6rem] font-outfit">Education</span>
           <div className="w-8 h-[1px] bg-accent-blue/50" />
         </div>
-        <h2 className="text-3xl md:text-5xl font-extrabold text-white mb-3 font-outfit">Educational <span className="text-accent-blue">Journey</span></h2>
-        <p className="text-slate-200 text-sm md:text-base max-w-2xl font-medium font-inter">My academic background and continuous learning path in technology.</p>
+        <h2 className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-white mb-2 sm:mb-3 font-outfit">Educational <span className="text-accent-blue">Journey</span></h2>
+        <p className="text-slate-200 text-xs sm:text-sm md:text-base max-w-2xl font-medium font-inter">My academic background and continuous learning path in technology.</p>
       </motion.div>
 
       {/* Responsive Slider / Desktop Grid Container */}
       <div className="relative w-full z-10 max-w-6xl mx-auto px-0 sm:px-4">
-        {/* Left Circular Arrow Button (hidden on mobile, visible on desktop like Portfolio Showcase) */}
-        <button
-          type="button"
-          onClick={() => handleScroll("left")}
-          className={`absolute left-2 md:left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-slate-900/90 backdrop-blur-md text-white rounded-full hidden lg:flex items-center justify-center z-30 transition-all duration-300 border border-white/20 hover:border-accent-blue hover:bg-slate-800 hover:scale-105 active:scale-95 cursor-pointer shadow-lg ${
-            showLeftArrow ? "opacity-100 pointer-events-auto translate-x-0" : "opacity-0 pointer-events-none -translate-x-4"
-          }`}
-          aria-label="Previous Education"
-        >
-          <ChevronLeft className="w-6 h-6 text-white" />
-        </button>
-
-        {/* Right Circular Arrow Button (hidden on mobile, visible on desktop like Portfolio Showcase) */}
-        <button
-          type="button"
-          onClick={() => handleScroll("right")}
-          className={`absolute right-2 md:right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-slate-900/90 backdrop-blur-md text-white rounded-full hidden lg:flex items-center justify-center z-30 transition-all duration-300 border border-white/20 hover:border-accent-blue hover:bg-slate-800 hover:scale-105 active:scale-95 cursor-pointer shadow-lg ${
-            showRightArrow ? "opacity-100 pointer-events-auto translate-x-0" : "opacity-0 pointer-events-none translate-x-4"
-          }`}
-          aria-label="Next Education"
-        >
-          <ChevronRight className="w-6 h-6 text-white" />
-        </button>
-
         {/* Scrollable Container with native snap & touch swipe on mobile, 3-col grid on desktop */}
         <div
           ref={sliderRef}
@@ -363,7 +338,7 @@ export default function EducationSection() {
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUpOrLeave}
           onMouseLeave={handleMouseUpOrLeave}
-          className="flex lg:grid lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 overflow-x-auto lg:overflow-visible py-4 lg:py-0 px-4 lg:px-0 no-scrollbar snap-x snap-proximity lg:snap-none touch-auto cursor-grab active:cursor-grabbing [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] items-stretch"
+          className="flex lg:grid lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 overflow-x-auto lg:overflow-visible py-3 lg:py-0 px-4 lg:px-0 no-scrollbar snap-x snap-mandatory lg:snap-none scroll-smooth touch-auto cursor-grab active:cursor-grabbing [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] items-stretch"
         >
           {education.map((item, index) => (
             <motion.div 
@@ -374,11 +349,11 @@ export default function EducationSection() {
               whileInView="visible"
               viewport={{ once: true, amount: 0.2 }}
               whileHover={{ y: -4 }}
-              className="w-[82vw] max-w-[340px] sm:w-[360px] lg:w-full shrink-0 lg:shrink snap-center lg:snap-align-none group relative flex h-full"
+              className="w-[calc(100vw-2.5rem)] max-w-[360px] sm:max-w-[400px] lg:w-full shrink-0 lg:shrink snap-center snap-always lg:snap-align-none group relative flex h-full mx-auto"
             >
-              <div className="relative h-full w-full flex flex-col justify-between bg-slate-950/20 border border-white/20 rounded-2xl p-5 sm:p-6 transition-all duration-300 hover:border-accent-blue shadow-sm hover:shadow-xl hover:shadow-accent-blue/20 min-h-[340px] sm:min-h-[320px] lg:min-h-0">
+              <div className="relative h-full w-full flex flex-col justify-between bg-slate-950/20 border border-white/20 rounded-2xl p-4 sm:p-6 transition-all duration-300 hover:border-accent-blue shadow-sm hover:shadow-xl hover:shadow-accent-blue/20 min-h-[300px] sm:min-h-[320px] lg:min-h-0">
                 <div>
-                  <div className="flex items-start justify-between mb-4">
+                  <div className="flex items-start justify-between mb-3 sm:mb-4">
                     <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/20 flex items-center justify-center text-accent-blue shadow-inner group-hover:border-accent-blue/60 group-hover:shadow-[0_0_12px_rgba(96,165,250,0.3)] transition-all">
                       <item.icon size={20} />
                     </div>
@@ -386,11 +361,11 @@ export default function EducationSection() {
                       {item.period}
                     </span>
                   </div>
-                  <div className="space-y-2">
-                    <h3 className="text-lg md:text-xl font-extrabold text-white group-hover:text-accent-blue transition-colors font-outfit">
+                  <div className="space-y-1.5 sm:space-y-2">
+                    <h3 className="text-base sm:text-lg md:text-xl font-extrabold text-white group-hover:text-accent-blue transition-colors font-outfit">
                       {item.school}
                     </h3>
-                    <p className="text-accent-blue text-sm font-bold font-outfit">{item.major}</p>
+                    <p className="text-accent-blue text-xs sm:text-sm font-bold font-outfit">{item.major}</p>
                     <p className="text-slate-200 text-xs sm:text-sm leading-relaxed font-semibold font-inter">
                       {item.description}
                     </p>
@@ -398,15 +373,15 @@ export default function EducationSection() {
                 </div>
 
                 {/* Action Button: Opens Certificate Pop-up */}
-                <div className="pt-5 mt-5 border-t border-white/10">
+                <div className="pt-4 mt-4 border-t border-white/10">
                   <button
                     type="button"
                     onClick={() => openModal(item)}
-                    className="w-full py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 bg-accent-blue/10 hover:bg-accent-blue border border-accent-blue/30 hover:border-accent-blue text-xs font-bold text-accent-blue hover:text-white transition-all duration-300 group/btn cursor-pointer font-outfit uppercase tracking-wider shadow-sm hover:shadow-lg hover:shadow-accent-blue/20"
+                    className="w-full py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 bg-[#4185DB] hover:bg-[#3273c5] border border-[#4185DB] text-xs font-bold text-white transition-all duration-300 group/btn cursor-pointer font-outfit uppercase tracking-wider shadow-md shadow-[#4185DB]/25 hover:shadow-lg hover:shadow-[#4185DB]/40 active:scale-[0.98]"
                   >
                     <Eye size={15} className="group-hover/btn:scale-110 transition-transform" />
                     <span>{item.certificateLabel}</span>
-                    <ExternalLink size={13} className="opacity-70 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
+                    <ExternalLink size={13} className="opacity-80 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
                   </button>
                 </div>
               </div>
@@ -520,25 +495,28 @@ export default function EducationSection() {
                 {/* Inside Box Animated Cosmic Light Background */}
                 <InBoxLightBackground />
 
-                {/* Floating Left Navigation Arrow */}
-                <button
-                  type="button"
-                  onClick={handlePrevCert}
-                  className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-30 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-slate-950/80 hover:bg-slate-900 border border-white/20 hover:border-accent-blue text-white flex items-center justify-center shadow-xl backdrop-blur-md transition-all active:scale-95 cursor-pointer"
-                  aria-label="Previous certificate"
-                >
-                  <ChevronLeft size={20} />
-                </button>
+                {/* Floating Left & Right Navigation Arrows (only when item has multiple certificates) */}
+                {selectedItem.certificates.length > 1 && (
+                  <>
+                    <button
+                      type="button"
+                      onClick={handlePrevCert}
+                      className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-30 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-slate-950/80 hover:bg-slate-900 border border-white/20 hover:border-accent-blue text-white flex items-center justify-center shadow-xl backdrop-blur-md transition-all active:scale-95 cursor-pointer"
+                      aria-label="Previous certificate"
+                    >
+                      <ChevronLeft size={20} />
+                    </button>
 
-                {/* Floating Right Navigation Arrow */}
-                <button
-                  type="button"
-                  onClick={handleNextCert}
-                  className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-30 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-slate-950/80 hover:bg-slate-900 border border-white/20 hover:border-accent-blue text-white flex items-center justify-center shadow-xl backdrop-blur-md transition-all active:scale-95 cursor-pointer"
-                  aria-label="Next certificate"
-                >
-                  <ChevronRight size={20} />
-                </button>
+                    <button
+                      type="button"
+                      onClick={handleNextCert}
+                      className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-30 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-slate-950/80 hover:bg-slate-900 border border-white/20 hover:border-accent-blue text-white flex items-center justify-center shadow-xl backdrop-blur-md transition-all active:scale-95 cursor-pointer"
+                      aria-label="Next certificate"
+                    >
+                      <ChevronRight size={20} />
+                    </button>
+                  </>
+                )}
 
                 {/* Main Image Frame (Pannable when zoomed) */}
                 <div 

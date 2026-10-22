@@ -32,7 +32,7 @@ export default function HeroSection() {
   return (
     <section 
       id="home" 
-      className="min-h-[calc(100vh-120px)] flex flex-col justify-center items-center text-center py-12 sm:py-16 md:py-24 relative overflow-hidden"
+      className="min-h-[calc(100dvh-5rem)] flex flex-col justify-center items-center text-center py-8 sm:py-12 md:py-20 relative overflow-hidden snap-start scroll-mt-20"
     >
       {/* Ambient Cosmic Radial Light Glow matching reference image & background light */}
       <div 
@@ -95,7 +95,7 @@ export default function HeroSection() {
           {/* Primary CTA: View My Work */}
           <Link
             href="#projects"
-            className="flex-1 sm:flex-initial group inline-flex items-center justify-center gap-1.5 sm:gap-2.5 px-4 sm:px-7 py-3 rounded-full bg-linear-to-r from-[#2c53a6] to-[#60a5fa] hover:from-[#214185] hover:to-[#4fa1ff] border border-blue-400/40 text-white font-bold text-xs sm:text-sm font-outfit tracking-wide transition-all duration-300 shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/35 cursor-pointer hover:scale-105 active:scale-95 whitespace-nowrap text-center"
+            className="flex-1 sm:flex-initial group inline-flex items-center justify-center gap-1.5 sm:gap-2.5 px-4 sm:px-7 py-3 rounded-full bg-linear-to-r from-[#214185] via-[#4185DB] to-[#60a5fa] hover:from-[#1b3469] hover:to-[#3273c5] border border-[#4185DB]/50 text-white font-bold text-xs sm:text-sm font-outfit tracking-wide transition-all duration-300 shadow-lg shadow-[#4185DB]/25 hover:shadow-xl hover:shadow-[#4185DB]/35 cursor-pointer hover:scale-105 active:scale-95 whitespace-nowrap text-center"
           >
             <span>View My Work</span>
             <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform shrink-0" />
@@ -104,7 +104,7 @@ export default function HeroSection() {
           {/* Secondary CTA: Learn More */}
           <Link
             href="#about"
-            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 sm:gap-2 px-4 sm:px-7 py-3 rounded-full bg-accent-blue/15 hover:bg-accent-blue/25 border border-accent-blue/40 hover:border-accent-blue text-accent-blue hover:text-white font-bold text-xs sm:text-sm font-outfit tracking-wide transition-all duration-300 shadow-md shadow-accent-blue/10 hover:shadow-lg hover:shadow-accent-blue/20 cursor-pointer hover:scale-105 active:scale-95 whitespace-nowrap text-center"
+            className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 sm:gap-2 px-4 sm:px-7 py-3 rounded-full bg-[#4185DB]/15 hover:bg-[#4185DB] border border-[#4185DB]/40 hover:border-[#4185DB] text-[#4185DB] hover:text-white font-bold text-xs sm:text-sm font-outfit tracking-wide transition-all duration-300 shadow-md shadow-[#4185DB]/10 hover:shadow-lg hover:shadow-[#4185DB]/20 cursor-pointer hover:scale-105 active:scale-95 whitespace-nowrap text-center"
           >
             <span>Learn More</span>
           </Link>

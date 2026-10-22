@@ -54,24 +54,24 @@ export default function ContactSection() {
   };
 
   return (
-    <section id="contact" className="py-16 sm:py-20 md:py-24 max-w-6xl mx-auto px-0 sm:px-4 overflow-hidden">
+    <section id="contact" className="min-h-[calc(100dvh-5rem)] flex flex-col justify-center py-6 sm:py-10 md:py-16 lg:py-24 max-w-6xl mx-auto px-0 sm:px-4 overflow-hidden snap-start scroll-mt-20">
       {/* Section Header */}
       <motion.div 
         initial={{ opacity: 0, y: 25 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.3 }}
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        className="flex flex-col items-center text-center mb-10 sm:mb-16 px-4"
+        className="flex flex-col items-center text-center mb-6 sm:mb-10 md:mb-14 px-4"
       >
-        <div className="flex items-center gap-3 mb-3">
+        <div className="flex items-center gap-3 mb-2 sm:mb-3">
           <div className="w-8 h-[1px] bg-accent-blue/50" />
           <span className="text-accent-blue font-bold uppercase tracking-[0.3em] sm:tracking-[0.4em] text-[0.6rem] font-outfit">Get In Touch</span>
           <div className="w-8 h-[1px] bg-accent-blue/50" />
         </div>
-        <h2 className="text-2xl sm:text-4xl md:text-5xl font-extrabold text-white max-w-2xl leading-tight mb-2 font-outfit">
+        <h2 className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-white max-w-2xl leading-tight mb-2 font-outfit">
           Contact <span className="text-accent-blue">Me</span>
         </h2>
-        <p className="text-accent-blue text-sm sm:text-base md:text-lg font-bold tracking-tight mb-2 font-outfit uppercase">Let&apos;s get in touch.</p>
+        <p className="text-accent-blue text-xs sm:text-sm md:text-base font-bold tracking-tight mb-2 font-outfit uppercase">Let&apos;s get in touch.</p>
         <p className="text-slate-200 text-xs sm:text-sm md:text-base leading-relaxed max-w-2xl font-semibold font-inter">
           I am always open to discussing new projects, creative ideas, or opportunities to be part of your visions.
         </p>
@@ -206,7 +206,7 @@ export default function ContactSection() {
                 href="https://t.me/Neat198" 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="flex items-center justify-center gap-2 w-full h-[40px] rounded-xl bg-accent-blue hover:bg-accent-blue/90 text-white transition-all duration-300 shadow-md hover:shadow-lg hover:shadow-accent-blue/30 cursor-pointer font-outfit text-xs sm:text-sm font-bold uppercase tracking-wider"
+                className="flex items-center justify-center gap-2 w-full h-[40px] rounded-xl bg-[#4185DB] hover:bg-[#3273c5] text-white transition-all duration-300 shadow-md hover:shadow-lg hover:shadow-[#4185DB]/30 cursor-pointer font-outfit text-xs sm:text-sm font-bold uppercase tracking-wider"
               >
                 <div className="w-5 h-5 rounded-full bg-white flex items-center justify-center flex-shrink-0">
                   <svg viewBox="0 0 24 24" className="w-3 h-3 fill-[#3b82f6] translate-x-[-0.5px]">
@@ -317,7 +317,7 @@ export default function ContactSection() {
                   ? "bg-green-600 text-white shadow-green-500/20" 
                   : status === "error"
                   ? "bg-red-600 text-white shadow-red-500/20"
-                  : "bg-accent-blue hover:bg-accent-blue/90 text-white shadow-accent-blue/20 hover:shadow-lg hover:shadow-accent-blue/30 cursor-pointer"
+                  : "bg-[#4185DB] hover:bg-[#3273c5] text-white shadow-[#4185DB]/20 hover:shadow-lg hover:shadow-[#4185DB]/30 cursor-pointer"
               }`}
             >
               {status === "sending" ? (

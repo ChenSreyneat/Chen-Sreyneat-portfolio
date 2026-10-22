@@ -75,41 +75,50 @@ export default function ProjectsSection() {
     }
   ];
 
+  const scrollToSlide = useCallback((index: number) => {
+    if (sliderRef.current) {
+      const cards = sliderRef.current.children;
+      const targetCard = cards[index] as HTMLElement;
+      if (targetCard) {
+        targetCard.scrollIntoView({
+          behavior: "smooth",
+          block: "nearest",
+          inline: "center"
+        });
+      }
+    }
+  }, []);
+
   const handleScrollButtons = useCallback(() => {
     if (sliderRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = sliderRef.current;
       setShowLeftArrow(scrollLeft > 10);
       setShowRightArrow(scrollLeft < scrollWidth - clientWidth - 10);
 
-      const card = sliderRef.current.firstElementChild as HTMLElement;
-      if (card) {
-        const style = window.getComputedStyle(sliderRef.current);
-        const gap = parseFloat(style.columnGap || style.gap) || 16;
-        const cardWidth = card.offsetWidth + gap;
-        const maxScroll = scrollWidth - clientWidth;
-        const current = scrollLeft >= maxScroll - 10
-          ? projects.length - 1
-          : Math.min(
-              projects.length - 1,
-              Math.max(0, Math.round(scrollLeft / cardWidth))
-            );
-        setActiveSlide(current);
+      const cards = Array.from(sliderRef.current.children) as HTMLElement[];
+      if (cards.length > 0) {
+        let closestIndex = 0;
+        let minDiff = Infinity;
+        const containerCenter = scrollLeft + clientWidth / 2;
+        cards.forEach((c, i) => {
+          const cardCenter = c.offsetLeft + c.offsetWidth / 2;
+          const diff = Math.abs(containerCenter - cardCenter);
+          if (diff < minDiff) {
+            minDiff = diff;
+            closestIndex = i;
+          }
+        });
+        setActiveSlide(closestIndex);
       }
     }
-  }, [projects.length]);
+  }, []);
 
-  const scrollToSlide = (index: number) => {
+  const handleScroll = (direction: "left" | "right") => {
     if (sliderRef.current) {
-      const card = sliderRef.current.firstElementChild as HTMLElement;
-      if (card) {
-        const style = window.getComputedStyle(sliderRef.current);
-        const gap = parseFloat(style.columnGap || style.gap) || 16;
-        const cardWidth = card.offsetWidth + gap;
-        sliderRef.current.scrollTo({
-          left: cardWidth * index,
-          behavior: "smooth"
-        });
-      }
+      const nextIndex = direction === "left"
+        ? Math.max(0, activeSlide - 1)
+        : Math.min(projects.length - 1, activeSlide + 1);
+      scrollToSlide(nextIndex);
     }
   };
 
@@ -136,19 +145,26 @@ export default function ProjectsSection() {
   };
 
   const handleMouseUpOrLeave = () => {
-    isDownRef.current = false;
-  };
-
-  const handleScroll = (direction: "left" | "right") => {
-    if (sliderRef.current) {
-      const cardElement = sliderRef.current.firstElementChild as HTMLElement;
-      const cardWidth = cardElement ? cardElement.offsetWidth : 280;
-      const scrollAmount = cardWidth + 24; // Card width + gap
-      
-      sliderRef.current.scrollBy({
-        left: direction === "left" ? -scrollAmount : scrollAmount,
-        behavior: "smooth",
-      });
+    if (isDownRef.current && sliderRef.current) {
+      isDownRef.current = false;
+      const { scrollLeft, clientWidth } = sliderRef.current;
+      const cards = Array.from(sliderRef.current.children) as HTMLElement[];
+      if (cards.length > 0) {
+        let closestIndex = 0;
+        let minDiff = Infinity;
+        const containerCenter = scrollLeft + clientWidth / 2;
+        cards.forEach((c, i) => {
+          const cardCenter = c.offsetLeft + c.offsetWidth / 2;
+          const diff = Math.abs(containerCenter - cardCenter);
+          if (diff < minDiff) {
+            minDiff = diff;
+            closestIndex = i;
+          }
+        });
+        scrollToSlide(closestIndex);
+      }
+    } else {
+      isDownRef.current = false;
     }
   };
 
@@ -167,20 +183,20 @@ export default function ProjectsSection() {
   }, [handleScrollButtons]);
 
   return (
-    <section id="projects" className="py-16 sm:py-20 md:py-24 relative overflow-hidden">
+    <section id="projects" className="min-h-[calc(100dvh-5rem)] flex flex-col justify-center py-6 sm:py-10 md:py-16 lg:py-24 relative overflow-hidden snap-start scroll-mt-20">
       <motion.div 
         initial={{ opacity: 0, y: 25 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.3 }}
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        className="flex flex-col items-center text-center mb-10 sm:mb-16 px-4 relative z-10"
+        className="flex flex-col items-center text-center mb-6 sm:mb-10 md:mb-14 px-4 relative z-10"
       >
-        <div className="flex items-center justify-center gap-3 mb-3">
+        <div className="flex items-center justify-center gap-3 mb-2 sm:mb-3">
           <div className="w-8 h-[1px] bg-accent-blue/50" />
           <span className="text-accent-blue font-bold uppercase tracking-[0.3em] sm:tracking-[0.4em] text-[0.6rem] font-outfit">Portfolio Showcase</span>
           <div className="w-8 h-[1px] bg-accent-blue/50" />
         </div>
-        <h2 className="text-2xl sm:text-4xl md:text-5xl font-extrabold text-white max-w-2xl leading-tight mb-3 font-outfit">
+        <h2 className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-white max-w-2xl leading-tight mb-2 sm:mb-3 font-outfit">
           Featured <span className="text-accent-blue">Projects</span>
         </h2>
         <p className="text-slate-200 text-xs sm:text-sm md:text-base max-w-2xl font-medium font-inter">
@@ -226,14 +242,14 @@ export default function ProjectsSection() {
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUpOrLeave}
           onMouseLeave={handleMouseUpOrLeave}
-          className="flex gap-4 sm:gap-6 overflow-x-auto py-4 sm:py-6 px-4 no-scrollbar snap-x snap-proximity touch-auto cursor-grab active:cursor-grabbing [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+          className="flex gap-4 sm:gap-6 overflow-x-auto py-4 sm:py-6 px-4 no-scrollbar snap-x snap-mandatory scroll-smooth touch-auto cursor-grab active:cursor-grabbing [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
         >
           {projects.map((project, index) => (
             <motion.div 
               key={index} 
               whileHover={{ y: -6, scale: 1.02 }}
               transition={{ type: "spring", stiffness: 350, damping: 20 }}
-              className="flex-shrink-0 w-[82vw] max-w-[320px] sm:w-[320px] md:w-[360px] snap-center group relative flex flex-col justify-between rounded-2xl bg-slate-950/20 border border-white/20 hover:border-accent-blue p-5 md:p-6 shadow-sm hover:shadow-xl hover:shadow-accent-blue/20 transition-all duration-300"
+              className="flex-shrink-0 w-[calc(100vw-2.5rem)] max-w-[360px] sm:w-[320px] md:w-[360px] snap-center snap-always group relative flex flex-col justify-between rounded-2xl bg-slate-950/20 border border-white/20 hover:border-accent-blue p-5 md:p-6 shadow-sm hover:shadow-xl hover:shadow-accent-blue/20 transition-all duration-300 mx-auto sm:mx-0"
             >
               <div className="flex flex-col">
                 <div className={`w-full aspect-video bg-linear-to-br ${project.gradient} rounded-xl mb-4 sm:mb-5 flex items-center justify-center overflow-hidden relative shadow-inner border border-white/10`}>
@@ -295,7 +311,7 @@ export default function ProjectsSection() {
                       href={project.live}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-2 bg-accent-blue/90 backdrop-blur-md rounded-lg text-white border border-accent-blue/40 active:scale-95 transition-transform"
+                      className="p-2 bg-[#4185DB] hover:bg-[#3273c5] backdrop-blur-md rounded-lg text-white border border-[#4185DB] active:scale-95 transition-transform shadow-sm"
                       aria-label="Live Demo"
                     >
                       <ExternalLink size={14} />
