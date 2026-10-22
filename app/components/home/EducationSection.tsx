@@ -303,7 +303,7 @@ export default function EducationSection() {
   } : null);
 
   return (
-    <section id="education" className="min-h-[calc(100dvh-5rem)] flex flex-col justify-center py-6 sm:py-10 md:py-16 lg:py-24 relative overflow-hidden bg-transparent snap-start scroll-mt-20">
+    <section id="education" className="min-h-[calc(100dvh-4.5rem)] flex flex-col justify-center py-4 sm:py-8 md:py-16 lg:py-24 relative overflow-hidden bg-transparent snap-center snap-always scroll-mt-16">
       {/* Background UI Grid & Ambient Luminous Glow */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#1d70a208_1px,transparent_1px),linear-gradient(to_bottom,#1d70a208_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none" />
       <div
@@ -493,28 +493,7 @@ export default function EducationSection() {
                 {/* Inside Box Animated Cosmic Light Background */}
                 <InBoxLightBackground />
 
-                {/* Floating Left & Right Navigation Arrows (only when item has multiple certificates) */}
-                {selectedItem.certificates.length > 1 && (
-                  <>
-                    <button
-                      type="button"
-                      onClick={handlePrevCert}
-                      className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-30 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-slate-950/80 hover:bg-slate-900 border border-white/20 hover:border-accent-blue text-white flex items-center justify-center shadow-xl backdrop-blur-md transition-all active:scale-95 cursor-pointer"
-                      aria-label="Previous certificate"
-                    >
-                      <ChevronLeft size={20} />
-                    </button>
 
-                    <button
-                      type="button"
-                      onClick={handleNextCert}
-                      className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-30 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-slate-950/80 hover:bg-slate-900 border border-white/20 hover:border-accent-blue text-white flex items-center justify-center shadow-xl backdrop-blur-md transition-all active:scale-95 cursor-pointer"
-                      aria-label="Next certificate"
-                    >
-                      <ChevronRight size={20} />
-                    </button>
-                  </>
-                )}
 
                 {/* Main Image Frame (Pannable when zoomed) */}
                 <div
@@ -547,13 +526,31 @@ export default function EducationSection() {
               {/* Bottom Responsive Control Bar: Zoom controls, document indicator, and double-tap tip */}
               <div className="p-2.5 sm:p-3.5 border-t border-white/10 bg-slate-950/85 backdrop-blur-md flex flex-wrap items-center justify-between gap-2 z-20">
                 <div className="flex items-center gap-2">
+                  {selectedItem.certificates.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={handlePrevCert}
+                      className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-bold font-outfit text-slate-200 border border-white/10 flex items-center gap-1 cursor-pointer transition-colors active:scale-95"
+                    >
+                      <ChevronLeft size={14} /> Prev
+                    </button>
+                  )}
                   <span className="text-xs font-bold font-outfit text-white truncate max-w-[200px] sm:max-w-none">
                     {activeCert.label || selectedItem.certificateTitle}
                   </span>
                   {selectedItem.certificates.length > 1 && (
-                    <span className="text-[11px] font-semibold text-accent-blue bg-accent-blue/10 border border-accent-blue/30 px-2 py-0.5 rounded-md font-outfit">
-                      {activeCertIndex + 1} of {selectedItem.certificates.length}
-                    </span>
+                    <>
+                      <button
+                        type="button"
+                        onClick={handleNextCert}
+                        className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-bold font-outfit text-slate-200 border border-white/10 flex items-center gap-1 cursor-pointer transition-colors active:scale-95"
+                      >
+                        Next <ChevronRight size={14} />
+                      </button>
+                      <span className="text-[11px] font-semibold text-accent-blue bg-accent-blue/10 border border-accent-blue/30 px-2 py-0.5 rounded-md font-outfit">
+                        {activeCertIndex + 1} of {selectedItem.certificates.length}
+                      </span>
+                    </>
                   )}
                 </div>
 

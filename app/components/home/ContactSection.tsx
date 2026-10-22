@@ -54,7 +54,7 @@ export default function ContactSection() {
   };
 
   return (
-    <section id="contact" className="min-h-[calc(100dvh-5rem)] flex flex-col justify-center py-6 sm:py-10 md:py-16 lg:py-24 max-w-6xl mx-auto px-0 sm:px-4 overflow-hidden snap-start scroll-mt-20">
+    <section id="contact" className="min-h-[calc(100dvh-4.5rem)] flex flex-col justify-center py-4 sm:py-8 md:py-16 lg:py-24 max-w-6xl mx-auto px-0 sm:px-4 overflow-hidden snap-center snap-always scroll-mt-16">
       {/* Section Header */}
       <motion.div
         initial={{ opacity: 0, y: 25 }}

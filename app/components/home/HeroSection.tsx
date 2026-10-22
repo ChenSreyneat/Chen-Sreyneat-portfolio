@@ -32,7 +32,7 @@ export default function HeroSection() {
   return (
     <section
       id="home"
-      className="min-h-[calc(100dvh-5rem)] flex flex-col justify-center items-center text-center py-8 sm:py-12 md:py-20 relative overflow-hidden snap-start scroll-mt-20"
+      className="min-h-[calc(100dvh-4.5rem)] flex flex-col justify-center items-center text-center py-4 sm:py-10 md:py-20 relative overflow-hidden snap-center snap-always scroll-mt-16"
     >
       {/* Ambient Cosmic Radial Light Glow matching reference image & background light */}
       <div

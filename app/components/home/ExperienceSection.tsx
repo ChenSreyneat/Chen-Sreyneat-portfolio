@@ -447,7 +447,7 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
   };
 
   return (
-    <section id="experience" className={`min-h-[calc(100dvh-5rem)] flex flex-col justify-center relative overflow-hidden bg-transparent snap-start scroll-mt-20 ${hideHeader ? "py-2" : "py-6 sm:py-10 md:py-16 lg:py-24"}`}>
+    <section id="experience" className={`min-h-[calc(100dvh-4.5rem)] flex flex-col justify-center relative overflow-hidden bg-transparent snap-center snap-always scroll-mt-16 ${hideHeader ? "py-2" : "py-4 sm:py-8 md:py-16 lg:py-24"}`}>
       {/* Background UI Grid & Ambient Cosmic Glow */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#1d70a208_1px,transparent_1px),linear-gradient(to_bottom,#1d70a208_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none" />
       <div
@@ -1053,31 +1053,7 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
                       onTouchStart={handlePhotoTouchStart}
                       onTouchEnd={handlePhotoTouchEnd}
                     >
-                      {/* Floating Prev Button */}
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setPhotoZoomLevel(1);
-                          setActivePhotoIndex(prev => prev > 0 ? prev - 1 : selectedItem.images!.length - 1);
-                        }}
-                        className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-30 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-slate-950/80 hover:bg-slate-900 border border-white/20 hover:border-sky-400 text-white flex items-center justify-center shadow-xl backdrop-blur-md transition-all active:scale-95 cursor-pointer"
-                        aria-label="Previous photo"
-                      >
-                        <ChevronLeft size={20} />
-                      </button>
 
-                      {/* Floating Next Button */}
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setPhotoZoomLevel(1);
-                          setActivePhotoIndex(prev => prev < selectedItem.images!.length - 1 ? prev + 1 : 0);
-                        }}
-                        className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-30 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-slate-950/80 hover:bg-slate-900 border border-white/20 hover:border-sky-400 text-white flex items-center justify-center shadow-xl backdrop-blur-md transition-all active:scale-95 cursor-pointer"
-                        aria-label="Next photo"
-                      >
-                        <ChevronRight size={20} />
-                      </button>
 
                       <div
                         className={`relative w-full h-[46vh] sm:h-[54vh] flex items-center justify-center bg-black/60 overflow-auto select-none no-scrollbar ${photoZoomLevel > 1 ? "cursor-grab active:cursor-grabbing" : "cursor-zoom-in"
