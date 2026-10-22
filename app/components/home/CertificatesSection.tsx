@@ -1,7 +1,21 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import { Award, Trophy, Star, ExternalLink, FileText, Code, ChevronLeft, ChevronRight, X, Eye } from "lucide-react";
+import { 
+  Award, 
+  Trophy, 
+  Star, 
+  ExternalLink, 
+  FileText, 
+  Code, 
+  ChevronLeft, 
+  ChevronRight, 
+  X, 
+  Eye,
+  ZoomIn,
+  ZoomOut,
+  RotateCcw
+} from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import ModalLightBackground from "../ModalLightBackground";
@@ -14,10 +28,10 @@ export default function CertificatesSection() {
   const [activeSlide, setActiveSlide] = useState(0);
 
   // Pop-up modal state
-  const [activeFile, setActiveFile] = useState<string | null>(null);
-  const [activeTitle, setActiveTitle] = useState<string>("");
-  const [activeType, setActiveType] = useState<"pdf" | "image">("pdf");
-  const [activeOrg, setActiveOrg] = useState<string>("");
+  const [selectedCertIndex, setSelectedCertIndex] = useState<number | null>(null);
+  const [zoomLevel, setZoomLevel] = useState<number>(1);
+  const touchStartXRef = useRef<number | null>(null);
+  const touchStartYRef = useRef<number | null>(null);
 
   const certificates = [
     {
@@ -67,15 +81,17 @@ export default function CertificatesSection() {
     }
   ];
 
+  const activeCert = selectedCertIndex !== null ? certificates[selectedCertIndex] : null;
+
   // Close modal on Escape key & manage body scroll
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        setActiveFile(null);
+        setSelectedCertIndex(null);
       }
     };
 
-    if (activeFile) {
+    if (selectedCertIndex !== null) {
       document.body.style.overflow = "hidden";
       window.addEventListener("keydown", handleKeyDown);
     } else {
@@ -86,7 +102,55 @@ export default function CertificatesSection() {
       document.body.style.overflow = "unset";
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [activeFile]);
+  }, [selectedCertIndex]);
+
+  const openCertModal = (index: number) => {
+    setSelectedCertIndex(index);
+    setZoomLevel(1);
+  };
+
+  const closeCertModal = () => {
+    setSelectedCertIndex(null);
+    setZoomLevel(1);
+  };
+
+  const handleNextCert = () => {
+    if (selectedCertIndex === null) return;
+    setZoomLevel(1);
+    setSelectedCertIndex((prev) => (prev! + 1) % certificates.length);
+  };
+
+  const handlePrevCert = () => {
+    if (selectedCertIndex === null) return;
+    setZoomLevel(1);
+    setSelectedCertIndex((prev) => (prev! - 1 + certificates.length) % certificates.length);
+  };
+
+  const handleZoomIn = () => setZoomLevel((prev) => Math.min(2.5, +(prev + 0.5).toFixed(1)));
+  const handleZoomOut = () => setZoomLevel((prev) => Math.max(1, +(prev - 0.5).toFixed(1)));
+  const handleResetZoom = () => setZoomLevel(1);
+  const toggleZoom = () => setZoomLevel((prev) => (prev > 1 ? 1 : 2));
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (zoomLevel > 1) return;
+    touchStartXRef.current = e.touches[0].clientX;
+    touchStartYRef.current = e.touches[0].clientY;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (zoomLevel > 1 || touchStartXRef.current === null || touchStartYRef.current === null) return;
+    const diffX = touchStartXRef.current - e.changedTouches[0].clientX;
+    const diffY = touchStartYRef.current - e.changedTouches[0].clientY;
+    if (Math.abs(diffX) > 40 && Math.abs(diffX) > Math.abs(diffY)) {
+      if (diffX > 0) {
+        handleNextCert();
+      } else {
+        handlePrevCert();
+      }
+    }
+    touchStartXRef.current = null;
+    touchStartYRef.current = null;
+  };
 
   const handleScrollButtons = useCallback(() => {
     if (sliderRef.current) {
@@ -275,12 +339,7 @@ export default function CertificatesSection() {
               <div className="pt-4 sm:pt-6 mt-auto border-t border-white/10">
                 <button
                   type="button"
-                  onClick={() => {
-                    setActiveFile(item.fileUrl);
-                    setActiveTitle(item.title);
-                    setActiveType(item.type);
-                    setActiveOrg(item.organization);
-                  }}
+                  onClick={() => openCertModal(index)}
                   className="w-full py-2.5 px-3 sm:px-4 rounded-xl flex items-center justify-center gap-2 bg-accent-blue/10 hover:bg-accent-blue border border-accent-blue/30 hover:border-accent-blue text-xs font-bold text-accent-blue hover:text-white transition-all duration-300 group/btn cursor-pointer font-outfit uppercase tracking-wider shadow-sm hover:shadow-lg hover:shadow-accent-blue/20"
                 >
                   <Eye size={15} className="group-hover/btn:scale-110 transition-transform" />
@@ -310,15 +369,15 @@ export default function CertificatesSection() {
 
       {/* Pop-up Modal (Matching EducationSection modal viewer) */}
       <AnimatePresence>
-        {activeFile && (
+        {selectedCertIndex !== null && activeCert && (
           <div className="fixed inset-0 z-[200] flex items-center justify-center p-2 sm:p-4 md:p-8">
             {/* Backdrop Blur with Cosmic Glass */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={() => setActiveFile(null)}
-              className="absolute inset-0 bg-[#010413]/65 backdrop-blur-md"
+              onClick={closeCertModal}
+              className="absolute inset-0 bg-[#010413]/75 backdrop-blur-md"
             />
             
             {/* Modal Light Background Animation & Glow */}
@@ -330,60 +389,193 @@ export default function CertificatesSection() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.92, y: 20 }}
               transition={{ type: "spring", damping: 25, stiffness: 350 }}
-              className="relative w-full max-w-4xl max-h-[92vh] bg-[#020617]/90 backdrop-blur-2xl border border-accent-blue/30 rounded-2xl overflow-hidden shadow-[0_0_60px_rgba(56,189,248,0.25)] flex flex-col z-10"
+              className="relative w-full max-w-4xl max-h-[92dvh] sm:max-h-[90vh] bg-[#020617]/95 backdrop-blur-2xl border border-accent-blue/30 rounded-2xl overflow-hidden shadow-[0_0_60px_rgba(56,189,248,0.25)] flex flex-col z-10"
             >
               {/* Header */}
-              <div className="p-3 sm:p-5 border-b border-white/10 bg-slate-950/70 backdrop-blur-md flex items-center justify-between gap-3 sm:gap-4">
-                <div className="min-w-0 pr-2">
-                  <h3 className="text-xs sm:text-base md:text-lg font-extrabold text-white font-outfit truncate">
-                    {activeTitle}
-                  </h3>
-                  <p className="text-[0.65rem] sm:text-[0.7rem] text-accent-blue uppercase tracking-widest font-bold font-outfit truncate">
-                    {activeOrg} • {activeType === "pdf" ? "Official Document (PDF)" : "Certificate"}
-                  </p>
+              <div className="p-3.5 sm:p-5 border-b border-white/10 bg-slate-950/80 backdrop-blur-md flex flex-col gap-2.5">
+                <div className="flex items-center justify-between gap-3">
+                  <div className="min-w-0 pr-2">
+                    <h3 className="text-xs sm:text-base md:text-lg font-extrabold text-white font-outfit truncate">
+                      {activeCert.title}
+                    </h3>
+                    <p className="text-[0.65rem] sm:text-xs text-accent-blue uppercase tracking-widest font-bold font-outfit truncate">
+                      {activeCert.organization} • {activeCert.period} • {activeCert.type === "pdf" ? "Official Document (PDF)" : "Certificate"}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2 shrink-0">
+                    <a
+                      href={activeCert.fileUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-white/80 hover:text-white text-xs font-semibold font-outfit border border-white/10 transition-colors"
+                      title="Open original file in new tab"
+                    >
+                      <ExternalLink size={13} />
+                      <span className="hidden sm:inline">Original</span>
+                    </a>
+                    <button
+                      type="button"
+                      onClick={closeCertModal}
+                      className="p-1.5 sm:p-2 rounded-xl bg-white/5 hover:bg-white/10 text-white/70 hover:text-white transition-all cursor-pointer border border-white/10 outline-none w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center"
+                      aria-label="Close modal"
+                    >
+                      <X size={18} />
+                    </button>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2 shrink-0">
-                  <a
-                    href={activeFile}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-white/80 hover:text-white text-xs font-semibold font-outfit border border-white/10 transition-colors"
-                    title="Open original file in new tab"
-                  >
-                    <ExternalLink size={13} />
-                    <span>Original</span>
-                  </a>
-                  <button
-                    type="button"
-                    onClick={() => setActiveFile(null)}
-                    className="p-1.5 sm:p-2 rounded-xl bg-white/5 hover:bg-white/10 text-white/70 hover:text-white transition-all cursor-pointer border border-white/10 outline-none"
-                    aria-label="Close modal"
-                  >
-                    <X size={18} className="sm:w-5 sm:h-5" />
-                  </button>
+
+                {/* Quick Certificate Switcher Pills */}
+                <div className="flex items-center gap-1.5 pt-2 border-t border-white/5 overflow-x-auto no-scrollbar">
+                  {certificates.map((cert, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() => openCertModal(idx)}
+                      className={`text-[11px] sm:text-xs px-2.5 sm:px-3 py-1 rounded-lg font-semibold font-outfit transition-all cursor-pointer whitespace-nowrap shrink-0 flex items-center gap-1.5 ${
+                        selectedCertIndex === idx
+                          ? "bg-accent-blue text-white shadow-sm shadow-accent-blue/30 scale-102"
+                          : "bg-white/5 text-slate-300 hover:bg-white/10 hover:text-white border border-white/10"
+                      }`}
+                    >
+                      <cert.icon size={11} className={selectedCertIndex === idx ? "text-white" : "text-accent-blue"} />
+                      <span>{cert.title.length > 22 ? cert.title.slice(0, 20) + "..." : cert.title}</span>
+                    </button>
+                  ))}
                 </div>
               </div>
               
-              {/* Content Area */}
-              <div className="flex-grow w-full bg-slate-950/60 relative flex items-center justify-center overflow-auto p-2 sm:p-4 md:p-6 min-h-[280px] max-h-[72vh]">
+              {/* Content Area with Zoom, Pan, Swipe & Floating Arrows */}
+              <div 
+                className="flex-grow w-full bg-slate-950/70 relative flex items-center justify-center overflow-hidden p-2 sm:p-4 md:p-6"
+                onTouchStart={handleTouchStart}
+                onTouchEnd={handleTouchEnd}
+              >
                 <InBoxLightBackground />
 
-                {activeType === "pdf" ? (
-                  <iframe
-                    src={`${activeFile}#toolbar=0&navpanes=0`}
-                    className="w-full h-[50vh] sm:h-[60vh] md:h-[65vh] border-0 rounded-xl relative z-10"
-                    title={activeTitle}
-                  />
-                ) : (
-                  <div className="relative w-full h-[50vh] sm:h-[60vh] md:h-[65vh] flex items-center justify-center z-10">
-                    <Image
-                      src={activeFile}
-                      alt={activeTitle}
-                      fill
-                      sizes="(max-width: 1024px) 100vw, 1024px"
-                      className="object-contain rounded-xl shadow-2xl border border-white/10"
-                      priority
+                {/* Floating Left Navigation Arrow */}
+                <button
+                  type="button"
+                  onClick={handlePrevCert}
+                  className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-30 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-slate-950/80 hover:bg-slate-900 border border-white/20 hover:border-accent-blue text-white flex items-center justify-center shadow-xl backdrop-blur-md transition-all active:scale-95 cursor-pointer"
+                  aria-label="Previous certificate"
+                >
+                  <ChevronLeft size={20} />
+                </button>
+
+                {/* Floating Right Navigation Arrow */}
+                <button
+                  type="button"
+                  onClick={handleNextCert}
+                  className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-30 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-slate-950/80 hover:bg-slate-900 border border-white/20 hover:border-accent-blue text-white flex items-center justify-center shadow-xl backdrop-blur-md transition-all active:scale-95 cursor-pointer"
+                  aria-label="Next certificate"
+                >
+                  <ChevronRight size={20} />
+                </button>
+
+                {activeCert.type === "pdf" ? (
+                  <div className="w-full h-[52vh] sm:h-[60vh] md:h-[66vh] relative z-10 flex flex-col items-center">
+                    <iframe
+                      src={`${activeCert.fileUrl}#toolbar=0&navpanes=0`}
+                      className="w-full h-full border-0 rounded-xl bg-slate-950/80 shadow-2xl"
+                      title={activeCert.title}
                     />
+                  </div>
+                ) : (
+                  <div 
+                    className={`relative w-full h-[52vh] sm:h-[60vh] md:h-[66vh] rounded-xl overflow-auto select-none no-scrollbar flex items-center justify-center ${
+                      zoomLevel > 1 ? "cursor-grab active:cursor-grabbing" : "cursor-zoom-in"
+                    }`}
+                    onDoubleClick={toggleZoom}
+                  >
+                    <div 
+                      className="relative flex items-center justify-center transition-transform duration-200 origin-center"
+                      style={{
+                        transform: `scale(${zoomLevel})`,
+                        width: zoomLevel > 1 ? `${zoomLevel * 100}%` : "100%",
+                        height: zoomLevel > 1 ? `${zoomLevel * 100}%` : "100%",
+                        minWidth: "100%",
+                        minHeight: "100%",
+                      }}
+                    >
+                      <Image
+                        src={activeCert.fileUrl}
+                        alt={activeCert.title}
+                        fill
+                        sizes="(max-width: 1024px) 100vw, 1024px"
+                        className="object-contain rounded-xl drop-shadow-2xl"
+                        priority
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Bottom Responsive Control Bar: Next/Prev, Zoom controls, indicator */}
+              <div className="p-2.5 sm:p-3.5 border-t border-white/10 bg-slate-950/85 backdrop-blur-md flex flex-wrap items-center justify-between gap-2 z-20">
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={handlePrevCert}
+                    className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-bold font-outfit text-slate-200 border border-white/10 flex items-center gap-1 cursor-pointer transition-colors active:scale-95"
+                  >
+                    <ChevronLeft size={14} /> Prev
+                  </button>
+
+                  <span className="text-[11px] sm:text-xs font-semibold text-accent-blue bg-accent-blue/10 border border-accent-blue/30 px-2 py-0.5 rounded-md font-outfit">
+                    Certificate {selectedCertIndex! + 1} of {certificates.length}
+                  </span>
+
+                  <button
+                    type="button"
+                    onClick={handleNextCert}
+                    className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-bold font-outfit text-slate-200 border border-white/10 flex items-center gap-1 cursor-pointer transition-colors active:scale-95"
+                  >
+                    Next <ChevronRight size={14} />
+                  </button>
+                </div>
+
+                {/* Image Zoom Controls (when image type) */}
+                {activeCert.type === "image" && (
+                  <div className="flex items-center gap-1.5 ml-auto">
+                    <div className="flex items-center bg-white/5 border border-white/10 rounded-lg p-0.5 shadow-xs">
+                      <button
+                        type="button"
+                        onClick={handleZoomOut}
+                        disabled={zoomLevel <= 1}
+                        className="p-1 sm:p-1.5 rounded-md text-white/70 hover:text-white disabled:opacity-30 disabled:pointer-events-none hover:bg-white/10 transition-colors cursor-pointer"
+                        title="Zoom Out"
+                        aria-label="Zoom Out"
+                      >
+                        <ZoomOut size={14} />
+                      </button>
+                      <span className="text-[11px] font-bold font-outfit text-accent-blue px-2 min-w-[42px] text-center select-none">
+                        {Math.round(zoomLevel * 100)}%
+                      </span>
+                      <button
+                        type="button"
+                        onClick={handleZoomIn}
+                        disabled={zoomLevel >= 2.5}
+                        className="p-1 sm:p-1.5 rounded-md text-white/70 hover:text-white disabled:opacity-30 disabled:pointer-events-none hover:bg-white/10 transition-colors cursor-pointer"
+                        title="Zoom In"
+                        aria-label="Zoom In"
+                      >
+                        <ZoomIn size={14} />
+                      </button>
+                      {zoomLevel > 1 && (
+                        <button
+                          type="button"
+                          onClick={handleResetZoom}
+                          className="p-1 sm:p-1.5 rounded-md text-cyan-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer ml-1"
+                          title="Reset Zoom"
+                          aria-label="Reset Zoom"
+                        >
+                          <RotateCcw size={12} />
+                        </button>
+                      )}
+                    </div>
+                    <span className="hidden md:inline-block text-[11px] text-slate-400 font-inter italic ml-2">
+                      Double-click to zoom
+                    </span>
                   </div>
                 )}
               </div>

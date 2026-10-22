@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import { GraduationCap, BookOpen, School, Eye, ExternalLink, X, LucideIcon, ChevronLeft, ChevronRight } from "lucide-react";
+import { GraduationCap, BookOpen, School, Eye, ExternalLink, X, LucideIcon, ChevronLeft, ChevronRight, ZoomIn, ZoomOut, RotateCcw } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import ModalLightBackground from "../ModalLightBackground";
@@ -205,13 +205,71 @@ export default function EducationSection() {
     };
   }, [handleScrollButtons]);
 
+  const [zoomLevel, setZoomLevel] = useState<number>(1);
+  const touchStartXRef = useRef<number | null>(null);
+  const touchStartYRef = useRef<number | null>(null);
+
   const openModal = (item: EducationItem) => {
     setSelectedItem(item);
     setActiveCertIndex(0);
+    setZoomLevel(1);
   };
 
   const closeModal = () => {
     setSelectedItem(null);
+    setZoomLevel(1);
+  };
+
+  const handleNextCert = () => {
+    if (!selectedItem) return;
+    setZoomLevel(1);
+    if (selectedItem.certificates.length > 1) {
+      setActiveCertIndex((prev) => (prev + 1) % selectedItem.certificates.length);
+    } else {
+      const currentIdx = education.findIndex((e) => e.school === selectedItem.school);
+      const nextIdx = (currentIdx + 1) % education.length;
+      setSelectedItem(education[nextIdx]);
+      setActiveCertIndex(0);
+    }
+  };
+
+  const handlePrevCert = () => {
+    if (!selectedItem) return;
+    setZoomLevel(1);
+    if (selectedItem.certificates.length > 1) {
+      setActiveCertIndex((prev) => (prev - 1 + selectedItem.certificates.length) % selectedItem.certificates.length);
+    } else {
+      const currentIdx = education.findIndex((e) => e.school === selectedItem.school);
+      const prevIdx = (currentIdx - 1 + education.length) % education.length;
+      setSelectedItem(education[prevIdx]);
+      setActiveCertIndex(0);
+    }
+  };
+
+  const handleZoomIn = () => setZoomLevel((prev) => Math.min(2.5, +(prev + 0.5).toFixed(1)));
+  const handleZoomOut = () => setZoomLevel((prev) => Math.max(1, +(prev - 0.5).toFixed(1)));
+  const handleResetZoom = () => setZoomLevel(1);
+  const toggleZoom = () => setZoomLevel((prev) => (prev > 1 ? 1 : 2));
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (zoomLevel > 1) return;
+    touchStartXRef.current = e.touches[0].clientX;
+    touchStartYRef.current = e.touches[0].clientY;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (zoomLevel > 1 || touchStartXRef.current === null || touchStartYRef.current === null) return;
+    const diffX = touchStartXRef.current - e.changedTouches[0].clientX;
+    const diffY = touchStartYRef.current - e.changedTouches[0].clientY;
+    if (Math.abs(diffX) > 40 && Math.abs(diffX) > Math.abs(diffY)) {
+      if (diffX > 0) {
+        handleNextCert();
+      } else {
+        handlePrevCert();
+      }
+    }
+    touchStartXRef.current = null;
+    touchStartYRef.current = null;
   };
 
   const headerVariants = {
@@ -372,14 +430,14 @@ export default function EducationSection() {
       {/* Pop-up Modal (Certificate Viewer) */}
       <AnimatePresence>
         {selectedItem && activeCert && (
-          <div className="fixed inset-0 z-[200] flex items-center justify-center p-3 sm:p-6 md:p-10">
+          <div className="fixed inset-0 z-[200] flex items-center justify-center p-2 sm:p-4 md:p-8">
             {/* Backdrop Blur with Cosmic Glass */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={closeModal}
-              className="absolute inset-0 bg-[#010413]/65 backdrop-blur-md"
+              className="absolute inset-0 bg-[#010413]/75 backdrop-blur-md"
             />
             
             {/* Modal Light Background Animation & Glow */}
@@ -391,52 +449,55 @@ export default function EducationSection() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.92, y: 20 }}
               transition={{ type: "spring", damping: 25, stiffness: 350 }}
-              className="relative w-full max-w-4xl max-h-[92vh] bg-[#020617]/90 backdrop-blur-2xl border border-accent-blue/30 rounded-2xl overflow-hidden shadow-[0_0_60px_rgba(56,189,248,0.25)] flex flex-col z-10"
+              className="relative w-full max-w-4xl max-h-[92dvh] sm:max-h-[90vh] bg-[#020617]/95 backdrop-blur-2xl border border-accent-blue/30 rounded-2xl overflow-hidden shadow-[0_0_60px_rgba(56,189,248,0.25)] flex flex-col z-10"
             >
               {/* Header */}
-              <div className="p-4 sm:p-5 border-b border-white/10 bg-slate-950/70 backdrop-blur-md flex flex-col gap-3">
-                <div className="flex items-center justify-between gap-4">
-                  <div>
-                    <h3 className="text-sm sm:text-base md:text-lg font-extrabold text-white font-outfit">
+              <div className="p-3.5 sm:p-5 border-b border-white/10 bg-slate-950/80 backdrop-blur-md flex flex-col gap-2.5">
+                <div className="flex items-center justify-between gap-3">
+                  <div className="min-w-0 pr-2">
+                    <h3 className="text-sm sm:text-base md:text-lg font-extrabold text-white font-outfit truncate">
                       {selectedItem.certificateTitle}
                     </h3>
-                    <p className="text-[0.7rem] text-accent-blue uppercase tracking-widest font-bold font-outfit">
+                    <p className="text-[0.68rem] sm:text-xs text-accent-blue uppercase tracking-widest font-bold font-outfit truncate">
                       {selectedItem.school} • {selectedItem.period}
                     </p>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 shrink-0">
                     <a
                       href={activeCert.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-white/80 hover:text-white text-xs font-semibold font-outfit border border-white/10 transition-colors"
+                      className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-white/80 hover:text-white text-xs font-semibold font-outfit border border-white/10 transition-colors"
                       title="Open full image in new tab"
                     >
                       <ExternalLink size={13} />
-                      <span>Original</span>
+                      <span className="hidden sm:inline">Original</span>
                     </a>
                     <button
                       type="button"
                       onClick={closeModal}
-                      className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-white/70 hover:text-white transition-all cursor-pointer border border-white/10 outline-none"
+                      className="p-1.5 sm:p-2 rounded-xl bg-white/5 hover:bg-white/10 text-white/70 hover:text-white transition-all cursor-pointer border border-white/10 outline-none w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center"
                       aria-label="Close modal"
                     >
-                      <X size={20} />
+                      <X size={18} />
                     </button>
                   </div>
                 </div>
 
                 {/* Variant Tabs if there are multiple certificates */}
                 {selectedItem.certificates.length > 1 && (
-                  <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-white/5">
+                  <div className="flex items-center gap-2 pt-2 border-t border-white/5 overflow-x-auto no-scrollbar">
                     {selectedItem.certificates.map((cert, idx) => (
                       <button
                         key={idx}
                         type="button"
-                        onClick={() => setActiveCertIndex(idx)}
-                        className={`text-xs px-3 py-1 rounded-lg font-semibold font-outfit transition-all cursor-pointer ${
+                        onClick={() => {
+                          setActiveCertIndex(idx);
+                          setZoomLevel(1);
+                        }}
+                        className={`text-xs px-3 py-1.5 rounded-lg font-semibold font-outfit transition-all cursor-pointer whitespace-nowrap shrink-0 ${
                           activeCertIndex === idx
-                            ? "bg-accent-blue text-white shadow-sm shadow-accent-blue/30"
+                            ? "bg-accent-blue text-white shadow-sm shadow-accent-blue/30 scale-102"
                             : "bg-white/5 text-slate-300 hover:bg-white/10 hover:text-white border border-white/10"
                         }`}
                       >
@@ -447,20 +508,118 @@ export default function EducationSection() {
                 )}
               </div>
               
-              {/* Content Area */}
-              <div className="flex-grow w-full bg-slate-950/60 relative flex items-center justify-center overflow-auto p-4 md:p-6 min-h-[350px] max-h-[72vh]">
+              {/* Content Area with Zoom, Pan, Swipe & Floating Arrows */}
+              <div 
+                className="flex-grow w-full bg-slate-950/70 relative flex items-center justify-center overflow-hidden p-2 sm:p-4 md:p-6"
+                onTouchStart={handleTouchStart}
+                onTouchEnd={handleTouchEnd}
+              >
                 {/* Inside Box Animated Cosmic Light Background */}
                 <InBoxLightBackground />
 
-                <div className="relative w-full h-[65vh] flex items-center justify-center z-10">
-                  <Image
-                    src={activeCert.url}
-                    alt={activeCert.label || selectedItem.certificateTitle}
-                    fill
-                    sizes="(max-width: 1024px) 100vw, 1024px"
-                    className="object-contain rounded-xl shadow-2xl border border-white/10"
-                    priority
-                  />
+                {/* Floating Left Navigation Arrow */}
+                <button
+                  type="button"
+                  onClick={handlePrevCert}
+                  className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-30 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-slate-950/80 hover:bg-slate-900 border border-white/20 hover:border-accent-blue text-white flex items-center justify-center shadow-xl backdrop-blur-md transition-all active:scale-95 cursor-pointer"
+                  aria-label="Previous certificate"
+                >
+                  <ChevronLeft size={20} />
+                </button>
+
+                {/* Floating Right Navigation Arrow */}
+                <button
+                  type="button"
+                  onClick={handleNextCert}
+                  className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-30 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-slate-950/80 hover:bg-slate-900 border border-white/20 hover:border-accent-blue text-white flex items-center justify-center shadow-xl backdrop-blur-md transition-all active:scale-95 cursor-pointer"
+                  aria-label="Next certificate"
+                >
+                  <ChevronRight size={20} />
+                </button>
+
+                {/* Main Image Frame (Pannable when zoomed) */}
+                <div 
+                  className={`relative w-full h-[52vh] sm:h-[60vh] md:h-[66vh] rounded-xl overflow-auto select-none no-scrollbar flex items-center justify-center ${
+                    zoomLevel > 1 ? "cursor-grab active:cursor-grabbing" : "cursor-zoom-in"
+                  }`}
+                  onDoubleClick={toggleZoom}
+                >
+                  <div 
+                    className="relative flex items-center justify-center transition-transform duration-200 origin-center"
+                    style={{
+                      transform: `scale(${zoomLevel})`,
+                      width: zoomLevel > 1 ? `${zoomLevel * 100}%` : "100%",
+                      height: zoomLevel > 1 ? `${zoomLevel * 100}%` : "100%",
+                      minWidth: "100%",
+                      minHeight: "100%",
+                    }}
+                  >
+                    <Image
+                      src={activeCert.url}
+                      alt={activeCert.label || selectedItem.certificateTitle}
+                      fill
+                      sizes="(max-width: 1024px) 100vw, 1024px"
+                      className="object-contain rounded-xl drop-shadow-2xl"
+                      priority
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Bottom Responsive Control Bar: Zoom controls, document indicator, and double-tap tip */}
+              <div className="p-2.5 sm:p-3.5 border-t border-white/10 bg-slate-950/85 backdrop-blur-md flex flex-wrap items-center justify-between gap-2 z-20">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-bold font-outfit text-white truncate max-w-[200px] sm:max-w-none">
+                    {activeCert.label || selectedItem.certificateTitle}
+                  </span>
+                  {selectedItem.certificates.length > 1 && (
+                    <span className="text-[11px] font-semibold text-accent-blue bg-accent-blue/10 border border-accent-blue/30 px-2 py-0.5 rounded-md font-outfit">
+                      {activeCertIndex + 1} of {selectedItem.certificates.length}
+                    </span>
+                  )}
+                </div>
+
+                {/* Zoom & Navigation Controls */}
+                <div className="flex items-center gap-1.5 ml-auto">
+                  <div className="flex items-center bg-white/5 border border-white/10 rounded-lg p-0.5 shadow-xs">
+                    <button
+                      type="button"
+                      onClick={handleZoomOut}
+                      disabled={zoomLevel <= 1}
+                      className="p-1 sm:p-1.5 rounded-md text-white/70 hover:text-white disabled:opacity-30 disabled:pointer-events-none hover:bg-white/10 transition-colors cursor-pointer"
+                      title="Zoom Out"
+                      aria-label="Zoom Out"
+                    >
+                      <ZoomOut size={14} />
+                    </button>
+                    <span className="text-[11px] font-bold font-outfit text-accent-blue px-2 min-w-[42px] text-center select-none">
+                      {Math.round(zoomLevel * 100)}%
+                    </span>
+                    <button
+                      type="button"
+                      onClick={handleZoomIn}
+                      disabled={zoomLevel >= 2.5}
+                      className="p-1 sm:p-1.5 rounded-md text-white/70 hover:text-white disabled:opacity-30 disabled:pointer-events-none hover:bg-white/10 transition-colors cursor-pointer"
+                      title="Zoom In"
+                      aria-label="Zoom In"
+                    >
+                      <ZoomIn size={14} />
+                    </button>
+                    {zoomLevel > 1 && (
+                      <button
+                        type="button"
+                        onClick={handleResetZoom}
+                        className="p-1 sm:p-1.5 rounded-md text-cyan-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer ml-1"
+                        title="Reset Zoom"
+                        aria-label="Reset Zoom"
+                      >
+                        <RotateCcw size={12} />
+                      </button>
+                    )}
+                  </div>
+                  <span className="hidden md:inline-block text-[11px] text-slate-400 font-inter italic ml-2">
+                    Double-click to zoom
+                  </span>
                 </div>
               </div>
             </motion.div>

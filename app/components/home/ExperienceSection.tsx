@@ -17,6 +17,11 @@ import {
   ChevronLeft, 
   ChevronRight, 
   Play, 
+  Pause,
+  Loader2,
+  ZoomIn,
+  ZoomOut,
+  RotateCcw,
   Image as ImageIcon, 
   Sparkles, 
   Wrench
@@ -287,11 +292,107 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
     };
   }, [handleScrollButtons]);
 
+  const [photoZoomLevel, setPhotoZoomLevel] = useState<number>(1);
+  const touchPhotoStartXRef = useRef<number | null>(null);
+  const touchPhotoStartYRef = useRef<number | null>(null);
+
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const videoPillsRef = useRef<HTMLDivElement>(null);
+  const [isVideoPlaying, setIsVideoPlaying] = useState<boolean>(false);
+  const [isVideoBuffering, setIsVideoBuffering] = useState<boolean>(false);
+  const [videoShowTapFeedback, setVideoShowTapFeedback] = useState<"play" | "pause" | null>(null);
+  const touchVideoStartXRef = useRef<number | null>(null);
+  const touchVideoStartYRef = useRef<number | null>(null);
+
+  // Auto-scroll active video pill into view
+  useEffect(() => {
+    if (videoPillsRef.current) {
+      const activeBtn = videoPillsRef.current.children[activeVideoIndex - 1] as HTMLElement;
+      if (activeBtn) {
+        activeBtn.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+      }
+    }
+  }, [activeVideoIndex]);
+
+  const selectVideoClip = (num: number) => {
+    setActiveVideoIndex(num);
+    setIsVideoPlaying(false);
+    setIsVideoBuffering(false);
+  };
+
   const openExperienceModal = (item: ExperienceItem, initialTab: "overview" | "certificate" | "videos" | "photos" | "tools" = "overview") => {
     setSelectedItem(item);
     setActiveTab(initialTab);
     setActiveVideoIndex(1);
     setActivePhotoIndex(0);
+    setPhotoZoomLevel(1);
+    setIsVideoPlaying(false);
+    setIsVideoBuffering(false);
+  };
+
+  const toggleVideoPlay = () => {
+    if (!videoRef.current) return;
+    if (videoRef.current.paused) {
+      videoRef.current.play().then(() => {
+        setIsVideoPlaying(true);
+        setVideoShowTapFeedback("play");
+        setTimeout(() => setVideoShowTapFeedback(null), 600);
+      }).catch((err) => {
+        console.warn("Video playback error:", err);
+      });
+    } else {
+      videoRef.current.pause();
+      setIsVideoPlaying(false);
+      setVideoShowTapFeedback("pause");
+      setTimeout(() => setVideoShowTapFeedback(null), 600);
+    }
+  };
+
+  const handleVideoTouchStart = (e: React.TouchEvent) => {
+    touchVideoStartXRef.current = e.touches[0].clientX;
+    touchVideoStartYRef.current = e.touches[0].clientY;
+  };
+
+  const handleVideoTouchEnd = (e: React.TouchEvent) => {
+    if (touchVideoStartXRef.current === null || touchVideoStartYRef.current === null) return;
+    const diffX = touchVideoStartXRef.current - e.changedTouches[0].clientX;
+    const diffY = touchVideoStartYRef.current - e.changedTouches[0].clientY;
+    if (Math.abs(diffX) > 40 && Math.abs(diffX) > Math.abs(diffY)) {
+      if (diffX > 0) {
+        selectVideoClip(activeVideoIndex < 9 ? activeVideoIndex + 1 : 1);
+      } else {
+        selectVideoClip(activeVideoIndex > 1 ? activeVideoIndex - 1 : 9);
+      }
+    }
+    touchVideoStartXRef.current = null;
+    touchVideoStartYRef.current = null;
+  };
+
+  const handlePhotoZoomIn = () => setPhotoZoomLevel((prev) => Math.min(2.5, +(prev + 0.5).toFixed(1)));
+  const handlePhotoZoomOut = () => setPhotoZoomLevel((prev) => Math.max(1, +(prev - 0.5).toFixed(1)));
+  const handleResetPhotoZoom = () => setPhotoZoomLevel(1);
+  const togglePhotoZoom = () => setPhotoZoomLevel((prev) => (prev > 1 ? 1 : 2));
+
+  const handlePhotoTouchStart = (e: React.TouchEvent) => {
+    if (photoZoomLevel > 1) return;
+    touchPhotoStartXRef.current = e.touches[0].clientX;
+    touchPhotoStartYRef.current = e.touches[0].clientY;
+  };
+
+  const handlePhotoTouchEnd = (e: React.TouchEvent) => {
+    if (photoZoomLevel > 1 || touchPhotoStartXRef.current === null || touchPhotoStartYRef.current === null || !selectedItem?.images) return;
+    const diffX = touchPhotoStartXRef.current - e.changedTouches[0].clientX;
+    const diffY = touchPhotoStartYRef.current - e.changedTouches[0].clientY;
+    if (Math.abs(diffX) > 40 && Math.abs(diffX) > Math.abs(diffY)) {
+      setPhotoZoomLevel(1);
+      if (diffX > 0) {
+        setActivePhotoIndex((prev) => (prev < selectedItem.images!.length - 1 ? prev + 1 : 0));
+      } else {
+        setActivePhotoIndex((prev) => (prev > 0 ? prev - 1 : selectedItem.images!.length - 1));
+      }
+    }
+    touchPhotoStartXRef.current = null;
+    touchPhotoStartYRef.current = null;
   };
 
   const headerVariants = {
@@ -613,7 +714,7 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
       {/* Pop-up Modal: Rich With Detailed Inputs, Metrics, Deliverables & Media */}
       <AnimatePresence>
         {selectedItem && (
-          <div className="fixed inset-0 z-[200] flex items-center justify-center p-3 sm:p-5 md:p-8">
+          <div className="fixed inset-0 z-[200] flex items-center justify-center p-2 sm:p-4 md:p-8">
             {/* Backdrop Blur with Cosmic Glass */}
             <motion.div
               initial={{ opacity: 0 }}
@@ -632,7 +733,7 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.92, y: 20 }}
               transition={{ type: "spring", damping: 25, stiffness: 350 }}
-              className="relative w-full max-w-3xl max-h-[92vh] bg-[#020617]/95 backdrop-blur-2xl border border-accent-blue/30 rounded-2xl overflow-hidden shadow-[0_0_60px_rgba(56,189,248,0.25)] flex flex-col z-10"
+              className="relative w-full max-w-3xl max-h-[92dvh] sm:max-h-[90vh] bg-[#020617]/95 backdrop-blur-2xl border border-accent-blue/30 rounded-2xl overflow-hidden shadow-[0_0_60px_rgba(56,189,248,0.25)] flex flex-col z-10"
             >
               {/* Modal Header */}
               <div className="p-4 sm:p-5 border-b border-white/10 bg-slate-950/80 backdrop-blur-md flex items-center justify-between gap-4">
@@ -884,9 +985,21 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
                           MoEYS Cambodia educational app instruction across 9 high schools (~578 students).
                         </p>
                       </div>
-                      <span className="text-xs font-bold text-sky-400 bg-sky-500/10 border border-sky-500/20 px-2.5 py-1 rounded-md font-outfit shrink-0 w-fit">
-                        Photo {activePhotoIndex + 1} of {selectedItem.images.length}
-                      </span>
+                      <div className="flex items-center gap-2 shrink-0">
+                        <span className="text-xs font-bold text-sky-400 bg-sky-500/10 border border-sky-500/20 px-2.5 py-1 rounded-md font-outfit">
+                          Photo {activePhotoIndex + 1} of {selectedItem.images.length}
+                        </span>
+                        <a
+                          href={selectedItem.images[activePhotoIndex].url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-white/5 hover:bg-white/10 text-white/80 hover:text-white text-xs font-semibold font-outfit border border-white/10 transition-colors"
+                          title="Open full photo"
+                        >
+                          <ExternalLink size={12} />
+                          <span className="hidden sm:inline">Original</span>
+                        </a>
+                      </div>
                     </div>
 
                     {/* Photo Selector Pills */}
@@ -897,7 +1010,10 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
                           <button
                             key={pIdx}
                             type="button"
-                            onClick={() => setActivePhotoIndex(pIdx)}
+                            onClick={() => {
+                              setActivePhotoIndex(pIdx);
+                              setPhotoZoomLevel(1);
+                            }}
                             className={`px-3.5 py-1.5 rounded-xl text-xs font-bold font-outfit transition-all cursor-pointer flex items-center gap-1.5 ${
                               isCurrent
                                 ? "bg-sky-500 text-white shadow-md shadow-sky-500/30 scale-105 border border-sky-400"
@@ -911,38 +1027,129 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
                       })}
                     </div>
 
-                    {/* Main Photo Frame */}
-                    <div className="relative w-full rounded-2xl overflow-hidden bg-black/90 border border-white/15 shadow-2xl flex flex-col items-center">
-                      <div className="relative w-full h-[50vh] sm:h-[55vh] flex items-center justify-center bg-black/60">
-                        <Image
-                          src={selectedItem.images[activePhotoIndex].url}
-                          alt={selectedItem.images[activePhotoIndex].label}
-                          fill
-                          sizes="(max-width: 1024px) 100vw, 850px"
-                          className="object-contain"
-                          priority
-                        />
+                    {/* Main Photo Frame with Zoom, Pan, Swipe & Floating Arrows */}
+                    <div 
+                      className="relative w-full rounded-2xl overflow-hidden bg-black/90 border border-white/15 shadow-2xl flex flex-col items-center"
+                      onTouchStart={handlePhotoTouchStart}
+                      onTouchEnd={handlePhotoTouchEnd}
+                    >
+                      {/* Floating Prev Button */}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setPhotoZoomLevel(1);
+                          setActivePhotoIndex(prev => prev > 0 ? prev - 1 : selectedItem.images!.length - 1);
+                        }}
+                        className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-30 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-slate-950/80 hover:bg-slate-900 border border-white/20 hover:border-sky-400 text-white flex items-center justify-center shadow-xl backdrop-blur-md transition-all active:scale-95 cursor-pointer"
+                        aria-label="Previous photo"
+                      >
+                        <ChevronLeft size={20} />
+                      </button>
+
+                      {/* Floating Next Button */}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setPhotoZoomLevel(1);
+                          setActivePhotoIndex(prev => prev < selectedItem.images!.length - 1 ? prev + 1 : 0);
+                        }}
+                        className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-30 w-9 h-9 sm:w-11 sm:h-11 rounded-full bg-slate-950/80 hover:bg-slate-900 border border-white/20 hover:border-sky-400 text-white flex items-center justify-center shadow-xl backdrop-blur-md transition-all active:scale-95 cursor-pointer"
+                        aria-label="Next photo"
+                      >
+                        <ChevronRight size={20} />
+                      </button>
+
+                      <div 
+                        className={`relative w-full h-[46vh] sm:h-[54vh] flex items-center justify-center bg-black/60 overflow-auto select-none no-scrollbar ${
+                          photoZoomLevel > 1 ? "cursor-grab active:cursor-grabbing" : "cursor-zoom-in"
+                        }`}
+                        onDoubleClick={togglePhotoZoom}
+                      >
+                        <div
+                          className="relative flex items-center justify-center transition-transform duration-200 origin-center"
+                          style={{
+                            transform: `scale(${photoZoomLevel})`,
+                            width: photoZoomLevel > 1 ? `${photoZoomLevel * 100}%` : "100%",
+                            height: photoZoomLevel > 1 ? `${photoZoomLevel * 100}%` : "100%",
+                            minWidth: "100%",
+                            minHeight: "100%",
+                          }}
+                        >
+                          <Image
+                            src={selectedItem.images[activePhotoIndex].url}
+                            alt={selectedItem.images[activePhotoIndex].label}
+                            fill
+                            sizes="(max-width: 1024px) 100vw, 850px"
+                            className="object-contain"
+                            priority
+                          />
+                        </div>
                       </div>
-                      <div className="w-full p-3.5 bg-slate-900/90 border-t border-white/10 flex items-center justify-between gap-2">
-                        <button
-                          type="button"
-                          onClick={() => setActivePhotoIndex(prev => prev > 0 ? prev - 1 : selectedItem.images!.length - 1)}
-                          className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-bold font-outfit text-slate-200 border border-white/10 flex items-center gap-1 cursor-pointer transition-colors"
-                        >
-                          <ChevronLeft size={14} /> Prev
-                        </button>
 
-                        <span className="text-xs font-semibold font-inter text-slate-200 text-center truncate px-2">
-                          {selectedItem.images[activePhotoIndex].label}
-                        </span>
+                      {/* Photo Bottom Bar: Prev/Next & Zoom Controls */}
+                      <div className="w-full p-2.5 sm:p-3 bg-slate-900/90 border-t border-white/10 flex flex-wrap items-center justify-between gap-2 z-20">
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setPhotoZoomLevel(1);
+                              setActivePhotoIndex(prev => prev > 0 ? prev - 1 : selectedItem.images!.length - 1);
+                            }}
+                            className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-bold font-outfit text-slate-200 border border-white/10 flex items-center gap-1 cursor-pointer transition-colors"
+                          >
+                            <ChevronLeft size={14} /> Prev
+                          </button>
 
-                        <button
-                          type="button"
-                          onClick={() => setActivePhotoIndex(prev => prev < selectedItem.images!.length - 1 ? prev + 1 : 0)}
-                          className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-bold font-outfit text-slate-200 border border-white/10 flex items-center gap-1 cursor-pointer transition-colors"
-                        >
-                          Next <ChevronRight size={14} />
-                        </button>
+                          <span className="text-xs font-semibold font-inter text-slate-200 truncate max-w-[150px] sm:max-w-xs">
+                            {selectedItem.images[activePhotoIndex].label}
+                          </span>
+
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setPhotoZoomLevel(1);
+                              setActivePhotoIndex(prev => prev < selectedItem.images!.length - 1 ? prev + 1 : 0);
+                            }}
+                            className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-bold font-outfit text-slate-200 border border-white/10 flex items-center gap-1 cursor-pointer transition-colors"
+                          >
+                            Next <ChevronRight size={14} />
+                          </button>
+                        </div>
+
+                        {/* Photo Zoom Controls */}
+                        <div className="flex items-center gap-1 bg-white/5 border border-white/10 rounded-lg p-0.5 ml-auto">
+                          <button
+                            type="button"
+                            onClick={handlePhotoZoomOut}
+                            disabled={photoZoomLevel <= 1}
+                            className="p-1 sm:p-1.5 rounded-md text-white/70 hover:text-white disabled:opacity-30 disabled:pointer-events-none hover:bg-white/10 transition-colors cursor-pointer"
+                            title="Zoom Out"
+                          >
+                            <ZoomOut size={13} />
+                          </button>
+                          <span className="text-[11px] font-bold font-outfit text-sky-400 px-1.5 min-w-[38px] text-center select-none">
+                            {Math.round(photoZoomLevel * 100)}%
+                          </span>
+                          <button
+                            type="button"
+                            onClick={handlePhotoZoomIn}
+                            disabled={photoZoomLevel >= 2.5}
+                            className="p-1 sm:p-1.5 rounded-md text-white/70 hover:text-white disabled:opacity-30 disabled:pointer-events-none hover:bg-white/10 transition-colors cursor-pointer"
+                            title="Zoom In"
+                          >
+                            <ZoomIn size={13} />
+                          </button>
+                          {photoZoomLevel > 1 && (
+                            <button
+                              type="button"
+                              onClick={handleResetPhotoZoom}
+                              className="p-1 sm:p-1.5 rounded-md text-sky-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+                              title="Reset Zoom"
+                            >
+                              <RotateCcw size={12} />
+                            </button>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -969,7 +1176,7 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
                       </a>
                     </div>
 
-                    <div className="w-full h-[55vh] rounded-xl overflow-hidden border border-white/10 bg-slate-950/80 shadow-2xl">
+                    <div className="w-full h-[52vh] sm:h-[60vh] rounded-xl overflow-hidden border border-white/10 bg-slate-950/80 shadow-2xl">
                       <iframe
                         src={`${selectedItem.certificatePdf}#toolbar=0&navpanes=0`}
                         className="w-full h-full border-0 rounded-xl"
@@ -981,7 +1188,7 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
 
                 {/* Tab 4: Video Creations (9 Self-Created Marketing Videos) */}
                 {activeTab === "videos" && selectedItem.videos && (
-                  <div className="space-y-5 relative z-10">
+                  <div className="space-y-4 sm:space-y-5 relative z-10">
                     <div className="p-3.5 rounded-xl bg-white/[0.03] border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                       <div>
                         <h4 className="text-xs sm:text-sm font-bold text-white font-outfit flex items-center gap-2">
@@ -998,7 +1205,10 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
                     </div>
 
                     {/* Video Selector Pills (1 to 9) */}
-                    <div className="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar">
+                    <div 
+                      ref={videoPillsRef}
+                      className="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar"
+                    >
                       {selectedItem.videos.map((_, vIdx) => {
                         const num = vIdx + 1;
                         const isCurrent = activeVideoIndex === num;
@@ -1006,47 +1216,114 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
                           <button
                             key={num}
                             type="button"
-                            onClick={() => setActiveVideoIndex(num)}
-                            className={`px-3 py-1.5 rounded-xl text-xs font-bold font-outfit whitespace-nowrap transition-all cursor-pointer flex items-center gap-1.5 shrink-0 ${
+                            onClick={() => selectVideoClip(num)}
+                            className={`min-h-[38px] px-3.5 py-1.5 rounded-xl text-xs font-bold font-outfit whitespace-nowrap transition-all cursor-pointer flex items-center gap-1.5 shrink-0 ${
                               isCurrent
                                 ? "bg-accent-blue text-white shadow-md shadow-blue-500/30 scale-105 border border-blue-400"
                                 : "bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10"
                             }`}
                           >
-                            <Play size={10} className={isCurrent ? "fill-white" : ""} />
+                            <Play size={11} className={isCurrent ? "fill-white" : ""} />
                             <span>Clip {num}</span>
                           </button>
                         );
                       })}
                     </div>
 
-                    {/* Main Video Theater */}
-                    <div className="relative w-full max-w-xl mx-auto rounded-2xl overflow-hidden bg-black/90 border border-white/15 shadow-2xl flex flex-col items-center">
-                      <video
-                        key={activeVideoIndex}
-                        src={`/video/${activeVideoIndex}.mp4`}
-                        controls
-                        playsInline
-                        preload="metadata"
-                        className="w-full max-h-[50vh] object-contain rounded-t-2xl bg-black"
-                      />
-                      <div className="w-full p-3 bg-slate-900/90 border-t border-white/10 flex items-center justify-between">
+                    {/* Main Video Theater: Tap to Play/Pause, Buffering Spinner, Touch Swipe */}
+                    <div 
+                      className="relative w-full max-w-xl mx-auto rounded-2xl overflow-hidden bg-black/95 border border-white/15 shadow-2xl flex flex-col items-center"
+                      onTouchStart={handleVideoTouchStart}
+                      onTouchEnd={handleVideoTouchEnd}
+                    >
+                      {/* Video Player Container */}
+                      <div className="relative w-full flex items-center justify-center bg-black min-h-[220px]">
+                        <video
+                          ref={videoRef}
+                          key={activeVideoIndex}
+                          src={`/video/${activeVideoIndex}.mp4`}
+                          controls
+                          playsInline
+                          preload="metadata"
+                          onWaiting={() => setIsVideoBuffering(true)}
+                          onPlaying={() => {
+                            setIsVideoBuffering(false);
+                            setIsVideoPlaying(true);
+                          }}
+                          onPause={() => setIsVideoPlaying(false)}
+                          onEnded={() => setIsVideoPlaying(false)}
+                          onLoadedData={() => setIsVideoBuffering(false)}
+                          className="w-full max-h-[46vh] sm:max-h-[52vh] object-contain rounded-t-2xl bg-black cursor-pointer"
+                        />
+
+                        {/* Interactive Centered Play Button Overlay when paused */}
+                        {!isVideoPlaying && !isVideoBuffering && (
+                          <div 
+                            onClick={toggleVideoPlay}
+                            className="absolute inset-0 flex flex-col items-center justify-center bg-black/45 backdrop-blur-[2px] transition-all cursor-pointer z-20 group/play"
+                          >
+                            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-accent-blue/90 text-white flex items-center justify-center shadow-[0_0_35px_rgba(56,189,248,0.7)] group-hover/play:scale-110 group-hover/play:bg-accent-blue transition-all cursor-pointer border border-white/30">
+                              <Play size={28} className="fill-white translate-x-0.5" />
+                            </div>
+                            <span className="mt-3 text-xs sm:text-sm font-bold font-outfit text-white tracking-wide bg-slate-950/80 px-3 py-1 rounded-full border border-white/10 shadow-md">
+                              Click to Play Video #{activeVideoIndex}
+                            </span>
+                          </div>
+                        )}
+
+                        {/* Buffering Loading Spinner Overlay */}
+                        {isVideoBuffering && (
+                          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/70 z-20 pointer-events-none">
+                            <Loader2 size={36} className="text-accent-blue animate-spin" />
+                            <span className="mt-2 text-xs font-bold text-white font-outfit bg-slate-950/80 px-3 py-1 rounded-full border border-white/10">
+                              Loading Video #{activeVideoIndex}...
+                            </span>
+                          </div>
+                        )}
+
+                        {/* Tap Feedback Flash */}
+                        <AnimatePresence>
+                          {videoShowTapFeedback && (
+                            <motion.div
+                              initial={{ opacity: 0, scale: 0.6 }}
+                              animate={{ opacity: 1, scale: 1 }}
+                              exit={{ opacity: 0, scale: 1.3 }}
+                              transition={{ duration: 0.4 }}
+                              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full bg-slate-950/80 backdrop-blur-md text-white flex items-center justify-center pointer-events-none z-30 border border-white/20"
+                            >
+                              {videoShowTapFeedback === "play" ? (
+                                <Play size={24} className="fill-white translate-x-0.5 text-accent-blue" />
+                              ) : (
+                                <Pause size={24} className="fill-white text-accent-blue" />
+                              )}
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
+
+                      {/* Video Bottom Navigation Controls */}
+                      <div className="w-full p-3 bg-slate-900/90 border-t border-white/10 flex items-center justify-between gap-2 z-10">
                         <button
                           type="button"
-                          onClick={() => setActiveVideoIndex(prev => prev > 1 ? prev - 1 : 9)}
-                          className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-bold font-outfit text-slate-200 border border-white/10 flex items-center gap-1 cursor-pointer transition-colors"
+                          onClick={() => selectVideoClip(activeVideoIndex > 1 ? activeVideoIndex - 1 : 9)}
+                          className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-bold font-outfit text-slate-200 border border-white/10 flex items-center gap-1.5 cursor-pointer transition-colors active:scale-95"
                         >
                           <ChevronLeft size={14} /> Prev Clip
                         </button>
 
-                        <span className="text-xs font-bold font-outfit text-white">
-                          Marketing Video #{activeVideoIndex}
-                        </span>
+                        <div className="text-center">
+                          <span className="text-xs font-bold font-outfit text-white block">
+                            Marketing Video #{activeVideoIndex}
+                          </span>
+                          <span className="text-[10px] text-slate-400 font-inter">
+                            Swipe or tap to switch
+                          </span>
+                        </div>
 
                         <button
                           type="button"
-                          onClick={() => setActiveVideoIndex(prev => prev < 9 ? prev + 1 : 1)}
-                          className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-bold font-outfit text-slate-200 border border-white/10 flex items-center gap-1 cursor-pointer transition-colors"
+                          onClick={() => selectVideoClip(activeVideoIndex < 9 ? activeVideoIndex + 1 : 1)}
+                          className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-bold font-outfit text-slate-200 border border-white/10 flex items-center gap-1.5 cursor-pointer transition-colors active:scale-95"
                         >
                           Next Clip <ChevronRight size={14} />
                         </button>
