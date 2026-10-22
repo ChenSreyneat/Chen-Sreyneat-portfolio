@@ -28,18 +28,18 @@
   --bg-gradient: linear-gradient(135deg, #1a2369 0%, #010413 100%);
   --text-primary: #ffffff;
   --text-secondary: #cbd5e1;
-  
+
   /* Midnight Blue Palette Accents */
   --accent-deep: #0d1236;
   --accent-mid: #131b50;
   --accent-blue: #4185DB;
   --accent-light: #5c6bc0;
-  
+
   /* Glassmorphism - Midnight Blue Tinted */
   --glass-bg: rgba(26, 35, 105, 0.1);
   --glass-border: rgba(92, 107, 192, 0.2);
   --glass-glow: rgba(26, 35, 105, 0.3);
-  
+
   /* Theming */
   --nav-bg: rgba(38, 75, 146, 0.8);
   --nav-border: rgba(255, 255, 255, 0.1);
@@ -107,14 +107,17 @@
   body::before {
     content: "";
     @apply fixed inset-[-50%] w-[200%] h-[200%] z-[-1] pointer-events-none;
-    background: 
+    background:
       radial-gradient(circle at 50% 50%, var(--glass-glow) 0%, transparent 40%),
       radial-gradient(circle at 80% 20%, rgba(26, 35, 105, 0.1) 0%, transparent 30%),
       radial-gradient(circle at 20% 80%, rgba(13, 18, 54, 0.2) 0%, transparent 40%);
     animation: rotate 60s linear infinite;
   }
 
-  h1, h2, h3, h4 {
+  h1,
+  h2,
+  h3,
+  h4 {
     @apply font-outfit font-bold leading-tight text-text-primary mb-4;
   }
 
@@ -128,8 +131,13 @@
 }
 
 @keyframes rotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Custom Component Classes (Bridging Vanilla to Tailwind) */
@@ -140,7 +148,7 @@
   }
 
   .glass-card {
-    @apply bg-glass-bg border border-glass-border backdrop-blur-xl rounded-2xl p-8 transition-all duration-300 hover:-translate-y-1 hover:border-white/20 md:hover:shadow-[0_10px_30px_var(--card-shadow),0_0_20px_var(--glass-glow)];
+    @apply bg-glass-bg border border-glass-border backdrop-blur-xl rounded-2xl p-8 transition-all duration-300 hover:-translate-y-1 hover:border-white/20 md:hover:shadow-[0_10px_30px_var(--card-shadow), 0_0_20px_var(--glass-glow)];
   }
 
   .btn {
@@ -148,7 +156,7 @@
   }
 
   .btn-primary {
-    @apply bg-linear-to-br from-[#214185] to-[#4185DB] text-white shadow-[0_4px_15px_rgba(65,133,219,0.4)] hover:scale-105 hover:shadow-[0_6px_20px_rgba(65,133,219,0.6)];
+    @apply bg-linear-to-br from-[#214185] to-[#4185DB] text-white shadow-[0_4px_15px_rgba(65, 133, 219, 0.4)] hover:scale-105 hover:shadow-[0_6px_20px_rgba(65, 133, 219, 0.6)];
   }
 
   .btn-outline {
@@ -206,14 +214,20 @@
     @apply absolute -left-[2.35rem] top-1.5 w-3 h-3 rounded-full bg-text-secondary border-2 border-bg-color;
   }
 
-  .form-input, .form-textarea {
-    @apply w-full px-4 py-3 rounded-lg bg-project-bg border border-glass-border text-text-primary font-[inherit] transition-all duration-300 focus:outline-none focus:border-accent-blue focus:shadow-[0_0_0_2px_rgba(29,112,162,0.2)];
+  .form-input,
+  .form-textarea {
+    @apply w-full px-4 py-3 rounded-lg bg-project-bg border border-glass-border text-text-primary font-[inherit] transition-all duration-300 focus:outline-none focus:border-accent-blue focus:shadow-[0_0_0_2px_rgba(29, 112, 162, 0.2)];
   }
 }
 
 @keyframes marquee {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 .animate-marquee {
@@ -221,9 +235,17 @@
 }
 
 @keyframes gradient-shift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 .animate-gradient-slow {
@@ -233,11 +255,25 @@
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-  .section { @apply py-16; }
-  .about-layout { @apply !grid-cols-1 gap-8; }
-  .contact-layout { @apply !grid-cols-1; }
-  h1 { @apply !text-4xl; }
-  .container { @apply px-4; }
+  .section {
+    @apply py-16;
+  }
+
+  .about-layout {
+    @apply !grid-cols-1 gap-8;
+  }
+
+  .contact-layout {
+    @apply !grid-cols-1;
+  }
+
+  h1 {
+    @apply !text-4xl;
+  }
+
+  .container {
+    @apply px-4;
+  }
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
@@ -247,8 +283,10 @@
 
 /* Hide scrollbar for IE, Edge and Firefox */
 .no-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 /* Dynamic Brand Skill Badge Hover Styles */
@@ -271,4 +309,3 @@
 :root:not([data-theme="light"]) .skill-badge-hover:hover {
   color: var(--hover-text-color);
 }
-

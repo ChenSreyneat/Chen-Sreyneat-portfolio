@@ -56,7 +56,7 @@ export default function ContactSection() {
   return (
     <section id="contact" className="min-h-[calc(100dvh-5rem)] flex flex-col justify-center py-6 sm:py-10 md:py-16 lg:py-24 max-w-6xl mx-auto px-0 sm:px-4 overflow-hidden snap-start scroll-mt-20">
       {/* Section Header */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 25 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.3 }}
@@ -79,7 +79,7 @@ export default function ContactSection() {
 
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.8fr] gap-10 lg:gap-16 items-start px-4 sm:px-0">
         {/* Contact Info Sidebar */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, x: -30 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, amount: 0.2 }}
@@ -89,7 +89,7 @@ export default function ContactSection() {
           {/* Profile Section */}
           <div className="relative w-56 h-56 sm:w-64 sm:h-64 md:w-72 md:h-72 mx-auto lg:mx-0 group">
             {/* Theme Accents (Top Left) */}
-            <motion.div 
+            <motion.div
               animate={{ rotate: [-45, -40, -45] }}
               transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
               className="absolute -top-4 -left-4 sm:-top-6 sm:-left-6 w-12 h-12 sm:w-16 sm:h-16 opacity-60 z-0"
@@ -100,7 +100,7 @@ export default function ContactSection() {
             </motion.div>
 
             {/* Sub-blob Shape (Top Left) */}
-            <motion.div 
+            <motion.div
               animate={{ scale: [1, 1.04, 1] }}
               transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
               className="absolute top-2 left-0 w-32 sm:w-40 h-40 sm:h-48 bg-accent-mid opacity-90 z-0"
@@ -114,10 +114,10 @@ export default function ContactSection() {
             </motion.div>
 
             {/* Theme Wavy Line (Behind person) */}
-            <motion.svg 
+            <motion.svg
               animate={{ rotate: [0, 5, 0] }}
               transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute -top-4 -right-4 sm:-right-8 md:-right-12 w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 opacity-40 z-0 pointer-events-none" 
+              className="absolute -top-4 -right-4 sm:-right-8 md:-right-12 w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 opacity-40 z-0 pointer-events-none"
               viewBox="0 0 200 200"
             >
               <path
@@ -130,15 +130,15 @@ export default function ContactSection() {
             </motion.svg>
 
             {/* Main Blue Organic Shape (Centered/Right) */}
-            <motion.div 
+            <motion.div
               animate={{ scale: [1, 1.02, 1] }}
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
               className="absolute top-8 sm:top-10 right-0 w-48 sm:w-56 md:w-60 h-48 sm:h-56 md:h-60 bg-accent-blue z-0 shadow-2xl shadow-accent-blue/20"
-              style={{ borderRadius: '60% 40% 30% 70% / 60% 30% 70% 40%' }} 
+              style={{ borderRadius: '60% 40% 30% 70% / 60% 30% 70% 40%' }}
             />
 
             {/* Theme Dots Accent (Bottom Left) */}
-            <motion.div 
+            <motion.div
               animate={{ opacity: [0.4, 0.8, 0.4] }}
               transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
               className="absolute -bottom-3 sm:-bottom-4 -left-3 sm:-left-4 grid grid-cols-3 gap-1.5 sm:gap-2 opacity-60 z-0"
@@ -165,7 +165,7 @@ export default function ContactSection() {
 
           {/* Contact Details */}
           <div className="space-y-3.5 sm:space-y-4 w-full max-w-[280px] sm:max-w-[310px] mx-auto lg:mx-0 flex flex-col items-start">
-            <motion.a 
+            <motion.a
               whileHover={{ x: 5 }}
               whileTap={{ scale: 0.98 }}
               href="mailto:chensreyneat198@gmail.com"
@@ -176,7 +176,7 @@ export default function ContactSection() {
               </div>
               <span className="text-slate-200 group-hover:text-white font-semibold text-xs sm:text-sm transition-colors font-inter truncate">chensreyneat198@gmail.com</span>
             </motion.a>
-            <motion.a 
+            <motion.a
               whileHover={{ x: 5 }}
               whileTap={{ scale: 0.98 }}
               href="tel:+855887514279"
@@ -187,7 +187,7 @@ export default function ContactSection() {
               </div>
               <span className="text-slate-200 group-hover:text-white font-semibold text-xs sm:text-sm transition-colors font-inter truncate">+855 88 75 14 279</span>
             </motion.a>
-            <motion.div 
+            <motion.div
               whileHover={{ x: 5 }}
               className="flex items-center gap-3 sm:gap-4 group cursor-default w-full text-left"
             >
@@ -200,12 +200,12 @@ export default function ContactSection() {
 
           <div className="pt-6 border-t border-white/10 space-y-6 w-full flex flex-col items-center lg:items-start">
             <div className="grid grid-cols-2 gap-3 w-full max-w-[340px] sm:max-w-[420px]">
-              <motion.a 
+              <motion.a
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.96 }}
-                href="https://t.me/Neat198" 
-                target="_blank" 
-                rel="noopener noreferrer" 
+                href="https://t.me/Neat198"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 w-full h-[40px] rounded-xl bg-[#4185DB] hover:bg-[#3273c5] text-white transition-all duration-300 shadow-md hover:shadow-lg hover:shadow-[#4185DB]/30 cursor-pointer font-outfit text-xs sm:text-sm font-bold uppercase tracking-wider"
               >
                 <div className="w-5 h-5 rounded-full bg-white flex items-center justify-center flex-shrink-0">
@@ -215,12 +215,12 @@ export default function ContactSection() {
                 </div>
                 <span>Telegram</span>
               </motion.a>
-              <motion.a 
+              <motion.a
                 whileHover={{ scale: 1.04 }}
                 whileTap={{ scale: 0.96 }}
-                href="https://www.linkedin.com/in/chen-sreyneat-749654313/" 
-                target="_blank" 
-                rel="noopener noreferrer" 
+                href="https://www.linkedin.com/in/chen-sreyneat-749654313/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex items-center justify-center gap-2 w-full h-[40px] rounded-xl bg-slate-950/20 border border-white/20 text-xs sm:text-sm font-bold text-slate-200 hover:border-accent-blue hover:text-white transition-all cursor-pointer font-outfit uppercase tracking-wider shadow-sm"
               >
                 <FaLinkedin size={16} className="flex-shrink-0 text-accent-blue" /> <span>LinkedIn</span>
@@ -230,21 +230,21 @@ export default function ContactSection() {
         </motion.div>
 
         {/* Contact Form Box */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, x: 30 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           className="w-full rounded-2xl bg-slate-950/20 border border-white/20 p-5 sm:p-6 md:p-8 hover:border-accent-blue transition-all duration-300 shadow-sm hover:shadow-xl hover:shadow-accent-blue/20"
         >
-          <form 
-            className="space-y-5 sm:space-y-6" 
+          <form
+            className="space-y-5 sm:space-y-6"
             onSubmit={handleSubmit}
           >
             {/* FormSubmit Configuration */}
             <input type="hidden" name="_captcha" value="false" />
             <input type="hidden" name="_template" value="table" />
-            
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
               <div className="space-y-2">
                 <label className="text-xs font-extrabold uppercase tracking-wider text-slate-200 flex items-center gap-2 font-outfit">
@@ -307,18 +307,17 @@ export default function ContactSection() {
               ></textarea>
             </div>
 
-            <motion.button 
+            <motion.button
               type="submit"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               disabled={status === "sending"}
-              className={`w-full py-4 rounded-xl font-extrabold text-sm uppercase tracking-wider font-outfit flex items-center justify-center gap-3 transition-all shadow-md ${
-                status === "success" 
-                  ? "bg-green-600 text-white shadow-green-500/20" 
+              className={`w-full py-4 rounded-xl font-extrabold text-sm uppercase tracking-wider font-outfit flex items-center justify-center gap-3 transition-all shadow-md ${status === "success"
+                  ? "bg-green-600 text-white shadow-green-500/20"
                   : status === "error"
-                  ? "bg-red-600 text-white shadow-red-500/20"
-                  : "bg-[#4185DB] hover:bg-[#3273c5] text-white shadow-[#4185DB]/20 hover:shadow-lg hover:shadow-[#4185DB]/30 cursor-pointer"
-              }`}
+                    ? "bg-red-600 text-white shadow-red-500/20"
+                    : "bg-[#4185DB] hover:bg-[#3273c5] text-white shadow-[#4185DB]/20 hover:shadow-lg hover:shadow-[#4185DB]/30 cursor-pointer"
+                }`}
             >
               {status === "sending" ? (
                 <>

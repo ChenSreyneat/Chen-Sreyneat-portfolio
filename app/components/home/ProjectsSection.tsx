@@ -184,7 +184,7 @@ export default function ProjectsSection() {
 
   return (
     <section id="projects" className="min-h-[calc(100dvh-5rem)] flex flex-col justify-center py-6 sm:py-10 md:py-16 lg:py-24 relative overflow-hidden snap-start scroll-mt-20">
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 25 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.3 }}
@@ -205,20 +205,19 @@ export default function ProjectsSection() {
       </motion.div>
 
       {/* Slider Container Wrapper */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, y: 35 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.15 }}
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
         className="relative w-full z-10 max-w-7xl mx-auto px-0 sm:px-4 md:px-8"
       >
-        
+
         {/* Left Circular Arrow Button */}
         <button
           onClick={() => handleScroll("left")}
-          className={`absolute left-2 md:left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-slate-900/90 dark:bg-white/10 backdrop-blur-md text-white rounded-full hidden lg:flex items-center justify-center z-30 transition-all duration-300 border border-white/20 hover:border-accent-blue hover:bg-slate-800 hover:scale-105 active:scale-95 cursor-pointer ${
-            showLeftArrow ? "opacity-100 pointer-events-auto translate-x-0" : "opacity-0 pointer-events-none -translate-x-4"
-          }`}
+          className={`absolute left-2 md:left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-slate-900/90 dark:bg-white/10 backdrop-blur-md text-white rounded-full hidden lg:flex items-center justify-center z-30 transition-all duration-300 border border-white/20 hover:border-accent-blue hover:bg-slate-800 hover:scale-105 active:scale-95 cursor-pointer ${showLeftArrow ? "opacity-100 pointer-events-auto translate-x-0" : "opacity-0 pointer-events-none -translate-x-4"
+            }`}
           aria-label="Scroll Left"
         >
           <ChevronLeft className="w-6 h-6 text-white" />
@@ -227,9 +226,8 @@ export default function ProjectsSection() {
         {/* Right Circular Arrow Button */}
         <button
           onClick={() => handleScroll("right")}
-          className={`absolute right-2 md:right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-slate-900/90 dark:bg-white/10 backdrop-blur-md text-white rounded-full hidden lg:flex items-center justify-center z-30 transition-all duration-300 border border-white/20 hover:border-accent-blue hover:bg-slate-800 hover:scale-105 active:scale-95 cursor-pointer ${
-            showRightArrow ? "opacity-100 pointer-events-auto translate-x-0" : "opacity-0 pointer-events-none translate-x-4"
-          }`}
+          className={`absolute right-2 md:right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-slate-900/90 dark:bg-white/10 backdrop-blur-md text-white rounded-full hidden lg:flex items-center justify-center z-30 transition-all duration-300 border border-white/20 hover:border-accent-blue hover:bg-slate-800 hover:scale-105 active:scale-95 cursor-pointer ${showRightArrow ? "opacity-100 pointer-events-auto translate-x-0" : "opacity-0 pointer-events-none translate-x-4"
+            }`}
           aria-label="Scroll Right"
         >
           <ChevronRight className="w-6 h-6 text-white" />
@@ -245,8 +243,8 @@ export default function ProjectsSection() {
           className="flex gap-4 sm:gap-6 overflow-x-auto py-4 sm:py-6 px-4 no-scrollbar snap-x snap-mandatory scroll-smooth touch-auto cursor-grab active:cursor-grabbing [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
         >
           {projects.map((project, index) => (
-            <motion.div 
-              key={index} 
+            <motion.div
+              key={index}
               whileHover={{ y: -6, scale: 1.02 }}
               transition={{ type: "spring", stiffness: 350, damping: 20 }}
               className="flex-shrink-0 w-[calc(100vw-2.5rem)] max-w-[360px] sm:w-[320px] md:w-[360px] snap-center snap-always group relative flex flex-col justify-between rounded-2xl bg-slate-950/20 border border-white/20 hover:border-accent-blue p-5 md:p-6 shadow-sm hover:shadow-xl hover:shadow-accent-blue/20 transition-all duration-300 mx-auto sm:mx-0"
@@ -254,8 +252,8 @@ export default function ProjectsSection() {
               <div className="flex flex-col">
                 <div className={`w-full aspect-video bg-linear-to-br ${project.gradient} rounded-xl mb-4 sm:mb-5 flex items-center justify-center overflow-hidden relative shadow-inner border border-white/10`}>
                   {project.image ? (
-                    <Image 
-                      src={project.image} 
+                    <Image
+                      src={project.image}
                       alt={project.title}
                       fill
                       className="object-cover group-hover:scale-105 transition-transform duration-500"
@@ -343,9 +341,8 @@ export default function ProjectsSection() {
               key={idx}
               type="button"
               onClick={() => scrollToSlide(idx)}
-              className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
-                activeSlide === idx ? "w-6 bg-accent-blue shadow-xs shadow-accent-blue/40" : "w-2 bg-white/20 hover:bg-white/40"
-              }`}
+              className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${activeSlide === idx ? "w-6 bg-accent-blue shadow-xs shadow-accent-blue/40" : "w-2 bg-white/20 hover:bg-white/40"
+                }`}
               aria-label={`Go to project ${idx + 1}`}
             />
           ))}

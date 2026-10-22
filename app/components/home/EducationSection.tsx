@@ -276,10 +276,10 @@ export default function EducationSection() {
 
   const headerVariants = {
     hidden: { opacity: 0, y: 25 },
-    visible: { 
-      opacity: 1, 
-      y: 0, 
-      transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const } 
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const }
     }
   };
 
@@ -306,14 +306,14 @@ export default function EducationSection() {
     <section id="education" className="min-h-[calc(100dvh-5rem)] flex flex-col justify-center py-6 sm:py-10 md:py-16 lg:py-24 relative overflow-hidden bg-transparent snap-start scroll-mt-20">
       {/* Background UI Grid & Ambient Luminous Glow */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#1d70a208_1px,transparent_1px),linear-gradient(to_bottom,#1d70a208_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none" />
-      <div 
+      <div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] rounded-full opacity-35 blur-[100px] pointer-events-none -z-10"
         style={{
           background: "radial-gradient(ellipse at center, rgba(56, 189, 248, 0.5) 0%, rgba(37, 99, 235, 0.3) 40%, transparent 75%)"
         }}
       />
 
-      <motion.div 
+      <motion.div
         variants={headerVariants}
         initial="hidden"
         whileInView="visible"
@@ -341,8 +341,8 @@ export default function EducationSection() {
           className="flex lg:grid lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 overflow-x-auto lg:overflow-visible py-3 lg:py-0 px-4 lg:px-0 no-scrollbar snap-x snap-mandatory lg:snap-none scroll-smooth touch-auto cursor-grab active:cursor-grabbing [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] items-stretch"
         >
           {education.map((item, index) => (
-            <motion.div 
-              key={index} 
+            <motion.div
+              key={index}
               custom={index}
               variants={cardVariants}
               initial="hidden"
@@ -396,9 +396,8 @@ export default function EducationSection() {
               key={idx}
               type="button"
               onClick={() => scrollToSlide(idx)}
-              className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
-                activeSlide === idx ? "w-6 bg-accent-blue shadow-xs shadow-accent-blue/40" : "w-2 bg-white/20 hover:bg-white/40"
-              }`}
+              className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${activeSlide === idx ? "w-6 bg-accent-blue shadow-xs shadow-accent-blue/40" : "w-2 bg-white/20 hover:bg-white/40"
+                }`}
               aria-label={`Go to slide ${idx + 1}`}
             />
           ))}
@@ -417,7 +416,7 @@ export default function EducationSection() {
               onClick={closeModal}
               className="absolute inset-0 bg-[#010413]/75 backdrop-blur-md touch-none"
             />
-            
+
             {/* Modal Light Background Animation & Glow */}
             <ModalLightBackground />
 
@@ -473,11 +472,10 @@ export default function EducationSection() {
                           setActiveCertIndex(idx);
                           setZoomLevel(1);
                         }}
-                        className={`text-xs px-3 py-1.5 rounded-lg font-semibold font-outfit transition-all cursor-pointer whitespace-nowrap shrink-0 ${
-                          activeCertIndex === idx
+                        className={`text-xs px-3 py-1.5 rounded-lg font-semibold font-outfit transition-all cursor-pointer whitespace-nowrap shrink-0 ${activeCertIndex === idx
                             ? "bg-accent-blue text-white shadow-sm shadow-accent-blue/30 scale-102"
                             : "bg-white/5 text-slate-300 hover:bg-white/10 hover:text-white border border-white/10"
-                        }`}
+                          }`}
                       >
                         {cert.label}
                       </button>
@@ -485,9 +483,9 @@ export default function EducationSection() {
                   </div>
                 )}
               </div>
-              
+
               {/* Content Area with Zoom, Pan, Swipe & Floating Arrows */}
-              <div 
+              <div
                 className="flex-grow w-full bg-slate-950/70 relative flex items-center justify-center overflow-hidden p-2 sm:p-4 md:p-6"
                 onTouchStart={handleTouchStart}
                 onTouchEnd={handleTouchEnd}
@@ -519,13 +517,12 @@ export default function EducationSection() {
                 )}
 
                 {/* Main Image Frame (Pannable when zoomed) */}
-                <div 
-                  className={`relative w-full h-[52vh] sm:h-[60vh] md:h-[66vh] rounded-xl overflow-auto select-none no-scrollbar flex items-center justify-center ${
-                    zoomLevel > 1 ? "cursor-grab active:cursor-grabbing" : "cursor-zoom-in"
-                  }`}
+                <div
+                  className={`relative w-full h-[52vh] sm:h-[60vh] md:h-[66vh] rounded-xl overflow-auto select-none no-scrollbar flex items-center justify-center ${zoomLevel > 1 ? "cursor-grab active:cursor-grabbing" : "cursor-zoom-in"
+                    }`}
                   onDoubleClick={toggleZoom}
                 >
-                  <div 
+                  <div
                     className="relative flex items-center justify-center transition-transform duration-200 origin-center"
                     style={{
                       transform: `scale(${zoomLevel})`,

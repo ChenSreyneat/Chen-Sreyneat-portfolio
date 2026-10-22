@@ -29,7 +29,7 @@ export default function AboutSection() {
     <section id="about" className="min-h-[calc(100dvh-5rem)] flex flex-col justify-center py-8 sm:py-12 md:py-20 lg:py-28 relative overflow-hidden bg-transparent snap-start scroll-mt-20">
       {/* Background UI Grid & Ambient Luminous Glow (Matching EducationSection) */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#1d70a208_1px,transparent_1px),linear-gradient(to_bottom,#1d70a208_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none" />
-      <div 
+      <div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-[700px] h-[350px] sm:h-[400px] rounded-full opacity-35 blur-[100px] pointer-events-none -z-10"
         style={{
           background: "radial-gradient(ellipse at center, rgba(56, 189, 248, 0.5) 0%, rgba(37, 99, 235, 0.3) 40%, transparent 75%)"
@@ -39,7 +39,7 @@ export default function AboutSection() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-8 relative z-10">
 
         {/* Section Header */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 25 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
@@ -69,7 +69,7 @@ export default function AboutSection() {
 
           {/* Left Column: Profile Card Sidebar (Unboxed Column) */}
           <div className="lg:col-span-4 flex flex-col items-center lg:items-start pb-8 lg:pb-0 lg:pr-4">
-            
+
             {/* Circular Avatar with Vivid Blue Ring */}
             <div className="relative w-40 h-40 sm:w-44 sm:h-44 md:w-48 md:h-48 rounded-full border-[1.5px] border-accent-blue/40 p-1 bg-transparent shadow-sm mx-auto lg:mx-0">
               <div className="relative w-full h-full rounded-full overflow-hidden">

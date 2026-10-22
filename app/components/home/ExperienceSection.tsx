@@ -2,28 +2,28 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
-import { 
-  Palette, 
-  GraduationCap, 
-  Laptop, 
-  Eye, 
-  ExternalLink, 
-  X, 
-  CheckCircle2, 
+import {
+  Palette,
+  GraduationCap,
+  Laptop,
+  Eye,
+  ExternalLink,
+  X,
+  CheckCircle2,
   Building2,
-  Clock, 
-  FileText, 
-  Film, 
-  ChevronLeft, 
-  ChevronRight, 
-  Play, 
+  Clock,
+  FileText,
+  Film,
+  ChevronLeft,
+  ChevronRight,
+  Play,
   Pause,
   Loader2,
   ZoomIn,
   ZoomOut,
   RotateCcw,
-  Image as ImageIcon, 
-  Sparkles, 
+  Image as ImageIcon,
+  Sparkles,
   Wrench
 } from "lucide-react";
 import { FaBehance } from "react-icons/fa";
@@ -426,8 +426,8 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
 
   const headerVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
       transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const }
     }
@@ -450,7 +450,7 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
     <section id="experience" className={`min-h-[calc(100dvh-5rem)] flex flex-col justify-center relative overflow-hidden bg-transparent snap-start scroll-mt-20 ${hideHeader ? "py-2" : "py-6 sm:py-10 md:py-16 lg:py-24"}`}>
       {/* Background UI Grid & Ambient Cosmic Glow */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#1d70a208_1px,transparent_1px),linear-gradient(to_bottom,#1d70a208_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none" />
-      <div 
+      <div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] rounded-full opacity-35 blur-[100px] pointer-events-none -z-10"
         style={{
           background: "radial-gradient(ellipse at center, rgba(56, 189, 248, 0.5) 0%, rgba(37, 99, 235, 0.3) 40%, transparent 75%)"
@@ -459,7 +459,7 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
 
       {/* Header section */}
       {!hideHeader && (
-        <motion.div 
+        <motion.div
           variants={headerVariants}
           initial="hidden"
           whileInView="visible"
@@ -488,9 +488,8 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
         <button
           type="button"
           onClick={() => handleScroll("left")}
-          className={`absolute left-2 md:left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-slate-900/90 backdrop-blur-md text-white rounded-full hidden lg:flex items-center justify-center z-30 transition-all duration-300 border border-white/20 hover:border-accent-blue hover:bg-slate-800 hover:scale-105 active:scale-95 cursor-pointer shadow-lg ${
-            showLeftArrow ? "opacity-100 pointer-events-auto translate-x-0" : "opacity-0 pointer-events-none -translate-x-4"
-          }`}
+          className={`absolute left-2 md:left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-slate-900/90 backdrop-blur-md text-white rounded-full hidden lg:flex items-center justify-center z-30 transition-all duration-300 border border-white/20 hover:border-accent-blue hover:bg-slate-800 hover:scale-105 active:scale-95 cursor-pointer shadow-lg ${showLeftArrow ? "opacity-100 pointer-events-auto translate-x-0" : "opacity-0 pointer-events-none -translate-x-4"
+            }`}
           aria-label="Previous Experience"
         >
           <ChevronLeft className="w-6 h-6 text-white" />
@@ -500,9 +499,8 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
         <button
           type="button"
           onClick={() => handleScroll("right")}
-          className={`absolute right-2 md:right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-slate-900/90 backdrop-blur-md text-white rounded-full hidden lg:flex items-center justify-center z-30 transition-all duration-300 border border-white/20 hover:border-accent-blue hover:bg-slate-800 hover:scale-105 active:scale-95 cursor-pointer shadow-lg ${
-            showRightArrow ? "opacity-100 pointer-events-auto translate-x-0" : "opacity-0 pointer-events-none translate-x-4"
-          }`}
+          className={`absolute right-2 md:right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-slate-900/90 backdrop-blur-md text-white rounded-full hidden lg:flex items-center justify-center z-30 transition-all duration-300 border border-white/20 hover:border-accent-blue hover:bg-slate-800 hover:scale-105 active:scale-95 cursor-pointer shadow-lg ${showRightArrow ? "opacity-100 pointer-events-auto translate-x-0" : "opacity-0 pointer-events-none translate-x-4"
+            }`}
           aria-label="Next Experience"
         >
           <ChevronRight className="w-6 h-6 text-white" />
@@ -518,8 +516,8 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
           className="flex lg:grid lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 overflow-x-auto lg:overflow-visible py-4 lg:py-0 px-4 lg:px-0 no-scrollbar snap-x snap-mandatory lg:snap-none scroll-smooth touch-auto cursor-grab active:cursor-grabbing [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] items-stretch"
         >
           {experiences.map((item, index) => (
-            <motion.div 
-              key={index} 
+            <motion.div
+              key={index}
               custom={index}
               variants={cardVariants}
               initial="hidden"
@@ -731,9 +729,8 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
               key={idx}
               type="button"
               onClick={() => scrollToSlide(idx)}
-              className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
-                activeSlide === idx ? "w-6 bg-accent-blue shadow-xs shadow-accent-blue/40" : "w-2 bg-white/20 hover:bg-white/40"
-              }`}
+              className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${activeSlide === idx ? "w-6 bg-accent-blue shadow-xs shadow-accent-blue/40" : "w-2 bg-white/20 hover:bg-white/40"
+                }`}
               aria-label={`Go to experience ${idx + 1}`}
             />
           ))}
@@ -752,7 +749,7 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
               onClick={() => setSelectedItem(null)}
               className="absolute inset-0 bg-[#010413]/80 backdrop-blur-md touch-none"
             />
-            
+
             {/* Modal Light Background Animation & Glow */}
             <ModalLightBackground />
 
@@ -803,11 +800,10 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
                 <button
                   type="button"
                   onClick={() => setActiveTab("overview")}
-                  className={`px-3 py-2 text-xs sm:text-sm font-bold font-outfit border-b-2 whitespace-nowrap transition-all cursor-pointer ${
-                    activeTab === "overview"
+                  className={`px-3 py-2 text-xs sm:text-sm font-bold font-outfit border-b-2 whitespace-nowrap transition-all cursor-pointer ${activeTab === "overview"
                       ? "border-accent-blue text-white"
                       : "border-transparent text-slate-400 hover:text-slate-200"
-                  }`}
+                    }`}
                 >
                   Overview &amp; Deliverables
                 </button>
@@ -816,11 +812,10 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
                   <button
                     type="button"
                     onClick={() => setActiveTab("photos")}
-                    className={`inline-flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-bold font-outfit border-b-2 whitespace-nowrap transition-all cursor-pointer ${
-                      activeTab === "photos"
+                    className={`inline-flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-bold font-outfit border-b-2 whitespace-nowrap transition-all cursor-pointer ${activeTab === "photos"
                         ? "border-sky-400 text-white"
                         : "border-transparent text-slate-400 hover:text-slate-200"
-                    }`}
+                      }`}
                   >
                     <ImageIcon size={14} className="text-sky-400" />
                     <span>Teaching Photos ({selectedItem.images.length})</span>
@@ -831,11 +826,10 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
                   <button
                     type="button"
                     onClick={() => setActiveTab("certificate")}
-                    className={`inline-flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-bold font-outfit border-b-2 whitespace-nowrap transition-all cursor-pointer ${
-                      activeTab === "certificate"
+                    className={`inline-flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-bold font-outfit border-b-2 whitespace-nowrap transition-all cursor-pointer ${activeTab === "certificate"
                         ? "border-cyan-400 text-white"
                         : "border-transparent text-slate-400 hover:text-slate-200"
-                    }`}
+                      }`}
                   >
                     <FileText size={14} className="text-cyan-400" />
                     <span>Certificate (PDF)</span>
@@ -846,11 +840,10 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
                   <button
                     type="button"
                     onClick={() => setActiveTab("videos")}
-                    className={`inline-flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-bold font-outfit border-b-2 whitespace-nowrap transition-all cursor-pointer ${
-                      activeTab === "videos"
+                    className={`inline-flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-bold font-outfit border-b-2 whitespace-nowrap transition-all cursor-pointer ${activeTab === "videos"
                         ? "border-emerald-400 text-white"
                         : "border-transparent text-slate-400 hover:text-slate-200"
-                    }`}
+                      }`}
                   >
                     <Film size={14} className="text-emerald-400" />
                     <span>My Videos ({selectedItem.videos.length})</span>
@@ -860,11 +853,10 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
                 <button
                   type="button"
                   onClick={() => setActiveTab("tools")}
-                  className={`inline-flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-bold font-outfit border-b-2 whitespace-nowrap transition-all cursor-pointer ${
-                    activeTab === "tools"
+                  className={`inline-flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-bold font-outfit border-b-2 whitespace-nowrap transition-all cursor-pointer ${activeTab === "tools"
                       ? "border-amber-400 text-white"
                       : "border-transparent text-slate-400 hover:text-slate-200"
-                  }`}
+                    }`}
                 >
                   <Wrench size={13} className="text-amber-400" />
                   <span>Tools &amp; Stack</span>
@@ -894,8 +886,8 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
                     {/* Performance Metrics Cards */}
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
                       {selectedItem.metrics.map((metric, mIdx) => (
-                        <div 
-                          key={mIdx} 
+                        <div
+                          key={mIdx}
                           className="p-3 rounded-xl bg-white/[0.03] border border-white/10 hover:border-accent-blue/40 transition-colors shadow-xs"
                         >
                           <div className="text-base sm:text-lg font-extrabold text-cyan-300 font-outfit">
@@ -953,8 +945,8 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
                       </h4>
                       <div className="space-y-2.5">
                         {selectedItem.bullets.map((bullet, idx) => (
-                          <div 
-                            key={idx} 
+                          <div
+                            key={idx}
                             className="flex items-start gap-3 p-3 rounded-xl bg-white/[0.02] border border-white/5 hover:border-accent-blue/30 transition-colors"
                           >
                             <CheckCircle2 size={16} className="text-accent-blue shrink-0 mt-0.5" />
@@ -989,8 +981,8 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
                       </h4>
                       <div className="flex flex-wrap gap-2">
                         {selectedItem.skills.map((skill, idx) => (
-                          <span 
-                            key={idx} 
+                          <span
+                            key={idx}
                             className="text-xs font-bold text-cyan-300 bg-white/5 border border-accent-blue/30 px-3 py-1 rounded-lg font-outfit shadow-xs"
                           >
                             {skill}
@@ -1043,11 +1035,10 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
                               setActivePhotoIndex(pIdx);
                               setPhotoZoomLevel(1);
                             }}
-                            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold font-outfit transition-all cursor-pointer flex items-center gap-1.5 ${
-                              isCurrent
+                            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold font-outfit transition-all cursor-pointer flex items-center gap-1.5 ${isCurrent
                                 ? "bg-sky-500 text-white shadow-md shadow-sky-500/30 scale-105 border border-sky-400"
                                 : "bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10"
-                            }`}
+                              }`}
                           >
                             <ImageIcon size={12} />
                             <span>Photo {pIdx + 1}</span>
@@ -1057,7 +1048,7 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
                     </div>
 
                     {/* Main Photo Frame with Zoom, Pan, Swipe & Floating Arrows */}
-                    <div 
+                    <div
                       className="relative w-full rounded-2xl overflow-hidden bg-black/90 border border-white/15 shadow-2xl flex flex-col items-center"
                       onTouchStart={handlePhotoTouchStart}
                       onTouchEnd={handlePhotoTouchEnd}
@@ -1088,10 +1079,9 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
                         <ChevronRight size={20} />
                       </button>
 
-                      <div 
-                        className={`relative w-full h-[46vh] sm:h-[54vh] flex items-center justify-center bg-black/60 overflow-auto select-none no-scrollbar ${
-                          photoZoomLevel > 1 ? "cursor-grab active:cursor-grabbing" : "cursor-zoom-in"
-                        }`}
+                      <div
+                        className={`relative w-full h-[46vh] sm:h-[54vh] flex items-center justify-center bg-black/60 overflow-auto select-none no-scrollbar ${photoZoomLevel > 1 ? "cursor-grab active:cursor-grabbing" : "cursor-zoom-in"
+                          }`}
                         onDoubleClick={togglePhotoZoom}
                       >
                         <div
@@ -1234,7 +1224,7 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
                     </div>
 
                     {/* Video Selector Pills (1 to 9) */}
-                    <div 
+                    <div
                       ref={videoPillsRef}
                       className="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar"
                     >
@@ -1246,11 +1236,10 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
                             key={num}
                             type="button"
                             onClick={() => selectVideoClip(num)}
-                            className={`min-h-[38px] px-3.5 py-1.5 rounded-xl text-xs font-bold font-outfit whitespace-nowrap transition-all cursor-pointer flex items-center gap-1.5 shrink-0 ${
-                              isCurrent
+                            className={`min-h-[38px] px-3.5 py-1.5 rounded-xl text-xs font-bold font-outfit whitespace-nowrap transition-all cursor-pointer flex items-center gap-1.5 shrink-0 ${isCurrent
                                 ? "bg-accent-blue text-white shadow-md shadow-blue-500/30 scale-105 border border-blue-400"
                                 : "bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10"
-                            }`}
+                              }`}
                           >
                             <Play size={11} className={isCurrent ? "fill-white" : ""} />
                             <span>Clip {num}</span>
@@ -1260,7 +1249,7 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
                     </div>
 
                     {/* Main Video Theater: Tap to Play/Pause, Buffering Spinner, Touch Swipe */}
-                    <div 
+                    <div
                       className="relative w-full max-w-xl mx-auto rounded-2xl overflow-hidden bg-black/95 border border-white/15 shadow-2xl flex flex-col items-center"
                       onTouchStart={handleVideoTouchStart}
                       onTouchEnd={handleVideoTouchEnd}
@@ -1287,7 +1276,7 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
 
                         {/* Interactive Centered Play Button Overlay when paused */}
                         {!isVideoPlaying && !isVideoBuffering && (
-                          <div 
+                          <div
                             onClick={toggleVideoPlay}
                             className="absolute inset-0 flex flex-col items-center justify-center bg-black/45 backdrop-blur-[2px] transition-all cursor-pointer z-20 group/play"
                           >
@@ -1376,8 +1365,8 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       {selectedItem.tools.map((tool, tIdx) => (
-                        <div 
-                          key={tIdx} 
+                        <div
+                          key={tIdx}
                           className="p-3.5 rounded-xl bg-white/[0.02] border border-white/10 hover:border-accent-blue/40 transition-colors flex items-center gap-3"
                         >
                           <div className="w-8 h-8 rounded-lg bg-accent-blue/10 border border-accent-blue/20 flex items-center justify-center text-accent-blue shrink-0">

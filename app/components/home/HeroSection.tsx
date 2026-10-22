@@ -30,12 +30,12 @@ export default function HeroSection() {
   };
 
   return (
-    <section 
-      id="home" 
+    <section
+      id="home"
       className="min-h-[calc(100dvh-5rem)] flex flex-col justify-center items-center text-center py-8 sm:py-12 md:py-20 relative overflow-hidden snap-start scroll-mt-20"
     >
       {/* Ambient Cosmic Radial Light Glow matching reference image & background light */}
-      <div 
+      <div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-[850px] h-[320px] sm:h-[450px] md:h-[550px] rounded-full opacity-35 blur-[80px] sm:blur-[120px] pointer-events-none -z-10"
         style={{
           background: "radial-gradient(ellipse at center, rgba(56, 189, 248, 0.45) 0%, rgba(37, 99, 235, 0.25) 45%, rgba(1, 4, 19, 0) 75%)"
@@ -68,8 +68,8 @@ export default function HeroSection() {
         </motion.div>
 
         {/* Main Impact Headline matching letter font & gradient from reference */}
-        <motion.h1 
-          variants={itemVariants} 
+        <motion.h1
+          variants={itemVariants}
           className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-white tracking-tight leading-[1.12] sm:leading-[1.08] font-outfit mb-4 sm:mb-6 text-center px-1"
         >
           Crafting engaging visuals &amp;{" "}
@@ -79,17 +79,17 @@ export default function HeroSection() {
         </motion.h1>
 
         {/* Subtitle Tailored to Chen Sreyneat's Profile */}
-        <motion.p 
-          variants={itemVariants} 
+        <motion.p
+          variants={itemVariants}
           className="text-slate-200 text-sm sm:text-base md:text-lg lg:text-xl font-medium leading-relaxed max-w-2xl mx-auto font-inter mb-8 sm:mb-10 text-center px-2"
         >
-          Combining IT engineering foundations with creative design and digital marketing. 
+          Combining IT engineering foundations with creative design and digital marketing.
           I build high-impact visuals, strengthen brand identity, and deliver digital solutions that connect.
         </motion.p>
 
         {/* Action Buttons Row with User Signature Blue Theme - Equal side-by-side on responsive screens */}
-        <motion.div 
-          variants={itemVariants} 
+        <motion.div
+          variants={itemVariants}
           className="flex flex-row items-center justify-center gap-2.5 sm:gap-4 w-full max-w-sm sm:max-w-none mx-auto mb-10 sm:mb-14 px-2"
         >
           {/* Primary CTA: View My Work */}
@@ -111,7 +111,7 @@ export default function HeroSection() {
         </motion.div>
 
         {/* Bottom Credibility Highlights Bar */}
-        <motion.div 
+        <motion.div
           variants={itemVariants}
           className="flex flex-wrap items-center justify-center gap-x-4 sm:gap-x-6 gap-y-2 text-xs sm:text-sm font-semibold text-slate-300 font-outfit px-2"
         >
@@ -131,20 +131,20 @@ export default function HeroSection() {
       </motion.div>
 
       {/* Floating Rotating "LET'S TALK" Badge (Bottom Right on Tablet/Desktop) */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.8, delay: 0.4 }}
         className="hidden md:block absolute right-4 lg:right-8 bottom-4 z-20"
       >
-        <Link 
+        <Link
           href="#contact"
           className="group relative block w-24 h-24 lg:w-28 lg:h-28 rounded-full cursor-pointer transition-transform duration-300 hover:scale-105"
           aria-label="Let's Talk - Contact Chen Sreyneat"
         >
           {/* Circular Rotating SVG Text */}
-          <svg 
-            className="w-full h-full animate-[spin_12s_linear_infinite] group-hover:[animation-play-state:paused]" 
+          <svg
+            className="w-full h-full animate-[spin_12s_linear_infinite] group-hover:[animation-play-state:paused]"
             viewBox="0 0 120 120"
           >
             <defs>

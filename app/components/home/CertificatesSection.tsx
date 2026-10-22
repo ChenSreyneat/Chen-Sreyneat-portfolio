@@ -1,16 +1,16 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import { 
-  Award, 
-  Trophy, 
-  Star, 
-  ExternalLink, 
-  FileText, 
-  Code, 
-  ChevronLeft, 
-  ChevronRight, 
-  X, 
+import {
+  Award,
+  Trophy,
+  Star,
+  ExternalLink,
+  FileText,
+  Code,
+  ChevronLeft,
+  ChevronRight,
+  X,
   Eye,
   ZoomIn,
   ZoomOut,
@@ -241,7 +241,7 @@ export default function CertificatesSection() {
 
   const handleScroll = (direction: "left" | "right") => {
     if (sliderRef.current) {
-      const nextIndex = direction === "left" 
+      const nextIndex = direction === "left"
         ? Math.max(0, activeSlide - 1)
         : Math.min(certificates.length - 1, activeSlide + 1);
       scrollToSlide(nextIndex);
@@ -266,7 +266,7 @@ export default function CertificatesSection() {
     <section id="certificates" className="min-h-[calc(100dvh-5rem)] flex flex-col justify-center py-6 sm:py-10 md:py-16 lg:py-24 relative overflow-hidden bg-transparent snap-start scroll-mt-20">
       {/* Background UI Grid & Ambient Luminous Glow (Matching EducationSection) */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#1d70a208_1px,transparent_1px),linear-gradient(to_bottom,#1d70a208_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none" />
-      <div 
+      <div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-[700px] h-[300px] sm:h-[400px] rounded-full opacity-35 blur-[100px] pointer-events-none -z-10"
         style={{
           background: "radial-gradient(ellipse at center, rgba(56, 189, 248, 0.5) 0%, rgba(37, 99, 235, 0.3) 40%, transparent 75%)"
@@ -295,13 +295,12 @@ export default function CertificatesSection() {
 
       {/* Slider Container Wrapper */}
       <div className="relative w-full z-10 max-w-7xl mx-auto px-0 sm:px-4 md:px-8">
-        
+
         {/* Left Circular Arrow Button */}
         <button
           onClick={() => handleScroll("left")}
-          className={`absolute left-2 md:left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-slate-950/60 backdrop-blur-md text-white rounded-full hidden lg:flex items-center justify-center z-30 transition-all duration-300 border border-white/20 hover:border-accent-blue hover:bg-slate-900/90 hover:scale-105 active:scale-95 cursor-pointer shadow-lg ${
-            showLeftArrow ? "opacity-100 pointer-events-auto translate-x-0" : "opacity-0 pointer-events-none -translate-x-4"
-          }`}
+          className={`absolute left-2 md:left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-slate-950/60 backdrop-blur-md text-white rounded-full hidden lg:flex items-center justify-center z-30 transition-all duration-300 border border-white/20 hover:border-accent-blue hover:bg-slate-900/90 hover:scale-105 active:scale-95 cursor-pointer shadow-lg ${showLeftArrow ? "opacity-100 pointer-events-auto translate-x-0" : "opacity-0 pointer-events-none -translate-x-4"
+            }`}
           aria-label="Scroll Left"
         >
           <ChevronLeft className="w-6 h-6 text-white" />
@@ -310,9 +309,8 @@ export default function CertificatesSection() {
         {/* Right Circular Arrow Button */}
         <button
           onClick={() => handleScroll("right")}
-          className={`absolute right-2 md:right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-slate-950/60 backdrop-blur-md text-white rounded-full hidden lg:flex items-center justify-center z-30 transition-all duration-300 border border-white/20 hover:border-accent-blue hover:bg-slate-900/90 hover:scale-105 active:scale-95 cursor-pointer shadow-lg ${
-            showRightArrow ? "opacity-100 pointer-events-auto translate-x-0" : "opacity-0 pointer-events-none translate-x-4"
-          }`}
+          className={`absolute right-2 md:right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-slate-950/60 backdrop-blur-md text-white rounded-full hidden lg:flex items-center justify-center z-30 transition-all duration-300 border border-white/20 hover:border-accent-blue hover:bg-slate-900/90 hover:scale-105 active:scale-95 cursor-pointer shadow-lg ${showRightArrow ? "opacity-100 pointer-events-auto translate-x-0" : "opacity-0 pointer-events-none translate-x-4"
+            }`}
           aria-label="Scroll Right"
         >
           <ChevronRight className="w-6 h-6 text-white" />
@@ -328,8 +326,8 @@ export default function CertificatesSection() {
           className="flex gap-4 sm:gap-6 overflow-x-auto py-4 sm:py-6 px-4 no-scrollbar snap-x snap-mandatory scroll-smooth touch-auto cursor-grab active:cursor-grabbing [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
         >
           {certificates.map((item, index) => (
-            <motion.div 
-              key={index} 
+            <motion.div
+              key={index}
               whileHover={{ y: -6 }}
               transition={{ duration: 0.3 }}
               className="flex-shrink-0 w-[calc(100vw-2.5rem)] max-w-[360px] sm:w-[340px] md:w-[380px] snap-center snap-always group relative flex flex-col justify-between bg-slate-950/20 border border-white/20 rounded-2xl p-5 sm:p-6 transition-all duration-300 hover:border-accent-blue shadow-sm hover:shadow-xl hover:shadow-accent-blue/20"
@@ -377,9 +375,8 @@ export default function CertificatesSection() {
               key={idx}
               type="button"
               onClick={() => scrollToSlide(idx)}
-              className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
-                activeSlide === idx ? "w-6 bg-accent-blue shadow-xs shadow-accent-blue/40" : "w-2 bg-white/20 hover:bg-white/40"
-              }`}
+              className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${activeSlide === idx ? "w-6 bg-accent-blue shadow-xs shadow-accent-blue/40" : "w-2 bg-white/20 hover:bg-white/40"
+                }`}
               aria-label={`Go to certificate ${idx + 1}`}
             />
           ))}
@@ -398,7 +395,7 @@ export default function CertificatesSection() {
               onClick={closeCertModal}
               className="absolute inset-0 bg-[#010413]/75 backdrop-blur-md touch-none"
             />
-            
+
             {/* Modal Light Background Animation & Glow */}
             <ModalLightBackground />
 
@@ -450,11 +447,10 @@ export default function CertificatesSection() {
                       key={idx}
                       type="button"
                       onClick={() => openCertModal(idx)}
-                      className={`text-[11px] sm:text-xs px-2.5 sm:px-3 py-1 rounded-lg font-semibold font-outfit transition-all cursor-pointer whitespace-nowrap shrink-0 flex items-center gap-1.5 ${
-                        selectedCertIndex === idx
+                      className={`text-[11px] sm:text-xs px-2.5 sm:px-3 py-1 rounded-lg font-semibold font-outfit transition-all cursor-pointer whitespace-nowrap shrink-0 flex items-center gap-1.5 ${selectedCertIndex === idx
                           ? "bg-accent-blue text-white shadow-sm shadow-accent-blue/30 scale-102"
                           : "bg-white/5 text-slate-300 hover:bg-white/10 hover:text-white border border-white/10"
-                      }`}
+                        }`}
                     >
                       <cert.icon size={11} className={selectedCertIndex === idx ? "text-white" : "text-accent-blue"} />
                       <span>{cert.title.length > 22 ? cert.title.slice(0, 20) + "..." : cert.title}</span>
@@ -462,9 +458,9 @@ export default function CertificatesSection() {
                   ))}
                 </div>
               </div>
-              
+
               {/* Content Area with Zoom, Pan, Swipe & Floating Arrows */}
-              <div 
+              <div
                 className="flex-grow w-full bg-slate-950/70 relative flex items-center justify-center overflow-hidden p-2 sm:p-4 md:p-6"
                 onTouchStart={handleTouchStart}
                 onTouchEnd={handleTouchEnd}
@@ -480,13 +476,12 @@ export default function CertificatesSection() {
                     />
                   </div>
                 ) : (
-                  <div 
-                    className={`relative w-full h-[52vh] sm:h-[60vh] md:h-[66vh] rounded-xl overflow-auto select-none no-scrollbar flex items-center justify-center ${
-                      zoomLevel > 1 ? "cursor-grab active:cursor-grabbing" : "cursor-zoom-in"
-                    }`}
+                  <div
+                    className={`relative w-full h-[52vh] sm:h-[60vh] md:h-[66vh] rounded-xl overflow-auto select-none no-scrollbar flex items-center justify-center ${zoomLevel > 1 ? "cursor-grab active:cursor-grabbing" : "cursor-zoom-in"
+                      }`}
                     onDoubleClick={toggleZoom}
                   >
-                    <div 
+                    <div
                       className="relative flex items-center justify-center transition-transform duration-200 origin-center"
                       style={{
                         transform: `scale(${zoomLevel})`,
