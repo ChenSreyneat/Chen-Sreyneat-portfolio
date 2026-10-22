@@ -195,13 +195,16 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
 
     if (selectedItem) {
       document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
       window.addEventListener("keydown", handleKeyDown);
     } else {
       document.body.style.overflow = "unset";
+      document.documentElement.style.overflow = "unset";
     }
 
     return () => {
       document.body.style.overflow = "unset";
+      document.documentElement.style.overflow = "unset";
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, [selectedItem]);
@@ -714,14 +717,14 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
       {/* Pop-up Modal: Rich With Detailed Inputs, Metrics, Deliverables & Media */}
       <AnimatePresence>
         {selectedItem && (
-          <div className="fixed inset-0 z-[200] flex items-center justify-center p-2 sm:p-4 md:p-8">
+          <div className="fixed inset-0 z-[2000] flex items-center justify-center p-2 sm:p-4 md:p-8 overscroll-contain touch-none">
             {/* Backdrop Blur with Cosmic Glass */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setSelectedItem(null)}
-              className="absolute inset-0 bg-[#010413]/80 backdrop-blur-md"
+              className="absolute inset-0 bg-[#010413]/80 backdrop-blur-md touch-none"
             />
             
             {/* Modal Light Background Animation & Glow */}
@@ -733,7 +736,7 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.92, y: 20 }}
               transition={{ type: "spring", damping: 25, stiffness: 350 }}
-              className="relative w-full max-w-3xl max-h-[92dvh] sm:max-h-[90vh] bg-[#020617]/95 backdrop-blur-2xl border border-accent-blue/30 rounded-2xl overflow-hidden shadow-[0_0_60px_rgba(56,189,248,0.25)] flex flex-col z-10"
+              className="relative w-full max-w-3xl max-h-[92dvh] sm:max-h-[90vh] bg-[#020617]/95 backdrop-blur-2xl border border-accent-blue/30 rounded-2xl overflow-hidden shadow-[0_0_60px_rgba(56,189,248,0.25)] flex flex-col z-10 overscroll-contain touch-auto"
             >
               {/* Modal Header */}
               <div className="p-4 sm:p-5 border-b border-white/10 bg-slate-950/80 backdrop-blur-md flex items-center justify-between gap-4">

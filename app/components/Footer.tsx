@@ -59,11 +59,14 @@ export default function Footer() {
   useEffect(() => {
     if (isCommandOpen) {
       document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "unset";
+      document.documentElement.style.overflow = "unset";
     }
     return () => {
       document.body.style.overflow = "unset";
+      document.documentElement.style.overflow = "unset";
     };
   }, [isCommandOpen]);
 
@@ -273,14 +276,14 @@ export default function Footer() {
       {/* Modern Interactive Command Palette Modal */}
       <AnimatePresence>
         {isCommandOpen && (
-          <div className="fixed inset-0 z-[300] flex items-start justify-center pt-20 sm:pt-28 px-4">
+          <div className="fixed inset-0 z-[2000] flex items-start justify-center pt-20 sm:pt-28 px-4 overscroll-contain touch-none">
             {/* Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={closeCommandPalette}
-              className="fixed inset-0 bg-black/75 backdrop-blur-md"
+              className="fixed inset-0 bg-black/75 backdrop-blur-md touch-none"
             />
 
             {/* Modal Dialog */}
@@ -289,7 +292,7 @@ export default function Footer() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: -20 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
-              className="relative w-full max-w-xl bg-[#030712]/95 border border-white/15 rounded-2xl shadow-[0_0_50px_rgba(56,189,248,0.2)] overflow-hidden flex flex-col z-10 backdrop-blur-2xl"
+              className="relative w-full max-w-xl bg-[#030712]/95 border border-white/15 rounded-2xl shadow-[0_0_50px_rgba(56,189,248,0.2)] overflow-hidden flex flex-col z-10 backdrop-blur-2xl overscroll-contain touch-auto"
             >
               {/* Search Bar Input */}
               <div className="flex items-center gap-3 px-4 py-3.5 border-b border-white/10 bg-white/[0.02]">
