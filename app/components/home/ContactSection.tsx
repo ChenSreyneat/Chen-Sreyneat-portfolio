@@ -13,22 +13,30 @@ export default function ContactSection() {
     message: ""
   });
 
-  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [status, setStatus] = useState<"idle" | "sending" | "success" | "opened_mail">("idle");
+  const [noticeMessage, setNoticeMessage] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-    if (status === "error") {
+    if (status !== "idle" && status !== "sending") {
       setStatus("idle");
-      setErrorMessage(null);
+      setNoticeMessage(null);
     }
+  };
+
+  const getMailtoUrl = () => {
+    const subject = encodeURIComponent(formData.subject || "Message from Portfolio");
+    const body = encodeURIComponent(
+      `Name: ${formData.name || "Portfolio Visitor"}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
+    );
+    return `mailto:chensreyneat198@gmail.com?subject=${subject}&body=${body}`;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus("sending");
-    setErrorMessage(null);
+    setNoticeMessage(null);
 
     try {
       const response = await fetch("https://formsubmit.co/ajax/chensreyneat198@gmail.com", {
@@ -38,7 +46,7 @@ export default function ContactSection() {
           "Accept": "application/json"
         },
         body: JSON.stringify({
-          name: formData.name,
+          name: formData.name || "Portfolio Visitor",
           email: formData.email,
           subject: formData.subject || "New Message from Portfolio",
           message: formData.message,
@@ -51,21 +59,21 @@ export default function ContactSection() {
         setStatus("success");
         setFormData({ name: "", email: "", subject: "", message: "" });
         setTimeout(() => setStatus("idle"), 5000);
-      } else {
-        const msg = String(result?.message || "");
-        if (msg.toLowerCase().includes("activation") || msg.toLowerCase().includes("activate")) {
-          setErrorMessage("Activation Required: FormSubmit sent an activation email to chensreyneat198@gmail.com. Please check your Gmail (including Spam folder) and tap 'Activate Form'. In the meantime, tap 'Open in Mail App' below to send directly!");
-        } else {
-          setErrorMessage(msg || "Could not send message automatically. Please tap 'Open in Mail App' or 'Telegram' below.");
-        }
-        setStatus("error");
-        setTimeout(() => setStatus("idle"), 8000);
+        return;
       }
     } catch {
-      setErrorMessage("Network connection issue. Tap 'Open in Mail App' or 'Telegram' below to send directly!");
-      setStatus("error");
-      setTimeout(() => setStatus("idle"), 8000);
+      // ignore network errors and proceed to reliable mail fallback
     }
+
+    // Seamless fallback: If FormSubmit needs activation or network is restricted,
+    // open the user's native email app with all fields filled in!
+    setStatus("opened_mail");
+    const url = getMailtoUrl();
+    window.location.href = url;
+    setNoticeMessage("Opening your Mail app so you can send your message directly to chensreyneat198@gmail.com. You can also chat on Telegram below!");
+    setTimeout(() => {
+      setStatus("idle");
+    }, 10000);
   };
 
   return (
@@ -356,8 +364,8 @@ export default function ContactSection() {
               disabled={status === "sending"}
               className={`w-full py-4 rounded-xl font-extrabold text-sm uppercase tracking-wider font-outfit flex items-center justify-center gap-3 transition-all shadow-md ${status === "success"
                   ? "bg-green-600 text-white shadow-green-500/20"
-                  : status === "error"
-                    ? "bg-red-600 text-white shadow-red-500/20"
+                  : status === "opened_mail"
+                    ? "bg-linear-to-r from-blue-600 to-indigo-600 text-white shadow-blue-500/30"
                     : "bg-[#4185DB] hover:bg-[#3273c5] text-white shadow-[#4185DB]/20 hover:shadow-lg hover:shadow-[#4185DB]/30 cursor-pointer"
                 }`}
             >
@@ -368,13 +376,12 @@ export default function ContactSection() {
                 </>
               ) : status === "success" ? (
                 <>
-                  <div className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center">✓</div>
+                  <div className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center font-bold">✓</div>
                   Message Sent!
                 </>
-              ) : status === "error" ? (
+              ) : status === "opened_mail" ? (
                 <>
-                  <div className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center">!</div>
-                  Error Sending
+                  <Mail size={18} /> Opening Mail App...
                 </>
               ) : (
                 <>
@@ -383,30 +390,26 @@ export default function ContactSection() {
               )}
             </motion.button>
 
-            {/* Error & Activation Guidance Banner with 1-Tap Fallbacks */}
-            {errorMessage && (
+            {/* Seamless Mail & Telegram Delivery Notice */}
+            {noticeMessage && (
               <motion.div
                 initial={{ opacity: 0, y: -6 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="p-4 rounded-xl bg-red-950/50 border border-red-500/40 text-xs sm:text-sm text-red-200 space-y-3 shadow-lg"
+                className="p-4 rounded-xl bg-blue-950/40 border border-blue-500/30 text-xs sm:text-sm text-blue-100 space-y-3 shadow-lg"
               >
                 <div className="flex items-start gap-2.5">
-                  <div className="w-5 h-5 rounded-full bg-red-500/30 text-red-300 flex items-center justify-center flex-shrink-0 text-xs font-bold mt-0.5">
-                    !
+                  <div className="w-5 h-5 rounded-full bg-blue-500/20 text-accent-blue flex items-center justify-center flex-shrink-0 text-xs font-bold mt-0.5">
+                    ℹ️
                   </div>
-                  <p className="leading-relaxed font-inter text-xs sm:text-[13px]">{errorMessage}</p>
+                  <p className="leading-relaxed font-inter text-xs sm:text-[13px]">{noticeMessage}</p>
                 </div>
 
-                <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-red-500/20">
-                  <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-red-300/80 font-outfit">
+                <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-blue-500/20">
+                  <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-blue-300 font-outfit">
                     Direct Send:
                   </span>
                   <a
-                    href={`mailto:chensreyneat198@gmail.com?subject=${encodeURIComponent(
-                      formData.subject || "Message from Portfolio"
-                    )}&body=${encodeURIComponent(
-                      `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
-                    )}`}
+                    href={getMailtoUrl()}
                     className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white font-medium text-xs transition-colors"
                   >
                     <Mail size={13} className="text-accent-blue" /> Open in Mail App
