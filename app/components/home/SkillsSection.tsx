@@ -1,5 +1,6 @@
 "use client";
 
+import type React from "react";
 import { Code2, Layers, Database, GitBranch, PenTool } from "lucide-react";
 import { FaJava } from "react-icons/fa";
 import { 

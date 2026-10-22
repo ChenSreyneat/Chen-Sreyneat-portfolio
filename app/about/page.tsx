@@ -12,7 +12,6 @@ import {
   GraduationCap, 
   MapPin, 
   ChevronLeft,
-  ChevronRight,
   Award,
   Globe,
   User,
@@ -27,8 +26,7 @@ import {
   FaLinkedin, 
   FaFacebook, 
   FaInstagram, 
-  FaTelegram,
-  FaBehance
+  FaTelegram
 } from "react-icons/fa";
 
 export default function About() {

@@ -41,7 +41,7 @@ export default function ContactSection() {
       });
 
       const result = await response.json();
-      if (result.success === "true") {
+      if (response.ok && (result.success === "true" || result.success === true)) {
         setStatus("success");
         setFormData({ name: "", email: "", subject: "", message: "" });
         setTimeout(() => setStatus("idle"), 5000);

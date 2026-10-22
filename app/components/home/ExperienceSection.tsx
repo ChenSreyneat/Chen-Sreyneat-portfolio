@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import { 
   Palette, 
@@ -11,16 +11,15 @@ import {
   X, 
   CheckCircle2, 
   Building2,
-  Clock,
-  FileText,
-  Film,
-  ChevronLeft,
-  ChevronRight,
-  Play,
-  Image as ImageIcon,
-  Sparkles,
-  Wrench,
-  Award
+  Clock, 
+  FileText, 
+  Film, 
+  ChevronLeft, 
+  ChevronRight, 
+  Play, 
+  Image as ImageIcon, 
+  Sparkles, 
+  Wrench
 } from "lucide-react";
 import { FaBehance } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
@@ -207,7 +206,7 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
   const [showRightArrow, setShowRightArrow] = useState(true);
   const [activeSlide, setActiveSlide] = useState(0);
 
-  const handleScrollButtons = () => {
+  const handleScrollButtons = useCallback(() => {
     if (sliderRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = sliderRef.current;
       setShowLeftArrow(scrollLeft > 15);
@@ -223,7 +222,7 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
         setActiveSlide(current);
       }
     }
-  };
+  }, [experiences.length]);
 
   const handleScroll = (direction: "left" | "right") => {
     if (sliderRef.current) {
@@ -256,75 +255,11 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
     handleScrollButtons();
     window.addEventListener("resize", handleScrollButtons);
 
-    let intervalId: NodeJS.Timeout | null = null;
-    let resumeTimeout: NodeJS.Timeout | null = null;
-    let isInteracting = false;
-
-    const autoScroll = () => {
-      if (isInteracting || !slider) return;
-      const { scrollLeft, scrollWidth, clientWidth } = slider;
-      const maxScroll = scrollWidth - clientWidth;
-      // If content fits within screen (e.g. desktop grid), do nothing
-      if (maxScroll <= 15) return;
-
-      if (scrollLeft >= maxScroll - 15) {
-        slider.scrollTo({ left: 0, behavior: "smooth" });
-      } else {
-        const card = slider.firstElementChild as HTMLElement;
-        const cardWidth = card ? card.offsetWidth : 300;
-        slider.scrollBy({ left: cardWidth + 24, behavior: "smooth" });
-      }
-    };
-
-    const startTimer = () => {
-      if (intervalId) clearInterval(intervalId);
-      intervalId = setInterval(autoScroll, 3000);
-    };
-
-    const stopTimer = () => {
-      if (intervalId) {
-        clearInterval(intervalId);
-        intervalId = null;
-      }
-    };
-
-    const handleInteractionStart = () => {
-      isInteracting = true;
-      stopTimer();
-      if (resumeTimeout) clearTimeout(resumeTimeout);
-    };
-
-    const handleInteractionEnd = () => {
-      if (resumeTimeout) clearTimeout(resumeTimeout);
-      resumeTimeout = setTimeout(() => {
-        isInteracting = false;
-        startTimer();
-      }, 2000);
-    };
-
-    startTimer();
-
-    // Desktop hover pause
-    slider.addEventListener("mouseenter", handleInteractionStart);
-    slider.addEventListener("mouseleave", handleInteractionEnd);
-
-    // Mobile touch pause & auto-resume
-    slider.addEventListener("touchstart", handleInteractionStart, { passive: true });
-    slider.addEventListener("touchend", handleInteractionEnd, { passive: true });
-    slider.addEventListener("touchcancel", handleInteractionEnd, { passive: true });
-
     return () => {
       slider.removeEventListener("scroll", handleScrollButtons);
       window.removeEventListener("resize", handleScrollButtons);
-      stopTimer();
-      if (resumeTimeout) clearTimeout(resumeTimeout);
-      slider.removeEventListener("mouseenter", handleInteractionStart);
-      slider.removeEventListener("mouseleave", handleInteractionEnd);
-      slider.removeEventListener("touchstart", handleInteractionStart);
-      slider.removeEventListener("touchend", handleInteractionEnd);
-      slider.removeEventListener("touchcancel", handleInteractionEnd);
     };
-  }, []);
+  }, [handleScrollButtons]);
 
   const openExperienceModal = (item: ExperienceItem, initialTab: "overview" | "certificate" | "videos" | "photos" | "tools" = "overview") => {
     setSelectedItem(item);
@@ -420,7 +355,7 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
         {/* Scrollable Container with native snap & touch swipe on mobile/tablet, 3-col grid on desktop */}
         <div
           ref={sliderRef}
-          className="flex lg:grid lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 overflow-x-auto lg:overflow-visible scroll-smooth py-4 lg:py-0 px-4 lg:px-0 select-none no-scrollbar snap-x snap-mandatory lg:snap-none touch-pan-x [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] items-stretch"
+          className="flex lg:grid lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 overflow-x-auto lg:overflow-visible scroll-smooth py-4 lg:py-0 px-4 lg:px-0 no-scrollbar snap-x snap-proximity lg:snap-none touch-pan-y [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] items-stretch"
         >
           {experiences.map((item, index) => (
             <motion.div 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Award, Trophy, Star, ExternalLink, FileText, Code, ChevronLeft, ChevronRight, X, Eye } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
@@ -11,6 +11,7 @@ export default function CertificatesSection() {
   const sliderRef = useRef<HTMLDivElement>(null);
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(true);
+  const [activeSlide, setActiveSlide] = useState(0);
 
   // Pop-up modal state
   const [activeFile, setActiveFile] = useState<string | null>(null);
@@ -87,11 +88,41 @@ export default function CertificatesSection() {
     };
   }, [activeFile]);
 
-  const handleScrollButtons = () => {
+  const handleScrollButtons = useCallback(() => {
     if (sliderRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = sliderRef.current;
       setShowLeftArrow(scrollLeft > 10);
       setShowRightArrow(scrollLeft < scrollWidth - clientWidth - 10);
+
+      const card = sliderRef.current.firstElementChild as HTMLElement;
+      if (card) {
+        const style = window.getComputedStyle(sliderRef.current);
+        const gap = parseFloat(style.columnGap || style.gap) || 16;
+        const cardWidth = card.offsetWidth + gap;
+        const maxScroll = scrollWidth - clientWidth;
+        const current = scrollLeft >= maxScroll - 10
+          ? certificates.length - 1
+          : Math.min(
+              certificates.length - 1,
+              Math.max(0, Math.round(scrollLeft / cardWidth))
+            );
+        setActiveSlide(current);
+      }
+    }
+  }, [certificates.length]);
+
+  const scrollToSlide = (index: number) => {
+    if (sliderRef.current) {
+      const card = sliderRef.current.firstElementChild as HTMLElement;
+      if (card) {
+        const style = window.getComputedStyle(sliderRef.current);
+        const gap = parseFloat(style.columnGap || style.gap) || 16;
+        const cardWidth = card.offsetWidth + gap;
+        sliderRef.current.scrollTo({
+          left: cardWidth * index,
+          behavior: "smooth"
+        });
+      }
     }
   };
 
@@ -116,39 +147,11 @@ export default function CertificatesSection() {
     handleScrollButtons();
     window.addEventListener("resize", handleScrollButtons);
 
-    let intervalId: NodeJS.Timeout;
-
-    const startAutoPlay = () => {
-      intervalId = setInterval(() => {
-        const { scrollLeft, scrollWidth, clientWidth } = slider;
-        const maxScroll = scrollWidth - clientWidth;
-        if (scrollLeft >= maxScroll - 10) {
-          slider.scrollTo({ left: 0, behavior: "smooth" });
-        } else {
-          const cardElement = slider.firstElementChild as HTMLElement;
-          const cardWidth = cardElement ? cardElement.offsetWidth : 300;
-          const scrollAmount = cardWidth + 24; // width + gap
-          slider.scrollBy({ left: scrollAmount, behavior: "smooth" });
-        }
-      }, 3500);
-    };
-
-    startAutoPlay();
-
-    const handleMouseEnter = () => clearInterval(intervalId);
-    const handleMouseLeave = () => startAutoPlay();
-
-    slider.addEventListener("mouseenter", handleMouseEnter);
-    slider.addEventListener("mouseleave", handleMouseLeave);
-
     return () => {
       slider.removeEventListener("scroll", handleScrollButtons);
       window.removeEventListener("resize", handleScrollButtons);
-      clearInterval(intervalId);
-      slider.removeEventListener("mouseenter", handleMouseEnter);
-      slider.removeEventListener("mouseleave", handleMouseLeave);
     };
-  }, []);
+  }, [handleScrollButtons]);
 
   return (
     <section id="certificates" className="py-16 sm:py-20 md:py-24 relative overflow-hidden bg-transparent">
@@ -209,7 +212,7 @@ export default function CertificatesSection() {
         {/* Scrollable Container with native snap & touch swipe */}
         <div
           ref={sliderRef}
-          className="flex gap-4 sm:gap-6 overflow-x-auto scroll-smooth py-4 sm:py-6 px-4 select-none no-scrollbar snap-x snap-mandatory touch-pan-x [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+          className="flex gap-4 sm:gap-6 overflow-x-auto scroll-smooth py-4 sm:py-6 px-4 no-scrollbar snap-x snap-proximity touch-pan-y [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
         >
           {certificates.map((item, index) => (
             <motion.div 
@@ -256,6 +259,21 @@ export default function CertificatesSection() {
                 </button>
               </div>
             </motion.div>
+          ))}
+        </div>
+
+        {/* Responsive Pagination Dots Indicator (< lg) */}
+        <div className="flex lg:hidden justify-center items-center gap-2 mt-4 sm:mt-6">
+          {certificates.map((_, idx) => (
+            <button
+              key={idx}
+              type="button"
+              onClick={() => scrollToSlide(idx)}
+              className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
+                activeSlide === idx ? "w-6 bg-accent-blue shadow-xs shadow-accent-blue/40" : "w-2 bg-white/20 hover:bg-white/40"
+              }`}
+              aria-label={`Go to certificate ${idx + 1}`}
+            />
           ))}
         </div>
       </div>

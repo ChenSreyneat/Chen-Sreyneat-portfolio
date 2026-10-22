@@ -236,7 +236,7 @@ export default function AboutSection() {
 
               {/* Instagram */}
               <a
-                href="https://instagram.com//"
+                href="https://instagram.com/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-3 py-1.5 rounded-xl bg-slate-950/20 border border-white/20 hover:border-accent-blue hover:bg-accent-blue/10 text-xs font-bold text-white transition-all inline-flex items-center gap-2 font-outfit hover:scale-105 active:scale-95 shadow-sm hover:shadow-accent-blue/20"

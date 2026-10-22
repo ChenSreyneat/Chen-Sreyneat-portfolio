@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import Link from "next/link";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { 
   FileText, 
@@ -18,7 +17,6 @@ import {
   GraduationCap, 
   Briefcase, 
   Layers, 
-  Wrench, 
   Award,
   Send
 } from "lucide-react";
@@ -31,20 +29,31 @@ export default function Footer() {
   const [searchQuery, setSearchQuery] = useState("");
   const [copiedEmail, setCopiedEmail] = useState(false);
 
+  const closeCommandPalette = useCallback(() => {
+    setIsCommandOpen(false);
+    setSearchQuery("");
+  }, []);
+
   // Keyboard shortcut listener (Cmd+K / Ctrl+K & Escape)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
         e.preventDefault();
-        setIsCommandOpen((prev) => !prev);
+        setIsCommandOpen((prev) => {
+          if (prev) {
+            setSearchQuery("");
+            return false;
+          }
+          return true;
+        });
       } else if (e.key === "Escape") {
-        setIsCommandOpen(false);
+        closeCommandPalette();
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  }, [closeCommandPalette]);
 
   // Lock body scroll when Command Palette is open
   useEffect(() => {
@@ -52,7 +61,6 @@ export default function Footer() {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "unset";
-      setSearchQuery("");
     }
     return () => {
       document.body.style.overflow = "unset";
@@ -70,7 +78,7 @@ export default function Footer() {
   };
 
   const handleNavigate = (href: string) => {
-    setIsCommandOpen(false);
+    closeCommandPalette();
     if (href.startsWith("http") || href.endsWith(".pdf")) {
       window.open(href, "_blank");
     } else {
@@ -84,7 +92,6 @@ export default function Footer() {
     { name: "Education", href: "/#education", icon: GraduationCap, category: "Navigation" },
     { name: "Work Experience", href: "/#experience", icon: Briefcase, category: "Navigation" },
     { name: "Projects", href: "/#projects", icon: Layers, category: "Navigation" },
-    { name: "Services", href: "/#services", icon: Wrench, category: "Navigation" },
     { name: "Certificates", href: "/#certificates", icon: Award, category: "Navigation" },
     { name: "Contact Me", href: "/#contact", icon: Mail, category: "Navigation" },
   ];
@@ -95,7 +102,7 @@ export default function Footer() {
       description: "Get Chen Sreyneat's official resume",
       icon: Download,
       action: () => {
-        setIsCommandOpen(false);
+        closeCommandPalette();
         const link = document.createElement("a");
         link.href = "/image/CV_Chen_Sreyneat.pdf";
         link.download = "CV_Chen_Sreyneat.pdf";
@@ -115,7 +122,7 @@ export default function Footer() {
       description: "Open in Gmail or default mail app",
       icon: Send,
       action: () => {
-        setIsCommandOpen(false);
+        closeCommandPalette();
         window.open("https://mail.google.com/mail/?view=cm&fs=1&to=chensreyneat198@gmail.com", "_blank");
       },
       category: "Actions",
@@ -125,7 +132,7 @@ export default function Footer() {
       description: "@Neat198",
       icon: FaTelegram,
       action: () => {
-        setIsCommandOpen(false);
+        closeCommandPalette();
         window.open("https://t.me/Neat198", "_blank");
       },
       category: "Social & Contact",
@@ -135,7 +142,7 @@ export default function Footer() {
       description: "View source code and repositories",
       icon: FaGithub,
       action: () => {
-        setIsCommandOpen(false);
+        closeCommandPalette();
         window.open("https://github.com/", "_blank");
       },
       category: "Social & Contact",
@@ -145,7 +152,7 @@ export default function Footer() {
       description: "Connect professionally on LinkedIn",
       icon: FaLinkedin,
       action: () => {
-        setIsCommandOpen(false);
+        closeCommandPalette();
         window.open("https://www.linkedin.com/in/chen-sreyneat-749654313/", "_blank");
       },
       category: "Social & Contact",
@@ -155,7 +162,7 @@ export default function Footer() {
       description: "Follow on Facebook",
       icon: FaFacebook,
       action: () => {
-        setIsCommandOpen(false);
+        closeCommandPalette();
         window.open("https://facebook.com/", "_blank");
       },
       category: "Social & Contact",
@@ -272,7 +279,7 @@ export default function Footer() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={() => setIsCommandOpen(false)}
+              onClick={closeCommandPalette}
               className="fixed inset-0 bg-black/75 backdrop-blur-md"
             />
 
@@ -297,7 +304,7 @@ export default function Footer() {
                 />
                 <button
                   type="button"
-                  onClick={() => setIsCommandOpen(false)}
+                  onClick={closeCommandPalette}
                   className="p-1 rounded-md text-slate-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
                   aria-label="Close command palette"
                 >
