@@ -4,8 +4,6 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { GraduationCap, BookOpen, School, Eye, ExternalLink, X, LucideIcon, ChevronLeft, ChevronRight, ZoomIn, ZoomOut, RotateCcw } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import ModalLightBackground from "../ModalLightBackground";
-import InBoxLightBackground from "../InBoxLightBackground";
 
 interface CertificateOption {
   label: string;
@@ -408,25 +406,23 @@ export default function EducationSection() {
       <AnimatePresence>
         {selectedItem && activeCert && (
           <div className="fixed inset-0 z-[2000] flex items-center justify-center p-2 sm:p-4 md:p-8 overscroll-contain touch-none">
-            {/* Backdrop Blur with Cosmic Glass */}
+            {/* Backdrop Blur */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
+              transition={{ duration: 0.22, ease: "easeOut" }}
               onClick={closeModal}
-              className="absolute inset-0 bg-[#010413]/75 backdrop-blur-md touch-none"
+              className="absolute inset-0 bg-[#010413]/80 backdrop-blur-md touch-none"
             />
-
-            {/* Modal Light Background Animation & Glow */}
-            <ModalLightBackground />
 
             {/* Modal Box */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.92, y: 20 }}
+              initial={{ opacity: 0, scale: 0.95, y: 14 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.92, y: 20 }}
-              transition={{ type: "spring", damping: 25, stiffness: 350 }}
-              className="relative w-full max-w-4xl max-h-[92dvh] sm:max-h-[90vh] bg-[#020617]/95 backdrop-blur-2xl border border-accent-blue/30 rounded-2xl overflow-hidden shadow-[0_0_60px_rgba(56,189,248,0.25)] flex flex-col z-10 overscroll-contain touch-auto"
+              exit={{ opacity: 0, scale: 0.95, y: 14 }}
+              transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+              className="relative w-full max-w-4xl max-h-[92dvh] sm:max-h-[90vh] bg-[#020617]/95 backdrop-blur-2xl border border-accent-blue/30 rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.8)] flex flex-col z-10 overscroll-contain touch-auto"
             >
               {/* Header */}
               <div className="p-3.5 sm:p-5 border-b border-white/10 bg-slate-950/80 backdrop-blur-md flex flex-col gap-2.5">
@@ -486,12 +482,10 @@ export default function EducationSection() {
 
               {/* Content Area with Zoom, Pan, Swipe & Floating Arrows */}
               <div
-                className="flex-grow w-full bg-slate-950/70 relative flex items-center justify-center overflow-hidden p-2 sm:p-4 md:p-6"
+                className="flex-grow w-full bg-slate-950/80 relative flex items-center justify-center overflow-hidden p-2 sm:p-4 md:p-6"
                 onTouchStart={handleTouchStart}
                 onTouchEnd={handleTouchEnd}
               >
-                {/* Inside Box Animated Cosmic Light Background */}
-                <InBoxLightBackground />
 
 
 

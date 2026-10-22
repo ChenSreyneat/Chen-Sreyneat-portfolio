@@ -3,7 +3,6 @@ import { Inter, Outfit } from "next/font/google";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
-import CosmicLightBackground from "./components/CosmicLightBackground";
 import "./globals.css";
 
 const inter = Inter({
@@ -37,7 +36,6 @@ export default function RootLayout({
       style={{ backgroundColor: "#010413", colorScheme: "dark" }}
     >
       <body className="relative min-h-screen text-white" style={{ backgroundColor: "#010413" }}>
-        <CosmicLightBackground />
         <Navbar />
         <div className="pt-[80px] min-h-[calc(100vh-160px)] max-w-7xl mx-auto px-4 md:px-12 lg:px-20">
           {children}

@@ -28,8 +28,6 @@ import {
 } from "lucide-react";
 import { FaBehance } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
-import ModalLightBackground from "../ModalLightBackground";
-import InBoxLightBackground from "../InBoxLightBackground";
 
 interface ExperienceItem {
   id: string;
@@ -741,25 +739,23 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
       <AnimatePresence>
         {selectedItem && (
           <div className="fixed inset-0 z-[2000] flex items-center justify-center p-2 sm:p-4 md:p-8 overscroll-contain touch-none">
-            {/* Backdrop Blur with Cosmic Glass */}
+            {/* Backdrop Blur */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
+              transition={{ duration: 0.22, ease: "easeOut" }}
               onClick={() => setSelectedItem(null)}
               className="absolute inset-0 bg-[#010413]/80 backdrop-blur-md touch-none"
             />
 
-            {/* Modal Light Background Animation & Glow */}
-            <ModalLightBackground />
-
             {/* Modal Box */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.92, y: 20 }}
+              initial={{ opacity: 0, scale: 0.95, y: 14 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.92, y: 20 }}
-              transition={{ type: "spring", damping: 25, stiffness: 350 }}
-              className="relative w-full max-w-3xl max-h-[92dvh] sm:max-h-[90vh] bg-[#020617]/95 backdrop-blur-2xl border border-accent-blue/30 rounded-2xl overflow-hidden shadow-[0_0_60px_rgba(56,189,248,0.25)] flex flex-col z-10 overscroll-contain touch-auto"
+              exit={{ opacity: 0, scale: 0.95, y: 14 }}
+              transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+              className="relative w-full max-w-3xl max-h-[92dvh] sm:max-h-[90vh] bg-[#020617]/95 backdrop-blur-2xl border border-accent-blue/30 rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.8)] flex flex-col z-10 overscroll-contain touch-auto"
             >
               {/* Modal Header */}
               <div className="p-4 sm:p-5 border-b border-white/10 bg-slate-950/80 backdrop-blur-md flex items-center justify-between gap-4">
@@ -877,8 +873,7 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
               </div>
 
               {/* Modal Body */}
-              <div className="flex-grow w-full bg-slate-950/50 relative overflow-y-auto p-4 sm:p-6 space-y-6">
-                <InBoxLightBackground />
+              <div className="flex-grow w-full bg-slate-950/70 relative overflow-y-auto p-4 sm:p-6 space-y-6">
 
                 {/* Tab 1: Overview & Responsibilities with Deep Inputs */}
                 {activeTab === "overview" && (
