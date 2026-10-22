@@ -327,6 +327,7 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
   const videoPillsRef = useRef<HTMLDivElement>(null);
   const [isVideoPlaying, setIsVideoPlaying] = useState<boolean>(false);
   const [isVideoBuffering, setIsVideoBuffering] = useState<boolean>(false);
+  const [videoHasError, setVideoHasError] = useState<boolean>(false);
   const [videoShowTapFeedback, setVideoShowTapFeedback] = useState<"play" | "pause" | null>(null);
   const touchVideoStartXRef = useRef<number | null>(null);
   const touchVideoStartYRef = useRef<number | null>(null);
@@ -345,6 +346,7 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
     setActiveVideoIndex(num);
     setIsVideoPlaying(false);
     setIsVideoBuffering(false);
+    setVideoHasError(false);
   };
 
   const openExperienceModal = (item: ExperienceItem, initialTab: "overview" | "certificate" | "videos" | "photos" | "tools" = "overview") => {
@@ -355,6 +357,7 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
     setPhotoZoomLevel(1);
     setIsVideoPlaying(false);
     setIsVideoBuffering(false);
+    setVideoHasError(false);
   };
 
   const toggleVideoPlay = () => {
@@ -1226,47 +1229,120 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
                       onTouchEnd={handleVideoTouchEnd}
                     >
                       {/* Video Player Container */}
-                      <div className="relative w-full flex items-center justify-center bg-black min-h-[220px]">
-                        <video
-                          ref={videoRef}
-                          key={activeVideoIndex}
-                          src={`/video/${activeVideoIndex}.mp4`}
-                          controls
-                          playsInline
-                          preload="metadata"
-                          onWaiting={() => setIsVideoBuffering(true)}
-                          onPlaying={() => {
-                            setIsVideoBuffering(false);
-                            setIsVideoPlaying(true);
-                          }}
-                          onPause={() => setIsVideoPlaying(false)}
-                          onEnded={() => setIsVideoPlaying(false)}
-                          onLoadedData={() => setIsVideoBuffering(false)}
-                          className="w-full max-h-[46vh] sm:max-h-[52vh] object-contain rounded-t-2xl bg-black cursor-pointer"
-                        />
+                      <div className="relative w-full flex items-center justify-center bg-black min-h-[260px] sm:min-h-[340px]">
+                        {!videoHasError ? (
+                          <>
+                            <video
+                              ref={videoRef}
+                              key={activeVideoIndex}
+                              src={`/video/${activeVideoIndex}.mp4`}
+                              controls
+                              playsInline
+                              preload="metadata"
+                              onWaiting={() => setIsVideoBuffering(true)}
+                              onPlaying={() => {
+                                setIsVideoBuffering(false);
+                                setIsVideoPlaying(true);
+                                setVideoHasError(false);
+                              }}
+                              onPause={() => setIsVideoPlaying(false)}
+                              onEnded={() => setIsVideoPlaying(false)}
+                              onLoadedData={() => {
+                                setIsVideoBuffering(false);
+                                setVideoHasError(false);
+                              }}
+                              onError={() => {
+                                setIsVideoBuffering(false);
+                                setIsVideoPlaying(false);
+                                setVideoHasError(true);
+                              }}
+                              className="w-full max-h-[46vh] sm:max-h-[52vh] object-contain rounded-t-2xl bg-black"
+                            />
 
-                        {/* Interactive Centered Play Button Overlay when paused */}
-                        {!isVideoPlaying && !isVideoBuffering && (
-                          <div
-                            onClick={toggleVideoPlay}
-                            className="absolute inset-0 flex flex-col items-center justify-center bg-black/45 backdrop-blur-[2px] transition-all cursor-pointer z-20 group/play"
-                          >
-                            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-accent-blue/90 text-white flex items-center justify-center shadow-[0_0_35px_rgba(56,189,248,0.7)] group-hover/play:scale-110 group-hover/play:bg-accent-blue transition-all cursor-pointer border border-white/30">
-                              <Play size={28} className="fill-white translate-x-0.5" />
+                            {/* Interactive Centered Play Button Overlay when paused */}
+                            {!isVideoPlaying && !isVideoBuffering && (
+                              <div
+                                className="absolute inset-0 flex flex-col items-center justify-center bg-black/40 backdrop-blur-[1px] transition-all z-20 pointer-events-none"
+                              >
+                                <button
+                                  type="button"
+                                  onClick={toggleVideoPlay}
+                                  className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-accent-blue/90 hover:bg-accent-blue text-white flex items-center justify-center shadow-[0_0_35px_rgba(56,189,248,0.7)] hover:scale-110 transition-all cursor-pointer border border-white/30 pointer-events-auto active:scale-95"
+                                  aria-label="Play video"
+                                >
+                                  <Play size={28} className="fill-white translate-x-0.5" />
+                                </button>
+                                <span 
+                                  onClick={toggleVideoPlay}
+                                  className="mt-3 text-xs sm:text-sm font-bold font-outfit text-white tracking-wide bg-slate-950/80 px-3 py-1 rounded-full border border-white/10 shadow-md pointer-events-auto cursor-pointer"
+                                >
+                                  Tap to Play Video #{activeVideoIndex}
+                                </span>
+                              </div>
+                            )}
+
+                            {/* Buffering Loading Spinner Overlay */}
+                            {isVideoBuffering && (
+                              <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/70 z-20 pointer-events-none">
+                                <Loader2 size={36} className="text-accent-blue animate-spin" />
+                                <span className="mt-2 text-xs font-bold text-white font-outfit bg-slate-950/80 px-3 py-1 rounded-full border border-white/10">
+                                  Loading Video #{activeVideoIndex}...
+                                </span>
+                              </div>
+                            )}
+                          </>
+                        ) : (
+                          /* Error / Streaming Notice with TikTok & Behance Links */
+                          <div className="p-6 sm:p-8 flex flex-col items-center justify-center text-center space-y-4 max-w-md mx-auto">
+                            <div className="w-14 h-14 rounded-2xl bg-accent-blue/10 border border-accent-blue/30 flex items-center justify-center text-accent-blue shadow-lg shadow-accent-blue/10">
+                              <Film size={26} />
                             </div>
-                            <span className="mt-3 text-xs sm:text-sm font-bold font-outfit text-white tracking-wide bg-slate-950/80 px-3 py-1 rounded-full border border-white/10 shadow-md">
-                              Click to Play Video #{activeVideoIndex}
-                            </span>
-                          </div>
-                        )}
+                            <div className="space-y-1.5">
+                              <h4 className="text-sm sm:text-base font-bold text-white font-outfit">
+                                Video Stream Fallback
+                              </h4>
+                              <p className="text-xs text-slate-300 leading-relaxed font-inter">
+                                Clip #{activeVideoIndex} is a high-resolution marketing video ({`public/video/${activeVideoIndex}.mp4`}). If Git LFS streaming is not enabled on your host, you can watch all marketing videos directly on TikTok or Behance:
+                              </p>
+                            </div>
 
-                        {/* Buffering Loading Spinner Overlay */}
-                        {isVideoBuffering && (
-                          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/70 z-20 pointer-events-none">
-                            <Loader2 size={36} className="text-accent-blue animate-spin" />
-                            <span className="mt-2 text-xs font-bold text-white font-outfit bg-slate-950/80 px-3 py-1 rounded-full border border-white/10">
-                              Loading Video #{activeVideoIndex}...
-                            </span>
+                            <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
+                              <a
+                                href="https://www.tiktok.com/@code.bridge2026?_r=1&_t=ZS-96WUSyJhGxc"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#fe2c55]/15 hover:bg-[#fe2c55]/30 text-[#ff7597] hover:text-white border border-[#fe2c55]/30 text-xs font-bold font-outfit transition-all cursor-pointer shadow-md"
+                              >
+                                <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-current">
+                                  <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.24 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z" />
+                                </svg>
+                                <span>Watch on TikTok</span>
+                              </a>
+                              <a
+                                href="https://www.behance.net/chensreyneat"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#0057ff]/15 hover:bg-[#0057ff]/30 text-[#60a5fa] hover:text-white border border-[#0057ff]/30 text-xs font-bold font-outfit transition-all cursor-pointer shadow-md"
+                              >
+                                <FaBehance size={14} />
+                                <span>View on Behance</span>
+                              </a>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setVideoHasError(false);
+                                  setIsVideoBuffering(true);
+                                  setTimeout(() => {
+                                    if (videoRef.current) {
+                                      videoRef.current.load();
+                                    }
+                                  }, 100);
+                                }}
+                                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold font-outfit transition-all cursor-pointer"
+                              >
+                                <span>Retry</span>
+                              </button>
+                            </div>
                           </div>
                         )}
 
