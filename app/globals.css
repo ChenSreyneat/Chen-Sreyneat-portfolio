@@ -90,8 +90,7 @@
 
   html {
     @apply scroll-smooth;
-    scroll-snap-type: y mandatory;
-    scroll-padding-top: 4.5rem;
+    scroll-padding-top: 5rem;
     overflow-x: clip;
     -webkit-overflow-scrolling: touch;
     background-color: #010413;

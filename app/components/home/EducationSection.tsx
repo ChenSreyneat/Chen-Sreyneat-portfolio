@@ -301,7 +301,7 @@ export default function EducationSection() {
   } : null);
 
   return (
-    <section id="education" className="min-h-[calc(100dvh-4.5rem)] flex flex-col justify-center py-4 sm:py-8 md:py-16 lg:py-24 relative overflow-hidden bg-transparent snap-center snap-always scroll-mt-16">
+    <section id="education" className="py-12 sm:py-16 md:py-24 relative overflow-hidden bg-transparent scroll-mt-20">
       {/* Background UI Grid & Ambient Luminous Glow */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#1d70a208_1px,transparent_1px),linear-gradient(to_bottom,#1d70a208_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none" />
       <div
@@ -315,7 +315,7 @@ export default function EducationSection() {
         variants={headerVariants}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, amount: 0.3 }}
+        viewport={{ once: true, amount: 0.1 }}
         className="flex flex-col items-center text-center mb-4 sm:mb-8 md:mb-12 px-4 relative z-10"
       >
         <div className="flex items-center gap-3 mb-2 sm:mb-3">

@@ -183,11 +183,11 @@ export default function ProjectsSection() {
   }, [handleScrollButtons]);
 
   return (
-    <section id="projects" className="min-h-[calc(100dvh-4.5rem)] flex flex-col justify-center py-4 sm:py-8 md:py-16 lg:py-24 relative overflow-hidden snap-center snap-always scroll-mt-16">
+    <section id="projects" className="py-12 sm:py-16 md:py-24 relative overflow-hidden scroll-mt-20">
       <motion.div
         initial={{ opacity: 0, y: 25 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.3 }}
+        viewport={{ once: true, amount: 0.1 }}
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         className="flex flex-col items-center text-center mb-6 sm:mb-10 md:mb-14 px-4 relative z-10"
       >

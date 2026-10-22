@@ -54,12 +54,12 @@ export default function ContactSection() {
   };
 
   return (
-    <section id="contact" className="min-h-[calc(100dvh-4.5rem)] flex flex-col justify-center py-4 sm:py-8 md:py-16 lg:py-24 max-w-6xl mx-auto px-0 sm:px-4 overflow-hidden snap-center snap-always scroll-mt-16">
+    <section id="contact" className="py-12 sm:py-16 md:py-24 max-w-6xl mx-auto px-0 sm:px-4 overflow-hidden scroll-mt-20">
       {/* Section Header */}
       <motion.div
         initial={{ opacity: 0, y: 25 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.3 }}
+        viewport={{ once: true, amount: 0.1 }}
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         className="flex flex-col items-center text-center mb-6 sm:mb-10 md:mb-14 px-4"
       >
@@ -247,63 +247,90 @@ export default function ContactSection() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
               <div className="space-y-2">
-                <label className="text-xs font-extrabold uppercase tracking-wider text-slate-200 flex items-center gap-2 font-outfit">
+                <label 
+                  htmlFor="contact-name"
+                  className="text-xs sm:text-[13px] font-extrabold uppercase tracking-wider text-slate-200 flex items-center gap-2 font-outfit cursor-pointer select-none"
+                >
                   <User size={14} className="text-accent-blue" /> Full Name
                 </label>
                 <div className="relative">
                   <input
+                    id="contact-name"
                     type="text"
                     name="name"
+                    autoComplete="name"
+                    autoCapitalize="words"
+                    enterKeyHint="next"
                     value={formData.name}
                     onChange={handleChange}
                     placeholder="Your name"
                     required
-                    className="w-full bg-slate-950/40 border border-white/20 rounded-xl px-4 py-3 sm:px-5 sm:py-3.5 text-xs sm:text-sm text-white placeholder:text-slate-400 focus:outline-none focus:border-accent-blue focus:bg-slate-950/60 transition-all font-inter font-medium"
+                    className="w-full min-h-[48px] bg-slate-900/60 hover:bg-slate-900/80 focus:bg-slate-950/90 border border-white/20 focus:border-accent-blue focus:ring-2 focus:ring-accent-blue/30 rounded-xl px-4 py-3 sm:px-5 sm:py-3.5 text-base sm:text-sm text-white placeholder:text-slate-400 focus:outline-none transition-all font-inter font-medium shadow-inner"
                   />
                 </div>
               </div>
               <div className="space-y-2">
-                <label className="text-xs font-extrabold uppercase tracking-wider text-slate-200 flex items-center gap-2 font-outfit">
+                <label 
+                  htmlFor="contact-email"
+                  className="text-xs sm:text-[13px] font-extrabold uppercase tracking-wider text-slate-200 flex items-center gap-2 font-outfit cursor-pointer select-none"
+                >
                   <Mail size={14} className="text-accent-blue" /> Email Address
                 </label>
                 <input
+                  id="contact-email"
                   type="email"
                   name="email"
+                  autoComplete="email"
+                  inputMode="email"
+                  autoCapitalize="none"
+                  enterKeyHint="next"
                   value={formData.email}
                   onChange={handleChange}
                   placeholder="your@email.com"
                   required
-                  className="w-full bg-slate-950/40 border border-white/20 rounded-xl px-4 py-3 sm:px-5 sm:py-3.5 text-xs sm:text-sm text-white placeholder:text-slate-400 focus:outline-none focus:border-accent-blue focus:bg-slate-950/60 transition-all font-inter font-medium"
+                  className="w-full min-h-[48px] bg-slate-900/60 hover:bg-slate-900/80 focus:bg-slate-950/90 border border-white/20 focus:border-accent-blue focus:ring-2 focus:ring-accent-blue/30 rounded-xl px-4 py-3 sm:px-5 sm:py-3.5 text-base sm:text-sm text-white placeholder:text-slate-400 focus:outline-none transition-all font-inter font-medium shadow-inner"
                 />
               </div>
             </div>
 
             <div className="space-y-2">
-              <label className="text-xs font-extrabold uppercase tracking-wider text-slate-200 flex items-center gap-2 font-outfit">
+              <label 
+                htmlFor="contact-subject"
+                className="text-xs sm:text-[13px] font-extrabold uppercase tracking-wider text-slate-200 flex items-center gap-2 font-outfit cursor-pointer select-none"
+              >
                 <Tag size={14} className="text-accent-blue" /> Subject
               </label>
               <input
+                id="contact-subject"
                 type="text"
                 name="subject"
+                autoComplete="off"
+                enterKeyHint="next"
                 value={formData.subject}
                 onChange={handleChange}
                 placeholder="What's this about?"
                 required
-                className="w-full bg-slate-950/40 border border-white/20 rounded-xl px-4 py-3 sm:px-5 sm:py-3.5 text-xs sm:text-sm text-white placeholder:text-slate-400 focus:outline-none focus:border-accent-blue focus:bg-slate-950/60 transition-all font-inter font-medium"
+                className="w-full min-h-[48px] bg-slate-900/60 hover:bg-slate-900/80 focus:bg-slate-950/90 border border-white/20 focus:border-accent-blue focus:ring-2 focus:ring-accent-blue/30 rounded-xl px-4 py-3 sm:px-5 sm:py-3.5 text-base sm:text-sm text-white placeholder:text-slate-400 focus:outline-none transition-all font-inter font-medium shadow-inner"
               />
             </div>
 
             <div className="space-y-2">
-              <label className="text-xs font-extrabold uppercase tracking-wider text-slate-200 flex items-center gap-2 font-outfit">
+              <label 
+                htmlFor="contact-message"
+                className="text-xs sm:text-[13px] font-extrabold uppercase tracking-wider text-slate-200 flex items-center gap-2 font-outfit cursor-pointer select-none"
+              >
                 <MessageSquare size={14} className="text-accent-blue" /> Message
               </label>
               <textarea
+                id="contact-message"
                 name="message"
+                autoComplete="off"
                 value={formData.message}
                 onChange={handleChange}
                 placeholder="Tell me about your project or question..."
                 required
-                className="w-full bg-slate-950/40 border border-white/20 rounded-xl px-4 py-3 sm:px-5 sm:py-3.5 text-xs sm:text-sm text-white placeholder:text-slate-400 focus:outline-none focus:border-accent-blue focus:bg-slate-950/60 transition-all min-h-[120px] sm:min-h-[140px] resize-none font-inter font-medium"
+                rows={4}
+                className="w-full bg-slate-900/60 hover:bg-slate-900/80 focus:bg-slate-950/90 border border-white/20 focus:border-accent-blue focus:ring-2 focus:ring-accent-blue/30 rounded-xl px-4 py-3.5 sm:px-5 sm:py-3.5 text-base sm:text-sm text-white placeholder:text-slate-400 focus:outline-none transition-all min-h-[130px] sm:min-h-[150px] resize-none font-inter font-medium leading-relaxed shadow-inner"
               ></textarea>
             </div>
 

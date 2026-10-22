@@ -26,7 +26,7 @@ import {
 
 export default function AboutSection() {
   return (
-    <section id="about" className="min-h-[calc(100dvh-4.5rem)] flex flex-col justify-center py-6 sm:py-12 md:py-20 lg:py-28 relative overflow-hidden bg-transparent snap-center snap-always scroll-mt-16">
+    <section id="about" className="py-12 sm:py-16 md:py-24 relative overflow-hidden bg-transparent scroll-mt-20">
       {/* Background UI Grid & Ambient Luminous Glow (Matching EducationSection) */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#1d70a208_1px,transparent_1px),linear-gradient(to_bottom,#1d70a208_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none" />
       <div
