@@ -759,7 +759,7 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 14 }}
               transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-              className="relative w-full max-w-3xl max-h-[92dvh] sm:max-h-[90vh] bg-[#020617]/95 backdrop-blur-2xl border border-accent-blue/30 rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.8)] flex flex-col z-10 overscroll-contain touch-auto"
+              className="relative w-full max-w-4xl md:max-w-5xl max-h-[92dvh] sm:max-h-[90vh] bg-[#020617]/95 backdrop-blur-2xl border border-accent-blue/30 rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.8)] flex flex-col z-10 overscroll-contain touch-auto"
             >
               {/* Modal Header */}
               <div className="p-4 sm:p-5 border-b border-white/10 bg-slate-950/80 backdrop-blur-md flex items-center justify-between gap-4">
@@ -1174,13 +1174,13 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
 
                     <div className="w-full bg-slate-950/80 rounded-2xl overflow-hidden border border-white/10 shadow-2xl flex flex-col">
                       <div
-                        className={`relative w-full h-[46vh] sm:h-[54vh] md:h-[60vh] overflow-auto select-none no-scrollbar flex items-center justify-center p-3 sm:p-5 md:p-6 ${
+                        className={`relative w-full h-[54vh] sm:h-[64vh] md:h-[72vh] overflow-auto select-none no-scrollbar flex items-center justify-center p-1.5 sm:p-3 md:p-4 ${
                           certZoomLevel > 1 ? "cursor-grab active:cursor-grabbing" : "cursor-zoom-in"
                         }`}
                         onDoubleClick={toggleCertZoom}
                       >
                         <div
-                          className="relative flex items-center justify-center transition-transform duration-200 origin-center w-full h-full p-2 sm:p-3"
+                          className="relative flex items-center justify-center transition-transform duration-200 origin-center w-full h-full"
                           style={{
                             transform: `scale(${certZoomLevel})`,
                             width: certZoomLevel > 1 ? `${certZoomLevel * 100}%` : "100%",
@@ -1193,8 +1193,8 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
                             src={selectedItem.certificateImage || selectedItem.certificatePdf || ""}
                             alt="Digital Marketing Certificate"
                             fill
-                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 85vw, 1024px"
-                            className="object-contain p-2 sm:p-3 rounded-xl drop-shadow-2xl"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1200px"
+                            className="object-contain p-1 sm:p-2 rounded-xl drop-shadow-2xl"
                             priority
                           />
                         </div>

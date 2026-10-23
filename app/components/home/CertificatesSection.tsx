@@ -407,7 +407,7 @@ export default function CertificatesSection() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 14 }}
               transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-              className="relative w-full max-w-4xl max-h-[92dvh] sm:max-h-[90vh] bg-[#020617]/95 backdrop-blur-2xl border border-accent-blue/30 rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.8)] flex flex-col z-10 overscroll-contain touch-auto"
+              className="relative w-full max-w-4xl md:max-w-5xl max-h-[92dvh] sm:max-h-[90vh] bg-[#020617]/95 backdrop-blur-2xl border border-accent-blue/30 rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.8)] flex flex-col z-10 overscroll-contain touch-auto"
             >
               {/* Header */}
               <div className="p-3.5 sm:p-5 border-b border-white/10 bg-slate-950/80 backdrop-blur-md flex flex-col gap-2.5">
@@ -464,17 +464,17 @@ export default function CertificatesSection() {
 
               {/* Content Area with Zoom, Pan, Swipe & Floating Arrows (Fitted with Margins) */}
               <div
-                className="flex-grow w-full bg-slate-950/80 relative flex items-center justify-center overflow-hidden p-3 sm:p-5 md:p-6"
+                className="flex-grow w-full bg-slate-950/80 relative flex items-center justify-center overflow-hidden p-1.5 sm:p-3 md:p-4"
                 onTouchStart={handleTouchStart}
                 onTouchEnd={handleTouchEnd}
               >
                 <div
-                  className={`relative w-full h-[46vh] sm:h-[56vh] md:h-[62vh] rounded-2xl overflow-auto select-none no-scrollbar flex items-center justify-center p-2 sm:p-4 ${zoomLevel > 1 ? "cursor-grab active:cursor-grabbing" : "cursor-zoom-in"
+                  className={`relative w-full h-[54vh] sm:h-[64vh] md:h-[72vh] rounded-2xl overflow-auto select-none no-scrollbar flex items-center justify-center p-1 sm:p-2 ${zoomLevel > 1 ? "cursor-grab active:cursor-grabbing" : "cursor-zoom-in"
                     }`}
                   onDoubleClick={toggleZoom}
                 >
                   <div
-                    className="relative flex items-center justify-center transition-transform duration-200 origin-center w-full h-full p-2 sm:p-3"
+                    className="relative flex items-center justify-center transition-transform duration-200 origin-center w-full h-full"
                     style={{
                       transform: `scale(${zoomLevel})`,
                       width: zoomLevel > 1 ? `${zoomLevel * 100}%` : "100%",
@@ -487,8 +487,8 @@ export default function CertificatesSection() {
                       src={activeCert.fileUrl}
                       alt={activeCert.title}
                       fill
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 85vw, 1024px"
-                      className="object-contain p-2 sm:p-3 rounded-xl drop-shadow-2xl"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1200px"
+                      className="object-contain p-1 sm:p-2 rounded-xl drop-shadow-2xl"
                       priority
                     />
                   </div>
