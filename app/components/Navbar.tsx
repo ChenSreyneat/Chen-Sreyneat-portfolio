@@ -44,7 +44,7 @@ export default function Navbar() {
             ))}
             <li>
               <a
-                href="/image/CV_Chen_Sreyneat.pdf"
+                href="/image/Chen Sreyneat CV.pdf"
                 download
                 className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-linear-to-r from-[#2c53a6] to-[#60a5fa] hover:from-[#214185] hover:to-[#4fa1ff] text-white font-bold text-xs transition-all duration-300 active:scale-95 shadow-md shadow-blue-500/5 cursor-pointer"
               >
@@ -94,7 +94,7 @@ export default function Navbar() {
             ))}
             <li className="pt-4 border-t" style={{ borderColor: 'var(--dropdown-border)' }}>
               <a
-                href="/image/CV_Chen_Sreyneat.pdf"
+                href="/image/Chen Sreyneat CV.pdf"
                 download
                 onClick={() => setIsOpen(false)}
                 className="flex items-center gap-3 text-sm font-bold hover:scale-[1.02] active:scale-95 transition-all"

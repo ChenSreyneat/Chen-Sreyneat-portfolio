@@ -95,14 +95,14 @@ export default function ResumeSection() {
 
               <div className="pt-2 flex flex-wrap gap-4">
                 <a
-                  href="/image/CV_Chen_Sreyneat.pdf"
+                  href="/image/Chen Sreyneat CV.pdf"
                   download
                   className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-linear-to-r from-[#2c53a6] to-[#60a5fa] hover:from-[#214185] hover:to-[#4fa1ff] text-white font-bold text-sm transition-all duration-300 active:scale-95 shadow-lg shadow-blue-500/10 hover:shadow-xl hover:shadow-blue-500/20 cursor-pointer"
                 >
                   <Download size={16} className="stroke-[2.5]" /> Download CV
                 </a>
                 <a
-                  href="/image/CV_Chen_Sreyneat.pdf"
+                  href="/image/Chen Sreyneat CV.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-glass-bg border border-glass-border hover:bg-glass-bg/20 text-text-secondary hover:text-white font-bold text-sm transition-all duration-300 cursor-pointer"

@@ -13,8 +13,15 @@ export default function ContactSection() {
     message: ""
   });
 
-  const [status, setStatus] = useState<"idle" | "sending" | "success" | "opened_mail">("idle");
+  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [noticeMessage, setNoticeMessage] = useState<string | null>(null);
+
+  const isAllFilled = Boolean(
+    formData.name.trim() &&
+    formData.email.trim() &&
+    formData.subject.trim() &&
+    formData.message.trim()
+  );
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -25,55 +32,40 @@ export default function ContactSection() {
     }
   };
 
-  const getMailtoUrl = () => {
-    const subject = encodeURIComponent(formData.subject || "Message from Portfolio");
-    const body = encodeURIComponent(
-      `Name: ${formData.name || "Portfolio Visitor"}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
-    );
-    return `mailto:chensreyneat198@gmail.com?subject=${subject}&body=${body}`;
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!isAllFilled) return;
+
     setStatus("sending");
     setNoticeMessage(null);
 
     try {
-      const response = await fetch("https://formsubmit.co/ajax/chensreyneat198@gmail.com", {
+      const response = await fetch("/api/contact", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json"
+          "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          name: formData.name || "Portfolio Visitor",
-          email: formData.email,
-          subject: formData.subject || "New Message from Portfolio",
-          message: formData.message,
-          _captcha: "false"
+          name: formData.name.trim(),
+          email: formData.email.trim(),
+          subject: formData.subject.trim(),
+          message: formData.message.trim()
         })
       });
 
-      const result = await response.json();
-      if (response.ok && (result.success === "true" || result.success === true)) {
+      const result = await response.json().catch(() => null);
+
+      if (response.ok && result?.success) {
         setStatus("success");
         setFormData({ name: "", email: "", subject: "", message: "" });
-        setTimeout(() => setStatus("idle"), 5000);
-        return;
+      } else {
+        setStatus("error");
+        setNoticeMessage(result?.message || "Failed to send message. Please try again.");
       }
     } catch {
-      // ignore network errors and proceed to reliable mail fallback
+      setStatus("error");
+      setNoticeMessage("Network error. Please check your connection or contact directly via Telegram.");
     }
-
-    // Seamless fallback: If FormSubmit needs activation or network is restricted,
-    // open the user's native email app with all fields filled in!
-    setStatus("opened_mail");
-    const url = getMailtoUrl();
-    window.location.href = url;
-    setNoticeMessage("Opening your Mail app so you can send your message directly to chensreyneat198@gmail.com. You can also chat on Telegram below!");
-    setTimeout(() => {
-      setStatus("idle");
-    }, 10000);
   };
 
   return (
@@ -260,188 +252,198 @@ export default function ContactSection() {
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           className="w-full rounded-2xl bg-slate-950/20 border border-white/20 p-5 sm:p-6 md:p-8 hover:border-accent-blue transition-all duration-300 shadow-sm hover:shadow-xl hover:shadow-accent-blue/20"
         >
-          <form
-            className="space-y-5 sm:space-y-6"
-            onSubmit={handleSubmit}
-          >
-            {/* FormSubmit Configuration */}
-            <input type="hidden" name="_captcha" value="false" />
-            <input type="hidden" name="_template" value="table" />
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+          {status === "success" ? (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.3 }}
+              className="py-10 px-6 sm:px-10 text-center flex flex-col items-center justify-center space-y-5"
+            >
+              <div className="w-16 h-16 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 flex items-center justify-center text-3xl font-bold shadow-lg shadow-emerald-500/20">
+                ✓
+              </div>
               <div className="space-y-2">
-                <label 
-                  htmlFor="contact-name"
-                  className="text-xs sm:text-[13px] font-extrabold uppercase tracking-wider text-slate-200 flex items-center gap-2 font-outfit cursor-pointer select-none"
+                <h3 className="text-xl sm:text-2xl font-extrabold text-white font-outfit">
+                  Message Sent Automatically!
+                </h3>
+                <p className="text-slate-300 text-xs sm:text-sm max-w-md mx-auto font-inter leading-relaxed">
+                  Thank you for reaching out! Your message has been received by Chen Sreyneat. A reply will be sent to your email address shortly.
+                </p>
+              </div>
+
+              <div className="pt-4 flex flex-col sm:flex-row items-center gap-3 w-full max-w-sm">
+                <button
+                  type="button"
+                  onClick={() => setStatus("idle")}
+                  className="w-full py-3 px-5 rounded-xl bg-[#4185DB] hover:bg-[#3273c5] text-white text-xs font-bold font-outfit uppercase tracking-wider transition-all cursor-pointer shadow-md"
                 >
-                  <User size={14} className="text-accent-blue" /> Full Name
-                </label>
-                <div className="relative">
+                  Send Another Message
+                </button>
+                <a
+                  href="https://t.me/Neat198"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full py-3 px-5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold font-outfit uppercase tracking-wider transition-all cursor-pointer border border-white/10 text-center"
+                >
+                  Chat on Telegram
+                </a>
+              </div>
+            </motion.div>
+          ) : (
+            <form
+              className="space-y-5 sm:space-y-6"
+              onSubmit={handleSubmit}
+            >
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                <div className="space-y-2">
+                  <label 
+                    htmlFor="contact-name"
+                    className="text-xs sm:text-[13px] font-extrabold uppercase tracking-wider text-slate-200 flex items-center gap-2 font-outfit cursor-pointer select-none"
+                  >
+                    <User size={14} className="text-accent-blue" /> Full Name
+                  </label>
+                  <div className="relative">
+                    <input
+                      id="contact-name"
+                      type="text"
+                      name="name"
+                      autoComplete="name"
+                      autoCapitalize="words"
+                      enterKeyHint="next"
+                      value={formData.name}
+                      onChange={handleChange}
+                      placeholder="Your name"
+                      required
+                      className="w-full min-h-[48px] bg-slate-900/60 hover:bg-slate-900/80 focus:bg-slate-950/90 border border-white/20 focus:border-accent-blue focus:ring-2 focus:ring-accent-blue/30 rounded-xl px-4 py-3 sm:px-5 sm:py-3.5 text-base sm:text-sm text-white placeholder:text-slate-400 focus:outline-none transition-all font-inter font-medium shadow-inner"
+                    />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <label 
+                    htmlFor="contact-email"
+                    className="text-xs sm:text-[13px] font-extrabold uppercase tracking-wider text-slate-200 flex items-center gap-2 font-outfit cursor-pointer select-none"
+                  >
+                    <Mail size={14} className="text-accent-blue" /> Email Address
+                  </label>
                   <input
-                    id="contact-name"
-                    type="text"
-                    name="name"
-                    autoComplete="name"
-                    autoCapitalize="words"
+                    id="contact-email"
+                    type="email"
+                    name="email"
+                    autoComplete="email"
+                    inputMode="email"
+                    autoCapitalize="none"
                     enterKeyHint="next"
-                    value={formData.name}
+                    value={formData.email}
                     onChange={handleChange}
-                    placeholder="Your name"
+                    placeholder="your@email.com"
                     required
                     className="w-full min-h-[48px] bg-slate-900/60 hover:bg-slate-900/80 focus:bg-slate-950/90 border border-white/20 focus:border-accent-blue focus:ring-2 focus:ring-accent-blue/30 rounded-xl px-4 py-3 sm:px-5 sm:py-3.5 text-base sm:text-sm text-white placeholder:text-slate-400 focus:outline-none transition-all font-inter font-medium shadow-inner"
                   />
                 </div>
               </div>
+
               <div className="space-y-2">
                 <label 
-                  htmlFor="contact-email"
+                  htmlFor="contact-subject"
                   className="text-xs sm:text-[13px] font-extrabold uppercase tracking-wider text-slate-200 flex items-center gap-2 font-outfit cursor-pointer select-none"
                 >
-                  <Mail size={14} className="text-accent-blue" /> Email Address
+                  <Tag size={14} className="text-accent-blue" /> Subject
                 </label>
                 <input
-                  id="contact-email"
-                  type="email"
-                  name="email"
-                  autoComplete="email"
-                  inputMode="email"
-                  autoCapitalize="none"
+                  id="contact-subject"
+                  type="text"
+                  name="subject"
+                  autoComplete="off"
                   enterKeyHint="next"
-                  value={formData.email}
+                  value={formData.subject}
                   onChange={handleChange}
-                  placeholder="your@email.com"
+                  placeholder="What's this about?"
                   required
                   className="w-full min-h-[48px] bg-slate-900/60 hover:bg-slate-900/80 focus:bg-slate-950/90 border border-white/20 focus:border-accent-blue focus:ring-2 focus:ring-accent-blue/30 rounded-xl px-4 py-3 sm:px-5 sm:py-3.5 text-base sm:text-sm text-white placeholder:text-slate-400 focus:outline-none transition-all font-inter font-medium shadow-inner"
                 />
               </div>
-            </div>
 
-            <div className="space-y-2">
-              <label 
-                htmlFor="contact-subject"
-                className="text-xs sm:text-[13px] font-extrabold uppercase tracking-wider text-slate-200 flex items-center gap-2 font-outfit cursor-pointer select-none"
-              >
-                <Tag size={14} className="text-accent-blue" /> Subject
-              </label>
-              <input
-                id="contact-subject"
-                type="text"
-                name="subject"
-                autoComplete="off"
-                enterKeyHint="next"
-                value={formData.subject}
-                onChange={handleChange}
-                placeholder="What's this about?"
-                required
-                className="w-full min-h-[48px] bg-slate-900/60 hover:bg-slate-900/80 focus:bg-slate-950/90 border border-white/20 focus:border-accent-blue focus:ring-2 focus:ring-accent-blue/30 rounded-xl px-4 py-3 sm:px-5 sm:py-3.5 text-base sm:text-sm text-white placeholder:text-slate-400 focus:outline-none transition-all font-inter font-medium shadow-inner"
-              />
-            </div>
+              <div className="space-y-2">
+                <label 
+                  htmlFor="contact-message"
+                  className="text-xs sm:text-[13px] font-extrabold uppercase tracking-wider text-slate-200 flex items-center gap-2 font-outfit cursor-pointer select-none"
+                >
+                  <MessageSquare size={14} className="text-accent-blue" /> Message
+                </label>
+                <textarea
+                  id="contact-message"
+                  name="message"
+                  autoComplete="off"
+                  value={formData.message}
+                  onChange={handleChange}
+                  placeholder="Tell me about your project or question..."
+                  required
+                  rows={4}
+                  className="w-full bg-slate-900/60 hover:bg-slate-900/80 focus:bg-slate-950/90 border border-white/20 focus:border-accent-blue focus:ring-2 focus:ring-accent-blue/30 rounded-xl px-4 py-3.5 sm:px-5 sm:py-3.5 text-base sm:text-sm text-white placeholder:text-slate-400 focus:outline-none transition-all min-h-[130px] sm:min-h-[150px] resize-none font-inter font-medium leading-relaxed shadow-inner"
+                ></textarea>
+              </div>
 
-            <div className="space-y-2">
-              <label 
-                htmlFor="contact-message"
-                className="text-xs sm:text-[13px] font-extrabold uppercase tracking-wider text-slate-200 flex items-center gap-2 font-outfit cursor-pointer select-none"
-              >
-                <MessageSquare size={14} className="text-accent-blue" /> Message
-              </label>
-              <textarea
-                id="contact-message"
-                name="message"
-                autoComplete="off"
-                value={formData.message}
-                onChange={handleChange}
-                placeholder="Tell me about your project or question..."
-                required
-                rows={4}
-                className="w-full bg-slate-900/60 hover:bg-slate-900/80 focus:bg-slate-950/90 border border-white/20 focus:border-accent-blue focus:ring-2 focus:ring-accent-blue/30 rounded-xl px-4 py-3.5 sm:px-5 sm:py-3.5 text-base sm:text-sm text-white placeholder:text-slate-400 focus:outline-none transition-all min-h-[130px] sm:min-h-[150px] resize-none font-inter font-medium leading-relaxed shadow-inner"
-              ></textarea>
-            </div>
-
-            <motion.button
-              type="submit"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              disabled={status === "sending"}
-              className={`w-full py-4 rounded-xl font-extrabold text-sm uppercase tracking-wider font-outfit flex items-center justify-center gap-3 transition-all shadow-md ${status === "success"
-                  ? "bg-green-600 text-white shadow-green-500/20"
-                  : status === "opened_mail"
-                    ? "bg-linear-to-r from-blue-600 to-indigo-600 text-white shadow-blue-500/30"
-                    : "bg-[#4185DB] hover:bg-[#3273c5] text-white shadow-[#4185DB]/20 hover:shadow-lg hover:shadow-[#4185DB]/30 cursor-pointer"
-                }`}
-            >
-              {status === "sending" ? (
-                <>
-                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                  Sending...
-                </>
-              ) : status === "success" ? (
-                <>
-                  <div className="w-5 h-5 rounded-full bg-white/20 flex items-center justify-center font-bold">✓</div>
-                  Message Sent!
-                </>
-              ) : status === "opened_mail" ? (
-                <>
-                  <Mail size={18} /> Opening Mail App...
-                </>
-              ) : (
-                <>
-                  <Mail size={18} /> Send Message
-                </>
+              {/* All Fields Completed Status Indicator */}
+              {isAllFilled && (
+                <motion.div
+                  initial={{ opacity: 0, y: -4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs font-outfit font-semibold"
+                >
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                  <span>All fields filled • Ready to send</span>
+                </motion.div>
               )}
-            </motion.button>
 
-            {/* Seamless Mail & Telegram Delivery Notice */}
-            {noticeMessage && (
-              <motion.div
-                initial={{ opacity: 0, y: -6 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="p-4 rounded-xl bg-blue-950/40 border border-blue-500/30 text-xs sm:text-sm text-blue-100 space-y-3 shadow-lg"
+              {/* Notice / Error Message */}
+              {noticeMessage && (
+                <motion.div
+                  initial={{ opacity: 0, y: -6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="p-3.5 rounded-xl bg-red-950/40 border border-red-500/30 text-xs sm:text-sm text-red-200 flex items-start gap-2.5 shadow-md"
+                >
+                  <span className="text-red-400 font-bold">⚠️</span>
+                  <p className="leading-relaxed font-inter">{noticeMessage}</p>
+                </motion.div>
+              )}
+
+              <motion.button
+                type="submit"
+                whileHover={{ scale: isAllFilled ? 1.02 : 1 }}
+                whileTap={{ scale: 0.98 }}
+                disabled={status === "sending" || !isAllFilled}
+                className={`w-full py-4 rounded-xl font-extrabold text-sm uppercase tracking-wider font-outfit flex items-center justify-center gap-3 transition-all shadow-md ${
+                  !isAllFilled
+                    ? "bg-slate-800 text-slate-400 border border-white/10 cursor-not-allowed opacity-75"
+                    : status === "sending"
+                    ? "bg-[#3273c5] text-white cursor-wait"
+                    : "bg-[#4185DB] hover:bg-[#3273c5] text-white shadow-[#4185DB]/25 hover:shadow-lg hover:shadow-[#4185DB]/40 cursor-pointer"
+                }`}
               >
-                <div className="flex items-start gap-2.5">
-                  <div className="w-5 h-5 rounded-full bg-blue-500/20 text-accent-blue flex items-center justify-center flex-shrink-0 text-xs font-bold mt-0.5">
-                    ℹ️
-                  </div>
-                  <p className="leading-relaxed font-inter text-xs sm:text-[13px]">{noticeMessage}</p>
-                </div>
+                {status === "sending" ? (
+                  <>
+                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    Sending Message...
+                  </>
+                ) : (
+                  <>
+                    <Mail size={18} /> Send Message
+                  </>
+                )}
+              </motion.button>
 
-                <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-blue-500/20">
-                  <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-blue-300 font-outfit">
-                    Direct Send:
-                  </span>
-                  <a
-                    href={getMailtoUrl()}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white font-medium text-xs transition-colors"
-                  >
-                    <Mail size={13} className="text-accent-blue" /> Open in Mail App
-                  </a>
-                  <a
-                    href={`https://t.me/Neat198?text=${encodeURIComponent(
-                      `Hi Sreyneat, my name is ${formData.name || "visitor"} (${formData.email || "no email"}):\n${formData.message}`
-                    )}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#4185DB]/25 hover:bg-[#4185DB]/40 text-[#60a5fa] hover:text-white font-medium text-xs transition-colors"
-                  >
-                    <svg viewBox="0 0 24 24" className="w-3 h-3 fill-current">
-                      <path d="M1.05 11.57c-.73-.23-.69-1.31.06-1.5l20.45-8c.67-.24 1.33.34 1.17 1.03l-4 17.5c-.14.61-.83.89-1.34.53l-5.69-4.13-3.66 3.52c-.36.35-.94.1-.94-.41v-3.79l8.63-8.3c.18-.17-.06-.46-.28-.31L3.9 12.35l-2.85-.78z" />
-                    </svg>
-                    Telegram
-                  </a>
-                </div>
-              </motion.div>
-            )}
-
-            {/* Subtle direct email option */}
-            <div className="flex items-center justify-center gap-2 text-[11px] sm:text-xs text-slate-400 font-inter pt-1">
-              <span>Or email directly:</span>
-              <a
-                href="mailto:chensreyneat198@gmail.com"
-                className="text-accent-blue hover:text-white underline underline-offset-4 font-semibold transition-colors"
-              >
-                chensreyneat198@gmail.com
-              </a>
-            </div>
-          </form>
+              {/* Direct email link */}
+              <div className="flex items-center justify-center gap-2 text-[11px] sm:text-xs text-slate-400 font-inter pt-1">
+                <span>Or email directly:</span>
+                <a
+                  href="mailto:chensreyneat198@gmail.com"
+                  className="text-accent-blue hover:text-white underline underline-offset-4 font-semibold transition-colors"
+                >
+                  chensreyneat198@gmail.com
+                </a>
+              </div>
+            </form>
+          )}
         </motion.div>
       </div>
     </section>

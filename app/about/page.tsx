@@ -236,8 +236,8 @@ export default function About() {
             <div className="flex flex-wrap items-center gap-2 mb-6">
               {/* Download CV */}
               <a
-                href="/image/CV_Chen_Sreyneat.pdf"
-                download="CV_Chen_Sreyneat.pdf"
+                href="/image/Chen Sreyneat CV.pdf"
+                download="Chen Sreyneat CV.pdf"
                 className="py-1.5 px-3 rounded-xl bg-[#4185DB] hover:bg-[#3273c5] border border-[#4185DB] text-xs font-bold text-white transition-all duration-300 inline-flex items-center gap-2 font-outfit uppercase tracking-wider shadow-md shadow-[#4185DB]/25 hover:shadow-lg hover:shadow-[#4185DB]/40 hover:scale-105 active:scale-95 cursor-pointer"
               >
                 <Download size={14} className="stroke-[2.5]" />

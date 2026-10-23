@@ -107,8 +107,8 @@ export default function Footer() {
       action: () => {
         closeCommandPalette();
         const link = document.createElement("a");
-        link.href = "/image/CV_Chen_Sreyneat.pdf";
-        link.download = "CV_Chen_Sreyneat.pdf";
+        link.href = "/image/Chen Sreyneat CV.pdf";
+        link.download = "Chen Sreyneat CV.pdf";
         link.click();
       },
       category: "Actions",
@@ -220,8 +220,8 @@ export default function Footer() {
             <div className="flex items-center gap-1">
               {/* Document / CV Link */}
               <a
-                href="/image/CV_Chen_Sreyneat.pdf"
-                download="CV_Chen_Sreyneat.pdf"
+                href="/image/Chen Sreyneat CV.pdf"
+                download="Chen Sreyneat CV.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 title="Download CV (Chen Sreyneat)"

@@ -110,7 +110,7 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
         { label: "Experience", value: "1 Year" }
       ],
       behanceUrl: "https://www.behance.net/chensreyneat",
-      certificateImage: "/image/digital-marketing-certificate.jpg",
+      certificateImage: "/image/chen Sreyneat.png",
       certificatePdf: "/image/Digital Marketing Certificate.pdf",
       videos: [
         "/video/1.mp4",
@@ -511,215 +511,213 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
               className="flex-shrink-0 w-[calc(100vw-2.5rem)] max-w-[360px] sm:w-[320px] md:w-[360px] snap-start group relative flex flex-col justify-between rounded-2xl bg-slate-950/20 border border-white/20 hover:border-accent-blue p-5 md:p-6 shadow-sm hover:shadow-xl hover:shadow-accent-blue/20 transition-all duration-300 mx-auto sm:mx-0 h-[465px]"
             >
               <div className="flex flex-col h-full justify-between">
-                  <div>
-                    {/* Top Row: Icon & Period Pill */}
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="w-11 h-11 rounded-xl bg-linear-to-br from-white/10 to-white/5 border border-white/20 flex items-center justify-center text-accent-blue shadow-inner group-hover:border-accent-blue/60 group-hover:shadow-[0_0_18px_rgba(96,165,250,0.35)] transition-all">
-                        <item.icon size={22} className="text-accent-blue group-hover:scale-110 transition-transform" />
-                      </div>
-                      <span className="inline-flex items-center gap-1.5 text-cyan-300 font-bold text-xs bg-white/5 px-3 py-1.5 rounded-full border border-accent-blue/40 font-outfit shadow-xs">
-                        <Clock size={12} className="text-cyan-400" />
-                        <span>{item.period}</span>
-                      </span>
+                <div>
+                  {/* Top Row: Icon & Period Pill */}
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="w-11 h-11 rounded-xl bg-linear-to-br from-white/10 to-white/5 border border-white/20 flex items-center justify-center text-accent-blue shadow-inner group-hover:border-accent-blue/60 group-hover:shadow-[0_0_18px_rgba(96,165,250,0.35)] transition-all">
+                      <item.icon size={22} className="text-accent-blue group-hover:scale-110 transition-transform" />
                     </div>
+                    <span className="inline-flex items-center gap-1.5 text-cyan-300 font-bold text-xs bg-white/5 px-3 py-1.5 rounded-full border border-accent-blue/40 font-outfit shadow-xs">
+                      <Clock size={12} className="text-cyan-400" />
+                      <span>{item.period}</span>
+                    </span>
+                  </div>
 
-                    {/* Role & Company Header */}
-                    <div className="space-y-1 mb-2.5">
-                      <span className="text-[10px] font-bold uppercase tracking-widest text-accent-blue/90 font-outfit">
-                        {item.category}
-                      </span>
-                      <h3 className="text-lg font-extrabold text-white group-hover:text-accent-blue transition-colors font-outfit tracking-tight leading-snug line-clamp-1">
-                        {item.role}
-                      </h3>
-                      <p className="text-accent-blue text-xs font-bold font-outfit flex items-center gap-1.5">
-                        <Building2 size={13} className="shrink-0 text-accent-blue/80" />
-                        <span className="truncate">{item.company}</span>
-                      </p>
-                    </div>
-
-                    {/* Summary Description (Clean 2-line clamp) */}
-                    <p className="text-slate-300 text-xs leading-relaxed font-medium font-inter mb-3 line-clamp-2">
-                      {item.summary}
+                  {/* Role & Company Header */}
+                  <div className="space-y-1 mb-2.5">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-accent-blue/90 font-outfit">
+                      {item.category}
+                    </span>
+                    <h3 className="text-lg font-extrabold text-white group-hover:text-accent-blue transition-colors font-outfit tracking-tight leading-snug line-clamp-1">
+                      {item.role}
+                    </h3>
+                    <p className="text-accent-blue text-xs font-bold font-outfit flex items-center gap-1.5">
+                      <Building2 size={13} className="shrink-0 text-accent-blue/80" />
+                      <span className="truncate">{item.company}</span>
                     </p>
+                  </div>
 
-                    {/* Middle Feature Section for Teaching Staff */}
-                    {item.id === "teaching" && (
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between">
-                          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg bg-sky-500/10 text-sky-300 border border-sky-400/30 text-[11px] font-bold font-outfit">
-                            <ImageIcon size={12} />
-                            <span>2 Teaching Photos</span>
-                          </span>
-                          <button
-                            type="button"
-                            onClick={() => openExperienceModal(item, "photos")}
-                            className="text-[11px] font-bold text-accent-blue hover:text-white transition-colors cursor-pointer font-outfit"
-                          >
-                            Enlarge →
-                          </button>
-                        </div>
+                  {/* Summary Description (Clean 2-line clamp) */}
+                  <p className="text-slate-300 text-xs leading-relaxed font-medium font-inter mb-3 line-clamp-2">
+                    {item.summary}
+                  </p>
 
-                        {/* 2-Photo Thumbnail Grid */}
-                        <div className="grid grid-cols-2 gap-2">
-                          {item.images?.map((img, pIdx) => (
-                            <button
-                              key={pIdx}
-                              type="button"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setSelectedItem(item);
-                                setActiveTab("photos");
-                                setActivePhotoIndex(pIdx);
-                              }}
-                              className="group/thumb relative h-20 rounded-xl overflow-hidden border border-white/10 hover:border-sky-400/60 transition-all cursor-pointer shadow-md bg-slate-950/60"
-                              title={`Click to view ${img.label}`}
-                            >
-                              <Image
-                                src={img.url}
-                                alt={img.label}
-                                fill
-                                sizes="200px"
-                                className="object-cover group-hover/thumb:scale-105 transition-transform duration-300"
-                              />
-                              <div className="absolute inset-0 bg-linear-to-t from-black/80 via-transparent to-transparent opacity-80 group-hover/thumb:opacity-100 transition-opacity flex items-end justify-between p-1.5">
-                                <span className="text-[10px] font-bold text-white font-outfit truncate">
-                                  Photo {pIdx + 1}
-                                </span>
-                                <ImageIcon size={11} className="text-sky-300 shrink-0" />
-                              </div>
-                            </button>
-                          ))}
-                        </div>
+                  {/* Middle Feature Section for Teaching Staff */}
+                  {item.id === "teaching" && (
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg bg-sky-500/10 text-sky-300 border border-sky-400/30 text-[11px] font-bold font-outfit">
+                          <ImageIcon size={12} />
+                          <span>2 Teaching Photos</span>
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => openExperienceModal(item, "photos")}
+                          className="text-[11px] font-bold text-accent-blue hover:text-white transition-colors cursor-pointer font-outfit"
+                        >
+                          Enlarge →
+                        </button>
                       </div>
-                    )}
 
-                    {/* Middle Feature Section for Digital Marketing */}
-                    {item.id === "marketing" && (
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between">
-                          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg bg-cyan-500/10 text-cyan-300 border border-cyan-400/30 text-[11px] font-bold font-outfit">
-                            <FileText size={12} />
-                            <span>Certificate &amp; 9 Videos</span>
-                          </span>
-                          {item.behanceUrl && (
-                            <a
-                              href={item.behanceUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-[11px] font-bold text-accent-blue hover:text-white transition-colors cursor-pointer font-outfit flex items-center gap-1"
-                            >
-                              <FaBehance size={11} />
-                              <span>Behance</span>
-                              <ExternalLink size={9} />
-                            </a>
-                          )}
-                        </div>
-
-                        {/* 2-Item Responsive Thumbnail Grid: Certificate + Video Preview */}
-                        <div className="grid grid-cols-2 gap-2">
+                      {/* 2-Photo Thumbnail Grid */}
+                      <div className="grid grid-cols-2 gap-2">
+                        {item.images?.map((img, pIdx) => (
                           <button
+                            key={pIdx}
                             type="button"
                             onClick={(e) => {
                               e.stopPropagation();
-                              openExperienceModal(item, "certificate");
+                              setSelectedItem(item);
+                              setActiveTab("photos");
+                              setActivePhotoIndex(pIdx);
                             }}
-                            className="group/thumb relative h-20 rounded-xl overflow-hidden border border-white/10 hover:border-cyan-400/60 transition-all cursor-pointer shadow-md bg-slate-950/80 p-1 flex items-center justify-center"
-                            title="Click to view Digital Marketing Certificate"
+                            className="group/thumb relative h-20 rounded-xl overflow-hidden border border-white/10 hover:border-sky-400/60 transition-all cursor-pointer shadow-md bg-slate-950/60"
+                            title={`Click to view ${img.label}`}
                           >
-                            <div className="relative w-full h-full">
-                              <Image
-                                src="/image/digital-marketing-certificate.jpg"
-                                alt="Digital Marketing Certificate"
-                                fill
-                                sizes="200px"
-                                className="object-contain p-0.5 group-hover/thumb:scale-105 transition-transform duration-300 drop-shadow-sm"
-                              />
-                            </div>
-                            <div className="absolute inset-0 bg-linear-to-t from-black/85 via-transparent to-transparent flex items-end justify-between p-1.5 pointer-events-none">
-                              <span className="text-[10px] font-bold text-white font-outfit truncate">
-                                Certificate
-                              </span>
-                              <FileText size={11} className="text-cyan-300 shrink-0" />
-                            </div>
-                          </button>
-
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              openExperienceModal(item, "videos");
-                            }}
-                            className="group/thumb relative h-20 rounded-xl overflow-hidden border border-white/10 hover:border-emerald-400/60 transition-all cursor-pointer shadow-md bg-slate-950/60 flex items-center justify-center"
-                            title="Click to watch 9 Marketing Videos"
-                          >
-                            <video
-                              src="/video/1.mp4"
-                              muted
-                              playsInline
-                              preload="metadata"
-                              className="absolute inset-0 w-full h-full object-cover opacity-70 group-hover/thumb:opacity-90 group-hover/thumb:scale-105 transition-all duration-300 pointer-events-none"
+                            <Image
+                              src={img.url}
+                              alt={img.label}
+                              fill
+                              sizes="200px"
+                              className="object-cover group-hover/thumb:scale-105 transition-transform duration-300"
                             />
-                            <div className="relative z-10 w-7 h-7 rounded-full bg-accent-blue/80 backdrop-blur-xs flex items-center justify-center text-white shadow-lg group-hover/thumb:scale-110 transition-transform">
-                              <Play size={11} className="fill-white ml-0.5" />
-                            </div>
-                            <div className="absolute inset-0 bg-linear-to-t from-black/85 via-transparent to-transparent flex items-end justify-between p-1.5 z-10">
+                            <div className="absolute inset-0 bg-linear-to-t from-black/80 via-transparent to-transparent opacity-80 group-hover/thumb:opacity-100 transition-opacity flex items-end justify-between p-1.5">
                               <span className="text-[10px] font-bold text-white font-outfit truncate">
-                                9 Videos
+                                Photo {pIdx + 1}
                               </span>
-                              <Film size={11} className="text-emerald-300 shrink-0" />
+                              <ImageIcon size={11} className="text-sky-300 shrink-0" />
                             </div>
                           </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Middle Feature Section for Digital Marketing */}
+                  {item.id === "marketing" && (
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg bg-cyan-500/10 text-cyan-300 border border-cyan-400/30 text-[11px] font-bold font-outfit">
+                          <FileText size={12} />
+                          <span>Certificate &amp; 9 Videos</span>
+                        </span>
+                        {item.behanceUrl && (
+                          <a
+                            href={item.behanceUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-[11px] font-bold text-accent-blue hover:text-white transition-colors cursor-pointer font-outfit flex items-center gap-1"
+                          >
+                            <FaBehance size={11} />
+                            <span>Behance</span>
+                            <ExternalLink size={9} />
+                          </a>
+                        )}
+                      </div>
+
+                      {/* 2-Item Responsive Thumbnail Grid: Certificate + Video Preview */}
+                      <div className="grid grid-cols-2 gap-2">
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            openExperienceModal(item, "certificate");
+                          }}
+                          className="group/thumb relative h-20 rounded-xl overflow-hidden border border-white/10 hover:border-cyan-400/60 transition-all cursor-pointer shadow-md bg-slate-950/60"
+                          title="Click to view Digital Marketing Certificate"
+                        >
+                          <Image
+                            src="/image/chen Sreyneat.png"
+                            alt="Digital Marketing Certificate"
+                            fill
+                            sizes="200px"
+                            className="object-cover group-hover/thumb:scale-105 transition-transform duration-300"
+                          />
+                          <div className="absolute inset-0 bg-linear-to-t from-black/85 via-black/20 to-transparent flex items-end justify-between p-1.5">
+                            <span className="text-[10px] font-bold text-white font-outfit truncate">
+                              Certificate
+                            </span>
+                            <FileText size={11} className="text-cyan-300 shrink-0" />
+                          </div>
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            openExperienceModal(item, "videos");
+                          }}
+                          className="group/thumb relative h-20 rounded-xl overflow-hidden border border-white/10 hover:border-emerald-400/60 transition-all cursor-pointer shadow-md bg-slate-950/60 flex items-center justify-center"
+                          title="Click to watch 9 Marketing Videos"
+                        >
+                          <video
+                            src="/video/1.mp4"
+                            muted
+                            playsInline
+                            preload="metadata"
+                            className="absolute inset-0 w-full h-full object-cover opacity-70 group-hover/thumb:opacity-90 group-hover/thumb:scale-105 transition-all duration-300 pointer-events-none"
+                          />
+                          <div className="relative z-10 w-7 h-7 rounded-full bg-accent-blue/80 backdrop-blur-xs flex items-center justify-center text-white shadow-lg group-hover/thumb:scale-110 transition-transform">
+                            <Play size={11} className="fill-white ml-0.5" />
+                          </div>
+                          <div className="absolute inset-0 bg-linear-to-t from-black/85 via-transparent to-transparent flex items-end justify-between p-1.5 z-10">
+                            <span className="text-[10px] font-bold text-white font-outfit truncate">
+                              9 Videos
+                            </span>
+                            <Film size={11} className="text-emerald-300 shrink-0" />
+                          </div>
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Middle Feature Section for Practical Computer */}
+                  {item.id === "computer" && (
+                    <div className="space-y-2.5">
+                      <div className="flex items-center justify-between">
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg bg-accent-blue/10 text-cyan-300 border border-accent-blue/30 text-[11px] font-bold font-outfit">
+                          <Laptop size={12} />
+                          <span>4-Year IT Program</span>
+                        </span>
+                        <span className="text-[11px] text-slate-400 font-outfit">RUPP Campus</span>
+                      </div>
+
+                      {/* Computer Key Focus Items */}
+                      <div className="grid grid-cols-2 gap-1.5 text-[11px] font-semibold text-slate-300 font-inter">
+                        <div className="p-2 rounded-lg bg-white/[0.02] border border-white/5 flex items-center gap-1.5">
+                          <span className="w-1.5 h-1.5 rounded-full bg-accent-blue shrink-0 shadow-[0_0_6px_rgba(96,165,250,0.8)]" />
+                          <span className="truncate">Hardware &amp; Systems</span>
+                        </div>
+                        <div className="p-2 rounded-lg bg-white/[0.02] border border-white/5 flex items-center gap-1.5">
+                          <span className="w-1.5 h-1.5 rounded-full bg-accent-blue shrink-0 shadow-[0_0_6px_rgba(96,165,250,0.8)]" />
+                          <span className="truncate">OS &amp; Troubleshooting</span>
+                        </div>
+                        <div className="p-2 rounded-lg bg-white/[0.02] border border-white/5 flex items-center gap-1.5">
+                          <span className="w-1.5 h-1.5 rounded-full bg-accent-blue shrink-0 shadow-[0_0_6px_rgba(96,165,250,0.8)]" />
+                          <span className="truncate">Web Development</span>
+                        </div>
+                        <div className="p-2 rounded-lg bg-white/[0.02] border border-white/5 flex items-center gap-1.5">
+                          <span className="w-1.5 h-1.5 rounded-full bg-accent-blue shrink-0 shadow-[0_0_6px_rgba(96,165,250,0.8)]" />
+                          <span className="truncate">Technical Support</span>
                         </div>
                       </div>
-                    )}
-
-                    {/* Middle Feature Section for Practical Computer */}
-                    {item.id === "computer" && (
-                      <div className="space-y-2.5">
-                        <div className="flex items-center justify-between">
-                          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg bg-accent-blue/10 text-cyan-300 border border-accent-blue/30 text-[11px] font-bold font-outfit">
-                            <Laptop size={12} />
-                            <span>4-Year IT Program</span>
-                          </span>
-                          <span className="text-[11px] text-slate-400 font-outfit">RUPP Campus</span>
-                        </div>
-
-                        {/* Computer Key Focus Items */}
-                        <div className="grid grid-cols-2 gap-1.5 text-[11px] font-semibold text-slate-300 font-inter">
-                          <div className="p-2 rounded-lg bg-white/[0.02] border border-white/5 flex items-center gap-1.5">
-                            <span className="w-1.5 h-1.5 rounded-full bg-accent-blue shrink-0 shadow-[0_0_6px_rgba(96,165,250,0.8)]" />
-                            <span className="truncate">Hardware &amp; Systems</span>
-                          </div>
-                          <div className="p-2 rounded-lg bg-white/[0.02] border border-white/5 flex items-center gap-1.5">
-                            <span className="w-1.5 h-1.5 rounded-full bg-accent-blue shrink-0 shadow-[0_0_6px_rgba(96,165,250,0.8)]" />
-                            <span className="truncate">OS &amp; Troubleshooting</span>
-                          </div>
-                          <div className="p-2 rounded-lg bg-white/[0.02] border border-white/5 flex items-center gap-1.5">
-                            <span className="w-1.5 h-1.5 rounded-full bg-accent-blue shrink-0 shadow-[0_0_6px_rgba(96,165,250,0.8)]" />
-                            <span className="truncate">Web Development</span>
-                          </div>
-                          <div className="p-2 rounded-lg bg-white/[0.02] border border-white/5 flex items-center gap-1.5">
-                            <span className="w-1.5 h-1.5 rounded-full bg-accent-blue shrink-0 shadow-[0_0_6px_rgba(96,165,250,0.8)]" />
-                            <span className="truncate">Technical Support</span>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Bottom Action Button: Fixed at bottom */}
-                  <div className="pt-3 border-t border-white/10 mt-auto">
-                    <button
-                      type="button"
-                      onClick={() => openExperienceModal(item, "overview")}
-                      className="w-full py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 bg-[#4185DB] hover:bg-[#3273c5] border border-[#4185DB] text-xs font-bold text-white transition-all duration-300 group/btn cursor-pointer font-outfit uppercase tracking-wider shadow-md shadow-[#4185DB]/25 hover:shadow-lg hover:shadow-[#4185DB]/40 active:scale-[0.98]"
-                    >
-                      <Eye size={15} className="group-hover/btn:scale-110 transition-transform" />
-                      <span>View Details</span>
-                      <ExternalLink size={13} className="opacity-80 group-hover/btn:translate-x-0.5 transition-transform" />
-                    </button>
-                  </div>
+                    </div>
+                  )}
                 </div>
+
+                {/* Bottom Action Button: Fixed at bottom */}
+                <div className="pt-3 border-t border-white/10 mt-auto">
+                  <button
+                    type="button"
+                    onClick={() => openExperienceModal(item, "overview")}
+                    className="w-full py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 bg-[#4185DB] hover:bg-[#3273c5] border border-[#4185DB] text-xs font-bold text-white transition-all duration-300 group/btn cursor-pointer font-outfit uppercase tracking-wider shadow-md shadow-[#4185DB]/25 hover:shadow-lg hover:shadow-[#4185DB]/40 active:scale-[0.98]"
+                  >
+                    <Eye size={15} className="group-hover/btn:scale-110 transition-transform" />
+                    <span>View Details</span>
+                    <ExternalLink size={13} className="opacity-80 group-hover/btn:translate-x-0.5 transition-transform" />
+                  </button>
+                </div>
+              </div>
             </motion.div>
           ))}
         </div>
@@ -759,7 +757,7 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 14 }}
               transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-              className="relative w-full max-w-4xl md:max-w-5xl max-h-[92dvh] sm:max-h-[90vh] bg-[#020617]/95 backdrop-blur-2xl border border-accent-blue/30 rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.8)] flex flex-col z-10 overscroll-contain touch-auto"
+              className="relative w-full max-w-3xl max-h-[92dvh] sm:max-h-[90vh] bg-[#020617]/95 backdrop-blur-2xl border border-accent-blue/30 rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.8)] flex flex-col z-10 overscroll-contain touch-auto"
             >
               {/* Modal Header */}
               <div className="p-4 sm:p-5 border-b border-white/10 bg-slate-950/80 backdrop-blur-md flex items-center justify-between gap-4">
@@ -1055,7 +1053,7 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
 
 
                       <div
-                        className={`relative w-full h-[46vh] sm:h-[54vh] flex items-center justify-center bg-black/60 overflow-auto select-none no-scrollbar ${photoZoomLevel > 1 ? "cursor-grab active:cursor-grabbing" : "cursor-zoom-in"
+                        className={`relative w-full h-[54vh] sm:h-[64vh] md:h-[72vh] flex items-center justify-center bg-black/60 overflow-auto select-none no-scrollbar ${photoZoomLevel > 1 ? "cursor-grab active:cursor-grabbing" : "cursor-zoom-in"
                           }`}
                         onDoubleClick={togglePhotoZoom}
                       >
@@ -1174,27 +1172,26 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
 
                     <div className="w-full bg-slate-950/80 rounded-2xl overflow-hidden border border-white/10 shadow-2xl flex flex-col">
                       <div
-                        className={`relative w-full h-[54vh] sm:h-[64vh] md:h-[72vh] overflow-auto select-none no-scrollbar flex items-center justify-center p-1.5 sm:p-3 md:p-4 ${
-                          certZoomLevel > 1 ? "cursor-grab active:cursor-grabbing" : "cursor-zoom-in"
-                        }`}
+                        className={`relative w-full h-[54vh] sm:h-[64vh] md:h-[72vh] overflow-auto select-none no-scrollbar flex items-center justify-center ${certZoomLevel > 1 ? "cursor-grab active:cursor-grabbing" : "cursor-zoom-in"
+                          }`}
                         onDoubleClick={toggleCertZoom}
                       >
                         <div
-                          className="relative flex items-center justify-center transition-transform duration-200 origin-center w-full h-full"
+                          className="relative w-full h-full transition-transform duration-200 origin-center"
                           style={{
                             transform: `scale(${certZoomLevel})`,
-                            width: certZoomLevel > 1 ? `${certZoomLevel * 100}%` : "100%",
-                            height: certZoomLevel > 1 ? `${certZoomLevel * 100}%` : "100%",
-                            minWidth: "100%",
-                            minHeight: "100%",
+                            ...(certZoomLevel > 1 ? {
+                              width: `${certZoomLevel * 100}%`,
+                              height: `${certZoomLevel * 100}%`,
+                            } : {}),
                           }}
                         >
                           <Image
                             src={selectedItem.certificateImage || selectedItem.certificatePdf || ""}
                             alt="Digital Marketing Certificate"
                             fill
-                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1200px"
-                            className="object-contain p-1 sm:p-2 rounded-xl drop-shadow-2xl"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 85vw, 768px"
+                            className="object-contain drop-shadow-2xl"
                             priority
                           />
                         </div>

@@ -14,10 +14,23 @@ import {
   Eye,
   ZoomIn,
   ZoomOut,
-  RotateCcw
+  RotateCcw,
+  LucideIcon
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+
+interface CertificateItem {
+  title: string;
+  period: string;
+  organization: string;
+  description: string;
+  fileUrl: string;
+  pdfUrl?: string;
+  pages?: string[];
+  type: "image";
+  icon: LucideIcon;
+}
 
 export default function CertificatesSection() {
   const sliderRef = useRef<HTMLDivElement>(null);
@@ -28,10 +41,11 @@ export default function CertificatesSection() {
   // Pop-up modal state
   const [selectedCertIndex, setSelectedCertIndex] = useState<number | null>(null);
   const [zoomLevel, setZoomLevel] = useState<number>(1);
+  const [activePageIndex, setActivePageIndex] = useState<number>(0);
   const touchStartXRef = useRef<number | null>(null);
   const touchStartYRef = useRef<number | null>(null);
 
-  const certificates = [
+  const certificates: CertificateItem[] = [
     {
       title: "C++, C#, & OOP Programming",
       period: "2023",
@@ -64,8 +78,8 @@ export default function CertificatesSection() {
       period: "2022 - Present",
       organization: "Royal University of Phnom Penh",
       description: "Official record of academic courses, training history, and credits completed during the engineering program.",
-      fileUrl: "/image/certificate-record.jpg",
-      pdfUrl: "/image/certificate-record.pdf",
+      fileUrl: "/image/certificate record.png",
+      pdfUrl: "/image/certificate record.pdf",
       type: "image" as const,
       icon: FileText
     },
@@ -74,7 +88,7 @@ export default function CertificatesSection() {
       period: "Various",
       organization: "Tech Communities & Workshops",
       description: "Compiled certificates and awards from tech workshops, seminars, and extra-curricular participations.",
-      fileUrl: "/image/general-certificate.jpg",
+      fileUrl: "/image/Certificate.png",
       pdfUrl: "/image/Certificate.pdf",
       type: "image" as const,
       icon: Trophy
@@ -109,23 +123,27 @@ export default function CertificatesSection() {
 
   const openCertModal = (index: number) => {
     setSelectedCertIndex(index);
+    setActivePageIndex(0);
     setZoomLevel(1);
   };
 
   const closeCertModal = () => {
     setSelectedCertIndex(null);
+    setActivePageIndex(0);
     setZoomLevel(1);
   };
 
   const handleNextCert = () => {
     if (selectedCertIndex === null) return;
     setZoomLevel(1);
+    setActivePageIndex(0);
     setSelectedCertIndex((prev) => (prev! + 1) % certificates.length);
   };
 
   const handlePrevCert = () => {
     if (selectedCertIndex === null) return;
     setZoomLevel(1);
+    setActivePageIndex(0);
     setSelectedCertIndex((prev) => (prev! - 1 + certificates.length) % certificates.length);
   };
 
@@ -407,7 +425,7 @@ export default function CertificatesSection() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 14 }}
               transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-              className="relative w-full max-w-4xl md:max-w-5xl max-h-[92dvh] sm:max-h-[90vh] bg-[#020617]/95 backdrop-blur-2xl border border-accent-blue/30 rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.8)] flex flex-col z-10 overscroll-contain touch-auto"
+              className="relative w-full max-w-5xl max-h-[92dvh] sm:max-h-[90vh] bg-[#020617]/95 backdrop-blur-2xl border border-accent-blue/30 rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.8)] flex flex-col z-10 overscroll-contain touch-auto"
             >
               {/* Header */}
               <div className="p-3.5 sm:p-5 border-b border-white/10 bg-slate-950/80 backdrop-blur-md flex flex-col gap-2.5">
@@ -450,8 +468,8 @@ export default function CertificatesSection() {
                       type="button"
                       onClick={() => openCertModal(idx)}
                       className={`text-[11px] sm:text-xs px-2.5 sm:px-3 py-1 rounded-lg font-semibold font-outfit transition-all cursor-pointer whitespace-nowrap shrink-0 flex items-center gap-1.5 ${selectedCertIndex === idx
-                          ? "bg-accent-blue text-white shadow-sm shadow-accent-blue/30 scale-102"
-                          : "bg-white/5 text-slate-300 hover:bg-white/10 hover:text-white border border-white/10"
+                        ? "bg-accent-blue text-white shadow-sm shadow-accent-blue/30 scale-102"
+                        : "bg-white/5 text-slate-300 hover:bg-white/10 hover:text-white border border-white/10"
                         }`}
                     >
                       <cert.icon size={11} className={selectedCertIndex === idx ? "text-white" : "text-accent-blue"} />
@@ -460,21 +478,45 @@ export default function CertificatesSection() {
                   ))}
                 </div>
 
+                {/* Multi-Page Selector Pills (for multi-page certificates) */}
+                {activeCert.pages && activeCert.pages.length > 1 && (
+                  <div className="flex items-center gap-1.5 pt-1.5 border-t border-white/5 overflow-x-auto no-scrollbar">
+                    <span className="text-[10px] sm:text-[11px] font-bold text-cyan-300 font-outfit uppercase tracking-wider shrink-0">
+                      Pages ({activeCert.pages.length}):
+                    </span>
+                    {activeCert.pages.map((_, pIdx) => (
+                      <button
+                        key={pIdx}
+                        type="button"
+                        onClick={() => {
+                          setActivePageIndex(pIdx);
+                          setZoomLevel(1);
+                        }}
+                        className={`text-[11px] px-2.5 py-0.5 rounded-md font-semibold font-outfit transition-all cursor-pointer shrink-0 ${activePageIndex === pIdx
+                          ? "bg-cyan-500 text-white shadow-xs shadow-cyan-500/30 scale-105 border border-cyan-400"
+                          : "bg-white/5 text-slate-300 hover:bg-white/10 border border-white/10"
+                          }`}
+                      >
+                        Page {pIdx + 1}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
 
-              {/* Content Area with Zoom, Pan, Swipe & Floating Arrows (Fitted with Margins) */}
+              {/* Content Area with Zoom, Pan, Swipe & Floating Arrows */}
               <div
-                className="flex-grow w-full bg-slate-950/80 relative flex items-center justify-center overflow-hidden p-1.5 sm:p-3 md:p-4"
+                className="flex-grow w-full bg-slate-950/80 relative flex items-center justify-center overflow-hidden p-2 sm:p-4 md:p-6"
                 onTouchStart={handleTouchStart}
                 onTouchEnd={handleTouchEnd}
               >
                 <div
-                  className={`relative w-full h-[54vh] sm:h-[64vh] md:h-[72vh] rounded-2xl overflow-auto select-none no-scrollbar flex items-center justify-center p-1 sm:p-2 ${zoomLevel > 1 ? "cursor-grab active:cursor-grabbing" : "cursor-zoom-in"
+                  className={`relative w-full h-[54vh] sm:h-[64vh] md:h-[72vh] rounded-xl overflow-auto select-none no-scrollbar flex items-center justify-center ${zoomLevel > 1 ? "cursor-grab active:cursor-grabbing" : "cursor-zoom-in"
                     }`}
                   onDoubleClick={toggleZoom}
                 >
                   <div
-                    className="relative flex items-center justify-center transition-transform duration-200 origin-center w-full h-full"
+                    className="relative flex items-center justify-center transition-transform duration-200 origin-center"
                     style={{
                       transform: `scale(${zoomLevel})`,
                       width: zoomLevel > 1 ? `${zoomLevel * 100}%` : "100%",
@@ -484,11 +526,11 @@ export default function CertificatesSection() {
                     }}
                   >
                     <Image
-                      src={activeCert.fileUrl}
+                      src={(activeCert.pages && activeCert.pages[activePageIndex]) || activeCert.fileUrl}
                       alt={activeCert.title}
                       fill
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1200px"
-                      className="object-contain p-1 sm:p-2 rounded-xl drop-shadow-2xl"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 85vw, 1024px"
+                      className="object-contain rounded-xl drop-shadow-2xl"
                       priority
                     />
                   </div>
