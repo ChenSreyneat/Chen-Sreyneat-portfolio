@@ -296,8 +296,9 @@ export default function CertificatesSection() {
 
         {/* Left Circular Arrow Button */}
         <button
+          type="button"
           onClick={() => handleScroll("left")}
-          className={`absolute left-2 md:left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-slate-950/60 backdrop-blur-md text-white rounded-full hidden lg:flex items-center justify-center z-30 transition-all duration-300 border border-white/20 hover:border-accent-blue hover:bg-slate-900/90 hover:scale-105 active:scale-95 cursor-pointer shadow-lg ${showLeftArrow ? "opacity-100 pointer-events-auto translate-x-0" : "opacity-0 pointer-events-none -translate-x-4"
+          className={`absolute left-2 md:left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-slate-900/90 dark:bg-white/10 backdrop-blur-md text-white rounded-full hidden lg:flex items-center justify-center z-30 transition-all duration-300 border border-white/20 hover:border-accent-blue hover:bg-slate-800 hover:scale-105 active:scale-95 cursor-pointer shadow-lg ${showLeftArrow ? "opacity-100 pointer-events-auto translate-x-0" : "opacity-0 pointer-events-none -translate-x-4"
             }`}
           aria-label="Scroll Left"
         >
@@ -306,8 +307,9 @@ export default function CertificatesSection() {
 
         {/* Right Circular Arrow Button */}
         <button
+          type="button"
           onClick={() => handleScroll("right")}
-          className={`absolute right-2 md:right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-slate-950/60 backdrop-blur-md text-white rounded-full hidden lg:flex items-center justify-center z-30 transition-all duration-300 border border-white/20 hover:border-accent-blue hover:bg-slate-900/90 hover:scale-105 active:scale-95 cursor-pointer shadow-lg ${showRightArrow ? "opacity-100 pointer-events-auto translate-x-0" : "opacity-0 pointer-events-none translate-x-4"
+          className={`absolute right-2 md:right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-slate-900/90 dark:bg-white/10 backdrop-blur-md text-white rounded-full hidden lg:flex items-center justify-center z-30 transition-all duration-300 border border-white/20 hover:border-accent-blue hover:bg-slate-800 hover:scale-105 active:scale-95 cursor-pointer shadow-lg ${showRightArrow ? "opacity-100 pointer-events-auto translate-x-0" : "opacity-0 pointer-events-none translate-x-4"
             }`}
           aria-label="Scroll Right"
         >
@@ -326,41 +328,43 @@ export default function CertificatesSection() {
           {certificates.map((item, index) => (
             <motion.div
               key={index}
-              whileHover={{ y: -6 }}
-              transition={{ duration: 0.3 }}
-              className="flex-shrink-0 w-[calc(100vw-2.5rem)] max-w-[360px] sm:w-[340px] md:w-[380px] snap-start group relative flex flex-col justify-between bg-slate-950/20 border border-white/20 rounded-2xl p-5 sm:p-6 transition-all duration-300 hover:border-accent-blue shadow-sm hover:shadow-xl hover:shadow-accent-blue/20"
+              whileHover={{ y: -6, scale: 1.02 }}
+              transition={{ type: "spring", stiffness: 350, damping: 20 }}
+              className="flex-shrink-0 w-[calc(100vw-2.5rem)] max-w-[360px] sm:w-[320px] md:w-[360px] snap-start group relative flex flex-col justify-between rounded-2xl bg-slate-950/20 border border-white/20 hover:border-accent-blue p-5 md:p-6 shadow-sm hover:shadow-xl hover:shadow-accent-blue/20 transition-all duration-300 mx-auto sm:mx-0 min-h-[340px]"
             >
-              <div>
-                <div className="flex items-start justify-between mb-4">
-                  <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/20 flex items-center justify-center text-accent-blue shadow-inner group-hover:border-accent-blue/60 group-hover:shadow-[0_0_12px_rgba(96,165,250,0.3)] transition-all">
-                    <item.icon size={20} />
+              <div className="flex flex-col h-full justify-between">
+                <div>
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/20 flex items-center justify-center text-accent-blue shadow-inner group-hover:border-accent-blue/60 group-hover:shadow-[0_0_12px_rgba(96,165,250,0.3)] transition-all">
+                      <item.icon size={20} />
+                    </div>
+                    <span className="text-cyan-300 font-bold text-xs bg-white/5 px-2.5 sm:px-3 py-1 rounded-md border border-accent-blue/40 font-outfit shadow-xs">
+                      {item.period}
+                    </span>
                   </div>
-                  <span className="text-cyan-300 font-bold text-xs bg-white/5 px-2.5 sm:px-3 py-1 rounded-md border border-accent-blue/40 font-outfit shadow-xs">
-                    {item.period}
-                  </span>
+                  <div className="space-y-2">
+                    <h3 className="text-lg md:text-xl font-extrabold text-white group-hover:text-accent-blue transition-colors font-outfit">
+                      {item.title}
+                    </h3>
+                    <p className="text-accent-blue text-xs sm:text-sm font-bold font-outfit">{item.organization}</p>
+                    <p className="text-slate-200 text-xs sm:text-sm leading-relaxed font-semibold font-inter mt-3 mb-6">
+                      {item.description}
+                    </p>
+                  </div>
                 </div>
-                <div className="space-y-2">
-                  <h3 className="text-lg md:text-xl font-extrabold text-white group-hover:text-accent-blue transition-colors font-outfit">
-                    {item.title}
-                  </h3>
-                  <p className="text-accent-blue text-xs sm:text-sm font-bold font-outfit">{item.organization}</p>
-                  <p className="text-slate-200 text-xs sm:text-sm leading-relaxed font-semibold font-inter mt-3 mb-6">
-                    {item.description}
-                  </p>
-                </div>
-              </div>
 
-              {/* Action Button (Matching EducationSection button design) */}
-              <div className="pt-4 sm:pt-6 mt-auto border-t border-white/10">
-                <button
-                  type="button"
-                  onClick={() => openCertModal(index)}
-                  className="w-full py-2.5 px-3 sm:px-4 rounded-xl flex items-center justify-center gap-2 bg-[#4185DB] hover:bg-[#3273c5] border border-[#4185DB] text-xs font-bold text-white transition-all duration-300 group/btn cursor-pointer font-outfit uppercase tracking-wider shadow-md shadow-[#4185DB]/25 hover:shadow-lg hover:shadow-[#4185DB]/40 active:scale-[0.98]"
-                >
-                  <Eye size={15} className="group-hover/btn:scale-110 transition-transform" />
-                  <span>{item.type === "pdf" ? "View Certificate (PDF)" : "View Certificate"}</span>
-                  <ExternalLink size={13} className="opacity-80 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
-                </button>
+                {/* Action Button (Matching EducationSection button design) */}
+                <div className="pt-4 sm:pt-6 mt-auto border-t border-white/10">
+                  <button
+                    type="button"
+                    onClick={() => openCertModal(index)}
+                    className="w-full py-2.5 px-3 sm:px-4 rounded-xl flex items-center justify-center gap-2 bg-[#4185DB] hover:bg-[#3273c5] border border-[#4185DB] text-xs font-bold text-white transition-all duration-300 group/btn cursor-pointer font-outfit uppercase tracking-wider shadow-md shadow-[#4185DB]/25 hover:shadow-lg hover:shadow-[#4185DB]/40 active:scale-[0.98]"
+                  >
+                    <Eye size={15} className="group-hover/btn:scale-110 transition-transform" />
+                    <span>{item.type === "pdf" ? "View Certificate (PDF)" : "View Certificate"}</span>
+                    <ExternalLink size={13} className="opacity-80 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 transition-transform" />
+                  </button>
+                </div>
               </div>
             </motion.div>
           ))}

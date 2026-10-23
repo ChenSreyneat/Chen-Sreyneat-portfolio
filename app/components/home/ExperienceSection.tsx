@@ -229,8 +229,8 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
   const handleScrollButtons = useCallback(() => {
     if (sliderRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = sliderRef.current;
-      setShowLeftArrow(scrollLeft > 15);
-      setShowRightArrow(scrollLeft < scrollWidth - clientWidth - 15);
+      setShowLeftArrow(scrollLeft > 10);
+      setShowRightArrow(scrollLeft < scrollWidth - clientWidth - 10);
 
       const cards = Array.from(sliderRef.current.children) as HTMLElement[];
       if (cards.length > 0) {
@@ -461,52 +461,47 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
         </motion.div>
       )}
 
-      {/* Responsive Slider / Desktop 3-Column Grid Container */}
-      <div className="relative w-full z-10 max-w-6xl mx-auto px-0 sm:px-4">
-        {/* Left Circular Arrow Button (hidden on mobile, visible on desktop like Portfolio Showcase) */}
+      {/* Slider Container Wrapper */}
+      <div className="relative w-full z-10 max-w-7xl mx-auto px-0 sm:px-4 md:px-8">
+        {/* Left Circular Arrow Button */}
         <button
           type="button"
           onClick={() => handleScroll("left")}
-          className={`absolute left-2 md:left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-slate-900/90 backdrop-blur-md text-white rounded-full hidden lg:flex items-center justify-center z-30 transition-all duration-300 border border-white/20 hover:border-accent-blue hover:bg-slate-800 hover:scale-105 active:scale-95 cursor-pointer shadow-lg ${showLeftArrow ? "opacity-100 pointer-events-auto translate-x-0" : "opacity-0 pointer-events-none -translate-x-4"
+          className={`absolute left-2 md:left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-slate-900/90 dark:bg-white/10 backdrop-blur-md text-white rounded-full hidden lg:flex items-center justify-center z-30 transition-all duration-300 border border-white/20 hover:border-accent-blue hover:bg-slate-800 hover:scale-105 active:scale-95 cursor-pointer shadow-lg ${showLeftArrow ? "opacity-100 pointer-events-auto translate-x-0" : "opacity-0 pointer-events-none -translate-x-4"
             }`}
           aria-label="Previous Experience"
         >
           <ChevronLeft className="w-6 h-6 text-white" />
         </button>
 
-        {/* Right Circular Arrow Button (hidden on mobile, visible on desktop like Portfolio Showcase) */}
+        {/* Right Circular Arrow Button */}
         <button
           type="button"
           onClick={() => handleScroll("right")}
-          className={`absolute right-2 md:right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-slate-900/90 backdrop-blur-md text-white rounded-full hidden lg:flex items-center justify-center z-30 transition-all duration-300 border border-white/20 hover:border-accent-blue hover:bg-slate-800 hover:scale-105 active:scale-95 cursor-pointer shadow-lg ${showRightArrow ? "opacity-100 pointer-events-auto translate-x-0" : "opacity-0 pointer-events-none translate-x-4"
+          className={`absolute right-2 md:right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-slate-900/90 dark:bg-white/10 backdrop-blur-md text-white rounded-full hidden lg:flex items-center justify-center z-30 transition-all duration-300 border border-white/20 hover:border-accent-blue hover:bg-slate-800 hover:scale-105 active:scale-95 cursor-pointer shadow-lg ${showRightArrow ? "opacity-100 pointer-events-auto translate-x-0" : "opacity-0 pointer-events-none translate-x-4"
             }`}
           aria-label="Next Experience"
         >
           <ChevronRight className="w-6 h-6 text-white" />
         </button>
 
-        {/* Scrollable Container with native snap & touch swipe on mobile/tablet, 3-col grid on desktop */}
+        {/* Scrollable Container with native snap & touch swipe */}
         <div
           ref={sliderRef}
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUpOrLeave}
           onMouseLeave={handleMouseUpOrLeave}
-          className="flex lg:grid lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 overflow-x-auto lg:overflow-visible py-4 lg:py-0 px-4 lg:px-0 no-scrollbar snap-x snap-proximity lg:snap-none scroll-smooth touch-pan-x touch-pan-y overscroll-x-contain cursor-grab active:cursor-grabbing [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] items-stretch"
+          className="flex gap-4 sm:gap-6 overflow-x-auto py-4 sm:py-6 px-4 no-scrollbar snap-x snap-proximity scroll-smooth touch-pan-x touch-pan-y overscroll-x-contain cursor-grab active:cursor-grabbing [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
         >
           {experiences.map((item, index) => (
             <motion.div
               key={index}
-              custom={index}
-              variants={cardVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.15 }}
-              whileHover={{ y: -6 }}
-              className="w-[calc(100vw-2.5rem)] max-w-[360px] sm:max-w-[400px] lg:w-full shrink-0 lg:shrink snap-start lg:snap-align-none h-[450px] group relative flex mx-auto"
+              whileHover={{ y: -6, scale: 1.02 }}
+              transition={{ type: "spring", stiffness: 350, damping: 20 }}
+              className="flex-shrink-0 w-[calc(100vw-2.5rem)] max-w-[360px] sm:w-[320px] md:w-[360px] snap-start group relative flex flex-col justify-between rounded-2xl bg-slate-950/20 border border-white/20 hover:border-accent-blue p-5 md:p-6 shadow-sm hover:shadow-xl hover:shadow-accent-blue/20 transition-all duration-300 mx-auto sm:mx-0 h-[465px]"
             >
-              <div className="relative h-[450px] w-full flex flex-col justify-between bg-slate-900/40 backdrop-blur-md border border-white/15 rounded-2xl p-5 sm:p-6 transition-all duration-300 hover:border-accent-blue/70 hover:shadow-[0_12px_35px_-5px_rgba(96,165,250,0.22)] hover:bg-slate-900/60 shadow-lg overflow-hidden">
-                <div className="flex flex-col h-full justify-between">
+              <div className="flex flex-col h-full justify-between">
                   <div>
                     {/* Top Row: Icon & Period Pill */}
                     <div className="flex items-start justify-between mb-4">
@@ -696,13 +691,12 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
                     </button>
                   </div>
                 </div>
-              </div>
             </motion.div>
           ))}
         </div>
 
         {/* Responsive Pagination Dots Indicator (< lg) */}
-        <div className="flex lg:hidden justify-center items-center gap-2 mt-4">
+        <div className="flex lg:hidden justify-center items-center gap-2 mt-4 sm:mt-6">
           {experiences.map((_, idx) => (
             <button
               key={idx}

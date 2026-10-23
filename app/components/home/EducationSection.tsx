@@ -121,6 +121,8 @@ export default function EducationSection() {
   }, [selectedItem]);
 
   const sliderRef = useRef<HTMLDivElement>(null);
+  const [showLeftArrow, setShowLeftArrow] = useState(false);
+  const [showRightArrow, setShowRightArrow] = useState(true);
   const [activeSlide, setActiveSlide] = useState(0);
 
   const scrollToSlide = useCallback((index: number) => {
@@ -139,7 +141,10 @@ export default function EducationSection() {
 
   const handleScrollButtons = useCallback(() => {
     if (sliderRef.current) {
-      const { scrollLeft, clientWidth } = sliderRef.current;
+      const { scrollLeft, scrollWidth, clientWidth } = sliderRef.current;
+      setShowLeftArrow(scrollLeft > 10);
+      setShowRightArrow(scrollLeft < scrollWidth - clientWidth - 10);
+
       const cards = Array.from(sliderRef.current.children) as HTMLElement[];
       if (cards.length > 0) {
         let closestIndex = 0;
@@ -157,6 +162,15 @@ export default function EducationSection() {
       }
     }
   }, []);
+
+  const handleScroll = (direction: "left" | "right") => {
+    if (sliderRef.current) {
+      const nextIndex = direction === "left"
+        ? Math.max(0, activeSlide - 1)
+        : Math.min(education.length - 1, activeSlide + 1);
+      scrollToSlide(nextIndex);
+    }
+  };
 
   // Mouse drag-to-scroll support ("like touch on box")
   const isDownRef = useRef(false);
@@ -327,29 +341,47 @@ export default function EducationSection() {
         <p className="text-slate-200 text-xs sm:text-sm md:text-base max-w-2xl font-medium font-inter">My academic background and continuous learning path in technology.</p>
       </motion.div>
 
-      {/* Responsive Slider / Desktop Grid Container */}
-      <div className="relative w-full z-10 max-w-6xl mx-auto px-0 sm:px-4">
-        {/* Scrollable Container with native snap & touch swipe on mobile, 3-col grid on desktop */}
+      {/* Slider Container Wrapper */}
+      <div className="relative w-full z-10 max-w-7xl mx-auto px-0 sm:px-4 md:px-8">
+        {/* Left Circular Arrow Button */}
+        <button
+          type="button"
+          onClick={() => handleScroll("left")}
+          className={`absolute left-2 md:left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-slate-900/90 dark:bg-white/10 backdrop-blur-md text-white rounded-full hidden lg:flex items-center justify-center z-30 transition-all duration-300 border border-white/20 hover:border-accent-blue hover:bg-slate-800 hover:scale-105 active:scale-95 cursor-pointer shadow-lg ${showLeftArrow ? "opacity-100 pointer-events-auto translate-x-0" : "opacity-0 pointer-events-none -translate-x-4"
+            }`}
+          aria-label="Previous Education"
+        >
+          <ChevronLeft className="w-6 h-6 text-white" />
+        </button>
+
+        {/* Right Circular Arrow Button */}
+        <button
+          type="button"
+          onClick={() => handleScroll("right")}
+          className={`absolute right-2 md:right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-slate-900/90 dark:bg-white/10 backdrop-blur-md text-white rounded-full hidden lg:flex items-center justify-center z-30 transition-all duration-300 border border-white/20 hover:border-accent-blue hover:bg-slate-800 hover:scale-105 active:scale-95 cursor-pointer shadow-lg ${showRightArrow ? "opacity-100 pointer-events-auto translate-x-0" : "opacity-0 pointer-events-none translate-x-4"
+            }`}
+          aria-label="Next Education"
+        >
+          <ChevronRight className="w-6 h-6 text-white" />
+        </button>
+
+        {/* Scrollable Container with native snap & touch swipe */}
         <div
           ref={sliderRef}
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUpOrLeave}
           onMouseLeave={handleMouseUpOrLeave}
-          className="flex lg:grid lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 overflow-x-auto lg:overflow-visible py-3 lg:py-0 px-4 lg:px-0 no-scrollbar snap-x snap-proximity lg:snap-none scroll-smooth touch-pan-x touch-pan-y overscroll-x-contain cursor-grab active:cursor-grabbing [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] items-stretch"
+          className="flex gap-4 sm:gap-6 overflow-x-auto py-4 sm:py-6 px-4 no-scrollbar snap-x snap-proximity scroll-smooth touch-pan-x touch-pan-y overscroll-x-contain cursor-grab active:cursor-grabbing [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
         >
           {education.map((item, index) => (
             <motion.div
               key={index}
-              custom={index}
-              variants={cardVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.15 }}
-              whileHover={{ y: -4 }}
-              className="w-[calc(100vw-2.5rem)] max-w-[360px] sm:max-w-[400px] lg:w-full shrink-0 lg:shrink snap-start lg:snap-align-none group relative flex h-full mx-auto"
+              whileHover={{ y: -6, scale: 1.02 }}
+              transition={{ type: "spring", stiffness: 350, damping: 20 }}
+              className="flex-shrink-0 w-[calc(100vw-2.5rem)] max-w-[360px] sm:w-[320px] md:w-[360px] snap-start group relative flex flex-col justify-between rounded-2xl bg-slate-950/20 border border-white/20 hover:border-accent-blue p-5 md:p-6 shadow-sm hover:shadow-xl hover:shadow-accent-blue/20 transition-all duration-300 mx-auto sm:mx-0 min-h-[340px]"
             >
-              <div className="relative h-full w-full flex flex-col justify-between bg-slate-950/20 border border-white/20 rounded-2xl p-4 sm:p-6 transition-all duration-300 hover:border-accent-blue shadow-sm hover:shadow-xl hover:shadow-accent-blue/20 min-h-[300px] sm:min-h-[320px] lg:min-h-0">
+              <div className="flex flex-col h-full justify-between">
                 <div>
                   <div className="flex items-start justify-between mb-3 sm:mb-4">
                     <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/20 flex items-center justify-center text-accent-blue shadow-inner group-hover:border-accent-blue/60 group-hover:shadow-[0_0_12px_rgba(96,165,250,0.3)] transition-all">
@@ -388,7 +420,7 @@ export default function EducationSection() {
         </div>
 
         {/* Responsive Pagination Dots Indicator (< lg) */}
-        <div className="flex lg:hidden justify-center items-center gap-2 mt-4">
+        <div className="flex lg:hidden justify-center items-center gap-2 mt-4 sm:mt-6">
           {education.map((_, idx) => (
             <button
               key={idx}
