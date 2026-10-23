@@ -45,6 +45,7 @@ interface ExperienceItem {
   impact: string[];
   behanceUrl?: string;
   certificatePdf?: string;
+  certificateImage?: string;
   videos?: string[];
   images?: { url: string; label: string }[];
 }
@@ -109,6 +110,7 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
         { label: "Experience", value: "1 Year" }
       ],
       behanceUrl: "https://www.behance.net/chensreyneat",
+      certificateImage: "/image/digital-marketing-certificate.jpg",
       certificatePdf: "/image/Digital Marketing Certificate.pdf",
       videos: [
         "/video/1.mp4",
@@ -320,6 +322,7 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
   }, [handleScrollButtons]);
 
   const [photoZoomLevel, setPhotoZoomLevel] = useState<number>(1);
+  const [certZoomLevel, setCertZoomLevel] = useState<number>(1);
   const touchPhotoStartXRef = useRef<number | null>(null);
   const touchPhotoStartYRef = useRef<number | null>(null);
 
@@ -352,6 +355,7 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
     setActiveVideoIndex(1);
     setActivePhotoIndex(0);
     setPhotoZoomLevel(1);
+    setCertZoomLevel(1);
     setIsVideoBuffering(false);
     setVideoHasError(false);
   };
@@ -380,6 +384,11 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
   const handlePhotoZoomOut = () => setPhotoZoomLevel((prev) => Math.max(1, +(prev - 0.5).toFixed(1)));
   const handleResetPhotoZoom = () => setPhotoZoomLevel(1);
   const togglePhotoZoom = () => setPhotoZoomLevel((prev) => (prev > 1 ? 1 : 2));
+
+  const handleCertZoomIn = () => setCertZoomLevel((prev) => Math.min(2.5, +(prev + 0.5).toFixed(1)));
+  const handleCertZoomOut = () => setCertZoomLevel((prev) => Math.max(1, +(prev - 0.5).toFixed(1)));
+  const handleResetCertZoom = () => setCertZoomLevel(1);
+  const toggleCertZoom = () => setCertZoomLevel((prev) => (prev > 1 ? 1 : 2));
 
   const handlePhotoTouchStart = (e: React.TouchEvent) => {
     if (photoZoomLevel > 1) return;
@@ -586,60 +595,78 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
 
                     {/* Middle Feature Section for Digital Marketing */}
                     {item.id === "marketing" && (
-                      <div className="space-y-2.5">
-                        <div className="flex flex-wrap items-center gap-1.5 p-2 rounded-xl bg-white/[0.03] border border-white/10">
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg bg-cyan-500/10 text-cyan-300 border border-cyan-400/30 text-[11px] font-bold font-outfit">
+                            <FileText size={12} />
+                            <span>Certificate &amp; 9 Videos</span>
+                          </span>
                           {item.behanceUrl && (
                             <a
                               href={item.behanceUrl}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="inline-flex items-center gap-1.5 px-2 py-1 rounded-lg bg-[#0057ff]/15 hover:bg-[#0057ff]/30 text-[#60a5fa] hover:text-white border border-[#0057ff]/30 text-[11px] font-bold font-outfit transition-all hover:scale-105"
+                              className="text-[11px] font-bold text-accent-blue hover:text-white transition-colors cursor-pointer font-outfit flex items-center gap-1"
                             >
-                              <FaBehance size={12} />
+                              <FaBehance size={11} />
                               <span>Behance</span>
-                              <ExternalLink size={9} className="opacity-70" />
+                              <ExternalLink size={9} />
                             </a>
-                          )}
-                          {item.certificatePdf && (
-                            <button
-                              type="button"
-                              onClick={() => openExperienceModal(item, "certificate")}
-                              className="inline-flex items-center gap-1.5 px-2 py-1 rounded-lg bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 border border-cyan-400/30 text-[11px] font-bold font-outfit transition-all hover:scale-105 cursor-pointer"
-                            >
-                              <FileText size={11} />
-                              <span>Certificate</span>
-                            </button>
-                          )}
-                          {item.videos && (
-                            <button
-                              type="button"
-                              onClick={() => openExperienceModal(item, "videos")}
-                              className="inline-flex items-center gap-1.5 px-2 py-1 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[11px] font-bold font-outfit transition-all hover:scale-105 cursor-pointer"
-                            >
-                              <Film size={11} />
-                              <span>9 Videos</span>
-                            </button>
                           )}
                         </div>
 
-                        {/* Marketing Key Focus Items */}
-                        <div className="grid grid-cols-2 gap-1.5 text-[11px] font-semibold text-slate-300 font-inter">
-                          <div className="p-2 rounded-lg bg-white/[0.02] border border-white/5 flex items-center gap-1.5">
-                            <span className="w-1.5 h-1.5 rounded-full bg-accent-blue shrink-0 shadow-[0_0_6px_rgba(96,165,250,0.8)]" />
-                            <span className="truncate">Facebook &amp; TikTok</span>
-                          </div>
-                          <div className="p-2 rounded-lg bg-white/[0.02] border border-white/5 flex items-center gap-1.5">
-                            <span className="w-1.5 h-1.5 rounded-full bg-accent-blue shrink-0 shadow-[0_0_6px_rgba(96,165,250,0.8)]" />
-                            <span className="truncate">9 Video Scripts</span>
-                          </div>
-                          <div className="p-2 rounded-lg bg-white/[0.02] border border-white/5 flex items-center gap-1.5">
-                            <span className="w-1.5 h-1.5 rounded-full bg-accent-blue shrink-0 shadow-[0_0_6px_rgba(96,165,250,0.8)]" />
-                            <span className="truncate">Poster Graphics</span>
-                          </div>
-                          <div className="p-2 rounded-lg bg-white/[0.02] border border-white/5 flex items-center gap-1.5">
-                            <span className="w-1.5 h-1.5 rounded-full bg-accent-blue shrink-0 shadow-[0_0_6px_rgba(96,165,250,0.8)]" />
-                            <span className="truncate">Audience Growth</span>
-                          </div>
+                        {/* 2-Item Responsive Thumbnail Grid: Certificate + Video Preview */}
+                        <div className="grid grid-cols-2 gap-2">
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              openExperienceModal(item, "certificate");
+                            }}
+                            className="group/thumb relative h-20 rounded-xl overflow-hidden border border-white/10 hover:border-cyan-400/60 transition-all cursor-pointer shadow-md bg-slate-950/60"
+                            title="Click to view Digital Marketing Certificate"
+                          >
+                            <Image
+                              src="/image/digital-marketing-certificate.jpg"
+                              alt="Digital Marketing Certificate"
+                              fill
+                              sizes="200px"
+                              className="object-cover group-hover/thumb:scale-105 transition-transform duration-300"
+                            />
+                            <div className="absolute inset-0 bg-linear-to-t from-black/85 via-black/20 to-transparent flex items-end justify-between p-1.5">
+                              <span className="text-[10px] font-bold text-white font-outfit truncate">
+                                Certificate
+                              </span>
+                              <FileText size={11} className="text-cyan-300 shrink-0" />
+                            </div>
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              openExperienceModal(item, "videos");
+                            }}
+                            className="group/thumb relative h-20 rounded-xl overflow-hidden border border-white/10 hover:border-emerald-400/60 transition-all cursor-pointer shadow-md bg-slate-950/60 flex items-center justify-center"
+                            title="Click to watch 9 Marketing Videos"
+                          >
+                            <video
+                              src="/video/1.mp4"
+                              muted
+                              playsInline
+                              preload="metadata"
+                              className="absolute inset-0 w-full h-full object-cover opacity-70 group-hover/thumb:opacity-90 group-hover/thumb:scale-105 transition-all duration-300 pointer-events-none"
+                            />
+                            <div className="relative z-10 w-7 h-7 rounded-full bg-accent-blue/80 backdrop-blur-xs flex items-center justify-center text-white shadow-lg group-hover/thumb:scale-110 transition-transform">
+                              <Play size={11} className="fill-white ml-0.5" />
+                            </div>
+                            <div className="absolute inset-0 bg-linear-to-t from-black/85 via-transparent to-transparent flex items-end justify-between p-1.5 z-10">
+                              <span className="text-[10px] font-bold text-white font-outfit truncate">
+                                9 Videos
+                              </span>
+                              <Film size={11} className="text-emerald-300 shrink-0" />
+                            </div>
+                          </button>
                         </div>
                       </div>
                     )}
@@ -1120,33 +1147,97 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
                   </div>
                 )}
 
-                {/* Tab 3: Certificate PDF Viewer */}
-                {activeTab === "certificate" && selectedItem.certificatePdf && (
-                  <div className="space-y-4 relative z-10">
+                {/* Tab 3: Certificate Viewer (Responsive Image with Zoom & Original PDF Link) */}
+                {activeTab === "certificate" && (selectedItem.certificateImage || selectedItem.certificatePdf) && (
+                  <div className="space-y-3.5 relative z-10">
                     <div className="flex items-center justify-between p-3 rounded-xl bg-white/[0.03] border border-white/10">
-                      <div className="flex items-center gap-2">
-                        <FileText size={16} className="text-cyan-400" />
-                        <span className="text-xs sm:text-sm font-bold text-white font-outfit">
+                      <div className="flex items-center gap-2 min-w-0 pr-2">
+                        <FileText size={16} className="text-cyan-400 shrink-0" />
+                        <span className="text-xs sm:text-sm font-bold text-white font-outfit truncate">
                           Digital Marketing Certificate (Official Document)
                         </span>
                       </div>
-                      <a
-                        href={selectedItem.certificatePdf}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-400/30 text-cyan-300 text-xs font-bold font-outfit transition-colors cursor-pointer"
-                      >
-                        <ExternalLink size={13} />
-                        <span>Open Original PDF</span>
-                      </a>
+                      {selectedItem.certificatePdf && (
+                        <a
+                          href={selectedItem.certificatePdf}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-400/30 text-cyan-300 text-xs font-bold font-outfit transition-colors cursor-pointer shrink-0"
+                        >
+                          <ExternalLink size={13} />
+                          <span>Open Original PDF</span>
+                        </a>
+                      )}
                     </div>
 
-                    <div className="w-full h-[52vh] sm:h-[60vh] rounded-xl overflow-hidden border border-white/10 bg-slate-950/80 shadow-2xl">
-                      <iframe
-                        src={`${selectedItem.certificatePdf}#toolbar=0&navpanes=0`}
-                        className="w-full h-full border-0 rounded-xl"
-                        title="Digital Marketing Certificate"
-                      />
+                    <div className="w-full bg-slate-950/80 rounded-2xl overflow-hidden border border-white/10 shadow-2xl flex flex-col">
+                      <div
+                        className={`relative w-full h-[46vh] sm:h-[54vh] md:h-[60vh] overflow-auto select-none no-scrollbar flex items-center justify-center p-2 sm:p-4 ${
+                          certZoomLevel > 1 ? "cursor-grab active:cursor-grabbing" : "cursor-zoom-in"
+                        }`}
+                        onDoubleClick={toggleCertZoom}
+                      >
+                        <div
+                          className="relative flex items-center justify-center transition-transform duration-200 origin-center"
+                          style={{
+                            transform: `scale(${certZoomLevel})`,
+                            width: certZoomLevel > 1 ? `${certZoomLevel * 100}%` : "100%",
+                            height: certZoomLevel > 1 ? `${certZoomLevel * 100}%` : "100%",
+                            minWidth: "100%",
+                            minHeight: "100%",
+                          }}
+                        >
+                          <Image
+                            src={selectedItem.certificateImage || selectedItem.certificatePdf || ""}
+                            alt="Digital Marketing Certificate"
+                            fill
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 85vw, 1024px"
+                            className="object-contain rounded-xl drop-shadow-2xl"
+                            priority
+                          />
+                        </div>
+                      </div>
+
+                      {/* Certificate Bottom Bar: Zoom controls */}
+                      <div className="w-full p-2.5 sm:p-3 bg-slate-900/90 border-t border-white/10 flex items-center justify-between gap-2 z-20">
+                        <span className="text-[11px] sm:text-xs font-medium text-slate-300 font-inter">
+                          Double-tap or use controls to zoom
+                        </span>
+
+                        <div className="flex items-center gap-1 bg-white/5 border border-white/10 rounded-lg p-0.5 ml-auto">
+                          <button
+                            type="button"
+                            onClick={handleCertZoomOut}
+                            disabled={certZoomLevel <= 1}
+                            className="p-1 sm:p-1.5 rounded-md text-white/70 hover:text-white disabled:opacity-30 disabled:pointer-events-none hover:bg-white/10 transition-colors cursor-pointer"
+                            title="Zoom Out"
+                          >
+                            <ZoomOut size={13} />
+                          </button>
+                          <span className="text-[11px] font-bold font-outfit text-cyan-400 px-1.5 min-w-[38px] text-center select-none">
+                            {Math.round(certZoomLevel * 100)}%
+                          </span>
+                          <button
+                            type="button"
+                            onClick={handleCertZoomIn}
+                            disabled={certZoomLevel >= 2.5}
+                            className="p-1 sm:p-1.5 rounded-md text-white/70 hover:text-white disabled:opacity-30 disabled:pointer-events-none hover:bg-white/10 transition-colors cursor-pointer"
+                            title="Zoom In"
+                          >
+                            <ZoomIn size={13} />
+                          </button>
+                          {certZoomLevel > 1 && (
+                            <button
+                              type="button"
+                              onClick={handleResetCertZoom}
+                              className="p-1 sm:p-1.5 rounded-md text-cyan-300 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+                              title="Reset Zoom"
+                            >
+                              <RotateCcw size={12} />
+                            </button>
+                          )}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 )}
@@ -1214,14 +1305,14 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
                       })}
                     </div>
 
-                    {/* Main Video Theater: Native Player with Error Fallback */}
+                    {/* Main Video Theater: Native Player with Error Fallback (Responsive 9:16 Phone Frame) */}
                     <div
-                      className="relative w-full max-w-xl mx-auto rounded-2xl overflow-hidden bg-black/95 border border-white/15 shadow-2xl flex flex-col items-center"
+                      className="relative w-full max-w-[280px] sm:max-w-[320px] md:max-w-[340px] mx-auto rounded-2xl overflow-hidden bg-black/95 border border-white/15 shadow-2xl flex flex-col items-center"
                       onTouchStart={handleVideoTouchStart}
                       onTouchEnd={handleVideoTouchEnd}
                     >
-                      {/* Video Player Container */}
-                      <div className="relative w-full flex items-center justify-center bg-black min-h-[240px] sm:min-h-[320px]">
+                      {/* Video Player Container (9:16 Aspect Fit) */}
+                      <div className="relative w-full aspect-[9/16] max-h-[48vh] sm:max-h-[56vh] flex items-center justify-center bg-black overflow-hidden">
                         {!videoHasError ? (
                           <>
                             <video
@@ -1244,7 +1335,7 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
                                 setIsVideoBuffering(false);
                                 setVideoHasError(true);
                               }}
-                              className="w-full max-h-[46vh] sm:max-h-[52vh] object-contain rounded-t-2xl bg-black"
+                              className="w-full h-full object-contain bg-black"
                             />
 
                             {/* Buffering Loading Spinner Overlay */}
@@ -1259,25 +1350,25 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
                           </>
                         ) : (
                           /* Error / Streaming Notice with TikTok & Behance Links */
-                          <div className="p-6 sm:p-8 flex flex-col items-center justify-center text-center space-y-4 max-w-md mx-auto">
-                            <div className="w-14 h-14 rounded-2xl bg-accent-blue/10 border border-accent-blue/30 flex items-center justify-center text-accent-blue shadow-lg shadow-accent-blue/10">
-                              <Film size={26} />
+                          <div className="p-4 sm:p-6 flex flex-col items-center justify-center text-center space-y-3 max-w-xs mx-auto">
+                            <div className="w-12 h-12 rounded-2xl bg-accent-blue/10 border border-accent-blue/30 flex items-center justify-center text-accent-blue shadow-lg shadow-accent-blue/10">
+                              <Film size={22} />
                             </div>
-                            <div className="space-y-1.5">
-                              <h4 className="text-sm sm:text-base font-bold text-white font-outfit">
+                            <div className="space-y-1">
+                              <h4 className="text-xs sm:text-sm font-bold text-white font-outfit">
                                 Video Stream Fallback
                               </h4>
-                              <p className="text-xs text-slate-300 leading-relaxed font-inter">
-                                Clip #{activeVideoIndex} is a high-resolution marketing video ({`public/video/${activeVideoIndex}.mp4`}). If Git LFS streaming is not enabled on your host, you can watch all marketing videos directly on TikTok or Behance:
+                              <p className="text-[11px] text-slate-300 leading-relaxed font-inter">
+                                Watch marketing videos directly on TikTok or Behance:
                               </p>
                             </div>
 
-                            <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
+                            <div className="flex flex-col items-center gap-1.5 w-full pt-1">
                               <a
                                 href="https://www.tiktok.com/@code.bridge2026?_r=1&_t=ZS-96WUSyJhGxc"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#fe2c55]/15 hover:bg-[#fe2c55]/30 text-[#ff7597] hover:text-white border border-[#fe2c55]/30 text-xs font-bold font-outfit transition-all cursor-pointer shadow-md"
+                                className="w-full inline-flex items-center justify-center gap-2 px-3 py-1.5 rounded-xl bg-[#fe2c55]/15 hover:bg-[#fe2c55]/30 text-[#ff7597] hover:text-white border border-[#fe2c55]/30 text-xs font-bold font-outfit transition-all cursor-pointer shadow-md"
                               >
                                 <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-current">
                                   <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.24 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z" />
@@ -1288,9 +1379,9 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
                                 href="https://www.behance.net/chensreyneat"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#0057ff]/15 hover:bg-[#0057ff]/30 text-[#60a5fa] hover:text-white border border-[#0057ff]/30 text-xs font-bold font-outfit transition-all cursor-pointer shadow-md"
+                                className="w-full inline-flex items-center justify-center gap-2 px-3 py-1.5 rounded-xl bg-[#0057ff]/15 hover:bg-[#0057ff]/30 text-[#60a5fa] hover:text-white border border-[#0057ff]/30 text-xs font-bold font-outfit transition-all cursor-pointer shadow-md"
                               >
-                                <FaBehance size={14} />
+                                <FaBehance size={13} />
                                 <span>View on Behance</span>
                               </a>
                               <button
@@ -1304,7 +1395,7 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
                                     }
                                   }, 100);
                                 }}
-                                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold font-outfit transition-all cursor-pointer"
+                                className="w-full inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold font-outfit transition-all cursor-pointer"
                               >
                                 <span>Retry</span>
                               </button>
@@ -1314,30 +1405,30 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
                       </div>
 
                       {/* Video Bottom Navigation Controls */}
-                      <div className="w-full p-3 bg-slate-900/90 border-t border-white/10 flex items-center justify-between gap-2 z-10">
+                      <div className="w-full p-2.5 sm:p-3 bg-slate-900/90 border-t border-white/10 flex items-center justify-between gap-1.5 z-10">
                         <button
                           type="button"
                           onClick={() => selectVideoClip(activeVideoIndex > 1 ? activeVideoIndex - 1 : 9)}
-                          className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-bold font-outfit text-slate-200 border border-white/10 flex items-center gap-1.5 cursor-pointer transition-colors active:scale-95"
+                          className="px-2.5 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-[11px] sm:text-xs font-bold font-outfit text-slate-200 border border-white/10 flex items-center gap-1 cursor-pointer transition-colors active:scale-95 shrink-0"
                         >
-                          <ChevronLeft size={14} /> Prev Clip
+                          <ChevronLeft size={13} /> Prev
                         </button>
 
-                        <div className="text-center">
-                          <span className="text-xs font-bold font-outfit text-white block">
-                            Marketing Video #{activeVideoIndex}
+                        <div className="text-center min-w-0 px-1">
+                          <span className="text-[11px] sm:text-xs font-bold font-outfit text-white block truncate">
+                            Clip #{activeVideoIndex}
                           </span>
-                          <span className="text-[10px] text-slate-400 font-inter">
-                            Swipe or tap to switch
+                          <span className="text-[9px] sm:text-[10px] text-slate-400 font-inter block truncate">
+                            Swipe or tap
                           </span>
                         </div>
 
                         <button
                           type="button"
                           onClick={() => selectVideoClip(activeVideoIndex < 9 ? activeVideoIndex + 1 : 1)}
-                          className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-xs font-bold font-outfit text-slate-200 border border-white/10 flex items-center gap-1.5 cursor-pointer transition-colors active:scale-95"
+                          className="px-2.5 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-[11px] sm:text-xs font-bold font-outfit text-slate-200 border border-white/10 flex items-center gap-1 cursor-pointer transition-colors active:scale-95 shrink-0"
                         >
-                          Next Clip <ChevronRight size={14} />
+                          Next <ChevronRight size={13} />
                         </button>
                       </div>
                     </div>
