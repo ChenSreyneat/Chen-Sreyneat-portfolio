@@ -623,17 +623,19 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
                               e.stopPropagation();
                               openExperienceModal(item, "certificate");
                             }}
-                            className="group/thumb relative h-20 rounded-xl overflow-hidden border border-white/10 hover:border-cyan-400/60 transition-all cursor-pointer shadow-md bg-slate-950/60"
+                            className="group/thumb relative h-20 rounded-xl overflow-hidden border border-white/10 hover:border-cyan-400/60 transition-all cursor-pointer shadow-md bg-slate-950/80 p-1 flex items-center justify-center"
                             title="Click to view Digital Marketing Certificate"
                           >
-                            <Image
-                              src="/image/digital-marketing-certificate.jpg"
-                              alt="Digital Marketing Certificate"
-                              fill
-                              sizes="200px"
-                              className="object-cover group-hover/thumb:scale-105 transition-transform duration-300"
-                            />
-                            <div className="absolute inset-0 bg-linear-to-t from-black/85 via-black/20 to-transparent flex items-end justify-between p-1.5">
+                            <div className="relative w-full h-full">
+                              <Image
+                                src="/image/digital-marketing-certificate.jpg"
+                                alt="Digital Marketing Certificate"
+                                fill
+                                sizes="200px"
+                                className="object-contain p-0.5 group-hover/thumb:scale-105 transition-transform duration-300 drop-shadow-sm"
+                              />
+                            </div>
+                            <div className="absolute inset-0 bg-linear-to-t from-black/85 via-transparent to-transparent flex items-end justify-between p-1.5 pointer-events-none">
                               <span className="text-[10px] font-bold text-white font-outfit truncate">
                                 Certificate
                               </span>
@@ -1172,13 +1174,13 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
 
                     <div className="w-full bg-slate-950/80 rounded-2xl overflow-hidden border border-white/10 shadow-2xl flex flex-col">
                       <div
-                        className={`relative w-full h-[46vh] sm:h-[54vh] md:h-[60vh] overflow-auto select-none no-scrollbar flex items-center justify-center p-2 sm:p-4 ${
+                        className={`relative w-full h-[46vh] sm:h-[54vh] md:h-[60vh] overflow-auto select-none no-scrollbar flex items-center justify-center p-3 sm:p-5 md:p-6 ${
                           certZoomLevel > 1 ? "cursor-grab active:cursor-grabbing" : "cursor-zoom-in"
                         }`}
                         onDoubleClick={toggleCertZoom}
                       >
                         <div
-                          className="relative flex items-center justify-center transition-transform duration-200 origin-center"
+                          className="relative flex items-center justify-center transition-transform duration-200 origin-center w-full h-full p-2 sm:p-3"
                           style={{
                             transform: `scale(${certZoomLevel})`,
                             width: certZoomLevel > 1 ? `${certZoomLevel * 100}%` : "100%",
@@ -1192,7 +1194,7 @@ export default function ExperienceSection({ hideHeader = false }: { hideHeader?:
                             alt="Digital Marketing Certificate"
                             fill
                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 85vw, 1024px"
-                            className="object-contain rounded-xl drop-shadow-2xl"
+                            className="object-contain p-2 sm:p-3 rounded-xl drop-shadow-2xl"
                             priority
                           />
                         </div>

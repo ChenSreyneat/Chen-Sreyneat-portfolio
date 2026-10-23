@@ -28,7 +28,6 @@ export default function CertificatesSection() {
   // Pop-up modal state
   const [selectedCertIndex, setSelectedCertIndex] = useState<number | null>(null);
   const [zoomLevel, setZoomLevel] = useState<number>(1);
-  const [activePageIndex, setActivePageIndex] = useState<number>(0);
   const touchStartXRef = useRef<number | null>(null);
   const touchStartYRef = useRef<number | null>(null);
 
@@ -67,13 +66,6 @@ export default function CertificatesSection() {
       description: "Official record of academic courses, training history, and credits completed during the engineering program.",
       fileUrl: "/image/certificate-record.jpg",
       pdfUrl: "/image/certificate-record.pdf",
-      pages: [
-        "/image/certificate-record.jpg",
-        "/image/certificate-record-2.jpg",
-        "/image/certificate-record-3.jpg",
-        "/image/certificate-record-4.jpg",
-        "/image/certificate-record-5.jpg"
-      ],
       type: "image" as const,
       icon: FileText
     },
@@ -84,12 +76,6 @@ export default function CertificatesSection() {
       description: "Compiled certificates and awards from tech workshops, seminars, and extra-curricular participations.",
       fileUrl: "/image/general-certificate.jpg",
       pdfUrl: "/image/Certificate.pdf",
-      pages: [
-        "/image/general-certificate.jpg",
-        "/image/general-certificate-2.jpg",
-        "/image/general-certificate-3.jpg",
-        "/image/general-certificate-4.jpg"
-      ],
       type: "image" as const,
       icon: Trophy
     }
@@ -123,27 +109,23 @@ export default function CertificatesSection() {
 
   const openCertModal = (index: number) => {
     setSelectedCertIndex(index);
-    setActivePageIndex(0);
     setZoomLevel(1);
   };
 
   const closeCertModal = () => {
     setSelectedCertIndex(null);
-    setActivePageIndex(0);
     setZoomLevel(1);
   };
 
   const handleNextCert = () => {
     if (selectedCertIndex === null) return;
     setZoomLevel(1);
-    setActivePageIndex(0);
     setSelectedCertIndex((prev) => (prev! + 1) % certificates.length);
   };
 
   const handlePrevCert = () => {
     if (selectedCertIndex === null) return;
     setZoomLevel(1);
-    setActivePageIndex(0);
     setSelectedCertIndex((prev) => (prev! - 1 + certificates.length) % certificates.length);
   };
 
@@ -478,46 +460,21 @@ export default function CertificatesSection() {
                   ))}
                 </div>
 
-                {/* Multi-Page Selector Pills (for multi-page certificates) */}
-                {activeCert.pages && activeCert.pages.length > 1 && (
-                  <div className="flex items-center gap-1.5 pt-1.5 border-t border-white/5 overflow-x-auto no-scrollbar">
-                    <span className="text-[10px] sm:text-[11px] font-bold text-cyan-300 font-outfit uppercase tracking-wider shrink-0">
-                      Pages ({activeCert.pages.length}):
-                    </span>
-                    {activeCert.pages.map((_, pIdx) => (
-                      <button
-                        key={pIdx}
-                        type="button"
-                        onClick={() => {
-                          setActivePageIndex(pIdx);
-                          setZoomLevel(1);
-                        }}
-                        className={`text-[11px] px-2.5 py-0.5 rounded-md font-semibold font-outfit transition-all cursor-pointer shrink-0 ${
-                          activePageIndex === pIdx
-                            ? "bg-cyan-500 text-white shadow-xs shadow-cyan-500/30 scale-105 border border-cyan-400"
-                            : "bg-white/5 text-slate-300 hover:bg-white/10 border border-white/10"
-                        }`}
-                      >
-                        Page {pIdx + 1}
-                      </button>
-                    ))}
-                  </div>
-                )}
               </div>
 
-              {/* Content Area with Zoom, Pan, Swipe & Floating Arrows */}
+              {/* Content Area with Zoom, Pan, Swipe & Floating Arrows (Fitted with Margins) */}
               <div
-                className="flex-grow w-full bg-slate-950/80 relative flex items-center justify-center overflow-hidden p-2 sm:p-4 md:p-6"
+                className="flex-grow w-full bg-slate-950/80 relative flex items-center justify-center overflow-hidden p-3 sm:p-5 md:p-6"
                 onTouchStart={handleTouchStart}
                 onTouchEnd={handleTouchEnd}
               >
                 <div
-                  className={`relative w-full h-[48vh] sm:h-[58vh] md:h-[64vh] rounded-xl overflow-auto select-none no-scrollbar flex items-center justify-center ${zoomLevel > 1 ? "cursor-grab active:cursor-grabbing" : "cursor-zoom-in"
+                  className={`relative w-full h-[46vh] sm:h-[56vh] md:h-[62vh] rounded-2xl overflow-auto select-none no-scrollbar flex items-center justify-center p-2 sm:p-4 ${zoomLevel > 1 ? "cursor-grab active:cursor-grabbing" : "cursor-zoom-in"
                     }`}
                   onDoubleClick={toggleZoom}
                 >
                   <div
-                    className="relative flex items-center justify-center transition-transform duration-200 origin-center"
+                    className="relative flex items-center justify-center transition-transform duration-200 origin-center w-full h-full p-2 sm:p-3"
                     style={{
                       transform: `scale(${zoomLevel})`,
                       width: zoomLevel > 1 ? `${zoomLevel * 100}%` : "100%",
@@ -527,11 +484,11 @@ export default function CertificatesSection() {
                     }}
                   >
                     <Image
-                      src={(activeCert.pages && activeCert.pages[activePageIndex]) || activeCert.fileUrl}
+                      src={activeCert.fileUrl}
                       alt={activeCert.title}
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 85vw, 1024px"
-                      className="object-contain rounded-xl drop-shadow-2xl"
+                      className="object-contain p-2 sm:p-3 rounded-xl drop-shadow-2xl"
                       priority
                     />
                   </div>
